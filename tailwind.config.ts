@@ -12,8 +12,17 @@ export default {
         "2xl": "1400px",
       },
     },
+    fontFamily: {
+      display: ['Outfit', 'sans-serif'],
+      body: ['Space Grotesk', 'sans-serif'],
+    },
     extend: {
       colors: {
+        champion: {
+          gold: "hsl(var(--champion-gold))",
+          silver: "hsl(var(--champion-silver))",
+          bronze: "hsl(var(--champion-bronze))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
