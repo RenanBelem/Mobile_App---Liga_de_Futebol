@@ -97,6 +97,6 @@ export const currentUser: User = {
   id: 'u1',
   name: 'Administrador do Sistema',
   email: 'admin@liga.com',
-  role: 'fan', // Altere para 'fan', 'player' ou 'moderator' para testar
+  role: 'admin', // Altere para 'fan', 'player' ou 'moderator' para testar
   createdAt: '2026-01-01T00:00:00Z'
 };
