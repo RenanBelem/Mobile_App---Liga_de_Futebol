@@ -38,7 +38,11 @@ const TournamentDetail = () => {
     <div className="pb-20">
       <div className="flex justify-between items-center pr-4">
         <PageHeader title={tournament.name} subtitle={`${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}`} showBack />
-        
+        //teste
+        <div className="bg-yellow-100 p-2 text-xs text-black">
+          Logado como: <strong>{currentUser.name}</strong> | Role: <strong>{currentUser.role}</strong>
+        </div>
+
         {/* BOTÃO GLOBAL DE EDIÇÃO: Só aparece para Admin/Moderador */}
         {canEdit && (
           <Button variant="outline" size="sm" className="gap-2">
