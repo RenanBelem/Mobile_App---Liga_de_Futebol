@@ -84,3 +84,18 @@ export interface MediaItem {
   tournamentId?: string;
   date: string;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'viewer';
+}
+
+// Para suportar estatísticas POR competição (Documentação Viva)
+export interface CompetitionStats {
+  competitionId: string;
+  playerId: string;
+  goals: number;
+  assists: number;
+}
