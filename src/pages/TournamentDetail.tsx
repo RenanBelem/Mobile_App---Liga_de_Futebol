@@ -39,8 +39,8 @@ const TournamentDetail = () => {
       <div className="flex justify-between items-center pr-4">
         <PageHeader title={tournament.name} subtitle={`${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}`} showBack />
         //teste
-        <div className="bg-yellow-100 p-2 text-xs text-black">
-          Logado como: <strong>{currentUser.name}</strong> | Role: <strong>{currentUser.role}</strong>
+        <div className="m-4 p-2 bg-yellow-500 text-black font-bold rounded shadow-lg">
+          DEBUG: Usuário [{currentUser.name}] | Nível de Acesso: [{currentUser.role}]
         </div>
 
         {/* BOTÃO GLOBAL DE EDIÇÃO: Só aparece para Admin/Moderador */}
