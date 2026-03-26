@@ -14,25 +14,66 @@ Este projeto é um aplicativo mobile (Progressive Web App - PWA) focado na prese
 ```text
 raiz/
 ├── public/                 # Arquivos estáticos (ícones, svgs, logos)
+│   ├── flavicon.ico
+│   ├── placeholder.svg
+│   └── robots.txt
 ├── src/
 │   ├── components/         # Componentes reutilizáveis (MatchCard, PodiumCard, etc.)
+│   │   ├── ui/
+│   │   ├── BottomNav.tsx
+│   │   ├── MatchCard.tsx
+│   │   ├── NavLinks.tsx
+│   │   ├── PageHeader.tsx
+│   │   ├── PodiumCard.tsx
+│   │   └── StandingsTable.tsx
 │   ├── data/
-│   │   └── mock.ts         # Base de dados estática e Usuário Simulado (currentUser)
+│   │   ├── seasons/
+│   │   ├── index.ts
+│   │   ├── mock.ts         # Base de dados estática e Usuário Simulado (currentUser)
+│   │   ├── player.ts
+│   │   └── teams.ts
 │   ├── hooks/              # Hooks customizados para lógica de estado
+│   │   ├── use-mobile.tsx
+│   │   └── use-toast.ts
 │   ├── lib/                # Configurações de bibliotecas externas
+│   │   └── utils.ts
 │   ├── pages/              # Páginas principais da aplicação
 │   │   ├── Index.tsx       # Home / Visão Geral
 │   │   ├── Media.tsx       # Galeria de fotos e vídeos
-│   │   ├── Teams.tsx       # Listagem de times cadastrados
+│   │   ├── More.tsx
+│   │   ├── NotFound.tsx
 │   │   ├── TeamDetail.tsx  # Perfil detalhado de um time e seu elenco
-│   │   ├── Tournament.tsx  # Lista de campeonatos (Ligas e Copas)
-│   │   └── TournamentDetail.tsx # Tabela, jogos, pódio e travas de acesso por Role
+│   │   ├── Teams.tsx       # Listagem de times cadastrados
+│   │   ├── TournamentDetail.tsx # Tabela, jogos, pódio e travas de acesso por Role
+│   │   └── Tournament.tsx  # Lista de campeonatos (Ligas e Copas)
+│   ├── test/
+│   │   ├── example.test.ts
+│   │   └── setup.ts
 │   ├── types/
 │   │   └── league.ts       # Definições de Interfaces (Team, Player, User, AuditLog)
+│   ├── App.css
 │   ├── App.tsx             # Arquivo principal com rotas
-│   └── main.tsx            # Ponto de entrada do React
+│   ├── index.css
+│   ├── main.tsx            # Ponto de entrada do React
+│   └── vite-env.d.ts
+├── .gitignore
+├── bun.lock
+├── bun.lockb
+├── components.json
+├── eslint.config.js
 ├── index.html              # Template principal HTML
-└── package.json            # Scripts e dependências do projeto
+├── package-lock.json
+├── package.json            # Scripts e dependências do projeto
+├── playwirght-fixture.ts
+├── playwirght.config.ts
+├── postcss.config.js
+├── README.md
+├── tailwind.config.ts
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+└── vitest.config.ts
 ```
 
 ## 🚀 Status do Desenvolvimento (Checklist)
