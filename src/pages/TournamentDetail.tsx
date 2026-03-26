@@ -18,6 +18,10 @@ const TournamentDetail = () => {
   const [activeTab, setActiveTab] = useState<Tab>('matches');
   // Lógica de permissão simplificada
   const canEdit = currentUser.role === 'admin' || currentUser.role === 'moderator';
+  const isAdmin = currentUser.role === 'admin';
+  const isModerator = currentUser.role === 'moderator' || isAdmin;
+  const isPlayer = currentUser.role === 'player';
+  const isFan = currentUser.role === 'fan';
 
   if (!tournament) return <div className="p-4 text-muted-foreground">Torneio não encontrado.</div>;
 
@@ -37,8 +41,41 @@ const TournamentDetail = () => {
   return (
     <div className="pb-20">
       <div className="flex justify-between items-center pr-4">
+        
+        {/* 1. ACESSO DE ADMINISTRADOR: Edição Geral */}
+        {isAdmin && (
+          <div className="bg-red-100 p-2 text-red-700 text-xs font-bold text-center">
+            Modo Administrador: Controle total da aplicação ativado.
+          </div>
+        )}
+        
         <PageHeader title={tournament.name} subtitle={`${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}`} showBack />
-        //teste
+        
+        {/* 2. ACESSO DE MODERADOR/ADMIN: Gestão de Jogos e Mídia */}
+        {activeTab === 'matches' && isModerator && (
+          <Button className="w-full mb-4">Cadastrar Resultado de Jogo</Button>
+        )}
+
+        {/* 3. ACESSO DE JOGADOR: Ver destaque nas estatísticas */}
+        {activeTab === 'stats' && (
+          <div>
+            {isPlayer && (
+              <div className="mb-4 p-3 bg-blue-50 border-l-4 border-blue-500 text-sm">
+                Olá, <strong>{currentUser.name}</strong>! Confira seu desempenho nesta copa.
+              </div>
+            )}
+            {/* ... renderização da artilharia ... */}
+          </div>
+        )}
+
+        {/* 4. ACESSO DE TORCEDOR: Apenas visualização */}
+        {activeTab === 'media' && (
+          <div className="text-center">
+            {!isModerator && <p>Galeria de fotos oficial da temporada.</p>}
+            {isModerator && <Button>Fazer Upload de Nova Foto</Button>}
+          </div>
+        )}
+
         <div className="m-4 p-2 bg-yellow-500 text-black font-bold rounded shadow-lg">
           DEBUG: Usuário [{currentUser.name}] | Nível de Acesso: [{currentUser.role}]
         </div>
