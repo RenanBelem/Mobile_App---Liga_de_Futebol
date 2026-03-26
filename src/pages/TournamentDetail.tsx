@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { tournaments, teams } from '@/data/mock';
+import { tournaments, teams, currentUser } from '@/data/mock'; // Importe o currentUser
+import { Button } from '@/components/ui/button'; // Supondo que você use shadcn ou similar
+import { Plus, Edit2 } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import MatchCard from '@/components/MatchCard';
 import StandingsTable from '@/components/StandingsTable';
 import PodiumCard from '@/components/PodiumCard';
 import { Player } from '@/types/league';
+
 
 type Tab = 'matches' | 'standings' | 'stats' | 'media';
 
@@ -13,6 +16,8 @@ const TournamentDetail = () => {
   const { id } = useParams();
   const tournament = tournaments.find(t => t.id === id);
   const [activeTab, setActiveTab] = useState<Tab>('matches');
+  // Lógica de permissão simplificada
+  const canEdit = currentUser.role === 'admin' || currentUser.role === 'moderator';
 
   if (!tournament) return <div className="p-4 text-muted-foreground">Torneio não encontrado.</div>;
 
@@ -31,7 +36,16 @@ const TournamentDetail = () => {
 
   return (
     <div className="pb-20">
-      <PageHeader title={tournament.name} subtitle={`${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}`} showBack />
+      <div className="flex justify-between items-center pr-4">
+        <PageHeader title={tournament.name} subtitle={`${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}`} showBack />
+        
+        {/* BOTÃO GLOBAL DE EDIÇÃO: Só aparece para Admin/Moderador */}
+        {canEdit && (
+          <Button variant="outline" size="sm" className="gap-2">
+            <Edit2 className="w-4 h-4" /> Editar Torneio
+          </Button>
+        )}
+      </div>
 
       {tournament.podium && (
         <div className="px-4 pt-2">
@@ -59,10 +73,27 @@ const TournamentDetail = () => {
 
         {activeTab === 'matches' && (
           <div className="space-y-2">
+            {/* BOTÃO DE ADICIONAR JOGO: Restrito */}
+            {canEdit && (
+              <Button className="w-full mb-4 gap-2" variant="secondary">
+                <Plus className="w-4 h-4" /> Novo Jogo
+              </Button>
+            )}
+            
             {tournament.matches.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-8">Nenhum jogo cadastrado.</p>
             ) : (
-              tournament.matches.map(m => <MatchCard key={m.id} match={m} />)
+              tournament.matches.map(m => (
+                <div key={m.id} className="relative group">
+                   <MatchCard match={m} />
+                   {/* Botão de edição rápida no card do jogo */}
+                   {canEdit && (
+                     <button className="absolute top-2 right-2 p-1 bg-primary text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                       <Edit2 className="w-3 h-3" />
+                     </button>
+                   )}
+                </div>
+              ))
             )}
           </div>
         )}
@@ -115,9 +146,19 @@ const TournamentDetail = () => {
         )}
 
         {activeTab === 'media' && (
-          <p className="text-sm text-muted-foreground text-center py-8">
-            Nenhuma mídia cadastrada ainda.
-          </p>
+          <div className="text-center py-8">
+            {/* BOTÃO DE ADICIONAR MÍDIA: Restrito conforme seu prompt */}
+            {canEdit ? (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">Nenhuma mídia cadastrada.</p>
+                <Button variant="outline" className="gap-2">
+                   <Plus className="w-4 h-4" /> Upload de Foto/Vídeo
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">Galeria de mídias vazia.</p>
+            )}
+          </div>
         )}
       </div>
     </div>

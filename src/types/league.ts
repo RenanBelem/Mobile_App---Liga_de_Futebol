@@ -85,17 +85,49 @@ export interface MediaItem {
   date: string;
 }
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'viewer';
-}
-
 // Para suportar estatísticas POR competição (Documentação Viva)
 export interface CompetitionStats {
   competitionId: string;
   playerId: string;
   goals: number;
   assists: number;
+}
+
+// 1. Definição de Papéis (Roles) para o sistema de permissões
+export type UserRole = 'admin' | 'moderator' | 'player' | 'fan';
+
+// 2. Interface de Usuário
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  teamId?: string; // Vinculado se o papel for 'player'
+  avatarUrl?: string;
+  createdAt: string;
+}
+
+// 3. Sistema de Auditoria (Logs)
+export interface AuditLog {
+  id: string;
+  userId: string;
+  userName: string;
+  action: 'create' | 'update' | 'delete';
+  entity: 'team' | 'player' | 'match' | 'tournament';
+  entityId: string;
+  description: string; // Ex: "Alterou o placar do jogo m1 de 1x0 para 1x1"
+  timestamp: string;
+}
+
+// 4. Extensão de Jogador para incluir vinculo com Usuário
+// (Mantendo a compatibilidade com o que você já tem)
+export interface Player {
+  id: string;
+  userId?: string; // Liga o perfil de atleta a uma conta de usuário
+  name: string;
+  number?: number;
+  position?: string;
+  photo?: string;
+  teamId: string;
+  stats?: PlayerStats;
 }

@@ -89,3 +89,14 @@ export const league: League = {
   season: '2026',
   tournaments,
 };
+
+// Alteração de interface por usuário
+import { User } from '@/types/league';
+
+export const currentUser: User = {
+  id: 'u1',
+  name: 'Administrador do Sistema',
+  email: 'admin@liga.com',
+  role: 'admin', // Altere para 'fan', 'player' ou 'moderator' para testar
+  createdAt: '2026-01-01T00:00:00Z'
+};
