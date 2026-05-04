@@ -1,9 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Users } from 'lucide-react';
-import { teams } from '@/data/mock';
+import { Shield, Users, Plus } from 'lucide-react'; // Adicionei o ícone Plus
+import { teams, getPlayersByTeam } from '@/data/mock';
 import PageHeader from '@/components/PageHeader';
-import CreateTeamForm from '@/components/CreateTeamForm'; // 1. Importando o nosso novo formulário
+import CreateTeamForm from '@/components/CreateTeamForm';
+
+// Importações do shadcn/ui
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Teams = () => {
   const navigate = useNavigate();
@@ -13,16 +20,31 @@ const Teams = () => {
       <PageHeader title="Times" subtitle={`${teams.length} times cadastrados`} />
       
       <div className="px-4 pt-4 space-y-6">
-        {/* 2. Renderizando o formulário no topo */}
-        <div className="mb-6">
-          <CreateTeamForm />
+        
+        {/* Cabeçalho da Lista + Botão de Novo Time */}
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-bold text-foreground/80">Times Cadastrados</h3>
+          
+          {/* Modal / Dialog */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="bg-primary text-primary-foreground px-3 py-1.5 rounded-md text-sm font-semibold flex items-center gap-1.5 hover:bg-primary/90 transition-colors">
+                <Plus className="w-4 h-4" /> Novo
+              </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md bg-background border-border p-0 overflow-hidden">
+              {/* O formulário entra aqui. O p-0 no Content tira o padding padrão para o glass-card do seu form preencher tudo */}
+              <CreateTeamForm />
+            </DialogContent>
+          </Dialog>
         </div>
 
-        {/* 3. Lista de times existentes (mantida intacta) */}
-        <div>
-          <h3 className="text-lg font-bold mb-3 text-foreground/80">Times Cadastrados</h3>
-          <div className="space-y-3">
-            {teams.map((team, i) => (
+        {/* Lista de times (Intacta) */}
+        <div className="space-y-3">
+          {teams.map((team, i) => {
+            const teamPlayers = getPlayersByTeam(team.id);
+
+            return (
               <motion.button
                 key={team.id}
                 initial={{ x: -20, opacity: 0 }}
@@ -32,7 +54,7 @@ const Teams = () => {
                 className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors"
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
+                  className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
                   style={{ backgroundColor: team.colors || 'hsl(var(--muted))' }}
                 >
                   <Shield className="w-6 h-6 text-background" />
@@ -40,12 +62,12 @@ const Teams = () => {
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm">{team.name}</p>
                   <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                    <Users className="w-3 h-3" /> {team.players.length} jogadores
+                    <Users className="w-3 h-3" /> {teamPlayers.length} jogadores
                   </p>
                 </div>
               </motion.button>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
       </div>
