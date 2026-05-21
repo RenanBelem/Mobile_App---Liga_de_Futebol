@@ -56,7 +56,7 @@
     },
     {
       "id": "p4",
-      "team_id": "2",
+      "team_id": "3",
       "name": "Rafael Costa",
       "number": 9,
       "position": "Atacante",
@@ -74,7 +74,7 @@
     },
     {
       "id": "p5",
-      "team_id": "2",
+      "team_id": "3",
       "name": "Diego Alves",
       "number": 5,
       "position": "Zagueiro",
@@ -92,7 +92,7 @@
     },
     {
       "id": "p6",
-      "team_id": "3",
+      "team_id": "7",
       "name": "Lucas Oliveira",
       "number": 11,
       "position": "Ponta",
@@ -110,7 +110,7 @@
     },
     {
       "id": "p7",
-      "team_id": "4",
+      "team_id": "8",
       "name": "André Souza",
       "number": 8,
       "position": "Volante",
@@ -164,7 +164,7 @@
     },
     {
       "id": "p10",
-      "team_id": "6",
+      "team_id": "12",
       "name": "Thiago Ferreira",
       "number": 10,
       "position": "Meia",
