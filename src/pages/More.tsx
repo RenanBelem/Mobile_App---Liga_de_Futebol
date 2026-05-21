@@ -1,33 +1,122 @@
-import { Settings, UserPlus, ShieldPlus, Trophy, Info } from 'lucide-react';
+import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
-
-const menuItems = [
-  { icon: UserPlus, label: 'Cadastrar Usuário', desc: 'Adicionar novo membro' },
-  { icon: ShieldPlus, label: 'Cadastrar Time', desc: 'Criar novo time' },
-  { icon: Trophy, label: 'Cadastrar Torneio', desc: 'Criar campeonato ou copa' },
-  { icon: Settings, label: 'Configurações', desc: 'Preferências do app' },
-  { icon: Info, label: 'Sobre', desc: 'Informações da liga' },
-];
+import CreateUserForm from '@/components/CreateUserForm';
+import CreateTeamForm from '@/components/CreateTeamForm';
+import CreatePlayerForm from '@/components/CreatePlayerForm';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 const More = () => {
   return (
     <div className="pb-20">
       <PageHeader title="Mais" subtitle="Administração e configurações" />
       <div className="px-4 pt-4 space-y-2">
-        {menuItems.map((item) => (
-          <button
-            key={item.label}
-            className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors"
-          >
-            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-              <item.icon className="w-5 h-5 text-primary" />
+
+        {/* Cadastrar Usuário */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                <UserPlus className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Cadastrar Usuário</p>
+                <p className="text-xs text-muted-foreground">Adicionar novo membro</p>
+              </div>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md bg-background border-border p-0 overflow-hidden">
+            <CreateUserForm />
+          </DialogContent>
+        </Dialog>
+
+        {/* Cadastrar Time */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                <ShieldPlus className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Cadastrar Time</p>
+                <p className="text-xs text-muted-foreground">Criar novo time</p>
+              </div>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md bg-background border-border p-0 overflow-hidden">
+            <CreateTeamForm />
+          </DialogContent>
+        </Dialog>
+
+        {/* Cadastrar Jogador */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                <Users className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Cadastrar Jogador</p>
+                <p className="text-xs text-muted-foreground">Adicionar novo jogador</p>
+              </div>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md bg-background border-border p-0 overflow-hidden">
+            <CreatePlayerForm />
+          </DialogContent>
+        </Dialog>
+
+        {/* Cadastrar Torneio — em breve */}
+        <button
+          disabled
+          className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left opacity-50 cursor-not-allowed"
+        >
+          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+            <Trophy className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold">Cadastrar Torneio</p>
+            <p className="text-xs text-muted-foreground">Em breve</p>
+          </div>
+        </button>
+
+        {/* Configurações — em breve */}
+        <button
+          disabled
+          className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left opacity-50 cursor-not-allowed"
+        >
+          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+            <Settings className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold">Configurações</p>
+            <p className="text-xs text-muted-foreground">Em breve</p>
+          </div>
+        </button>
+
+        {/* Sobre */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                <Info className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Sobre</p>
+                <p className="text-xs text-muted-foreground">Informações da liga</p>
+              </div>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md bg-background border-border">
+            <div className="p-5 space-y-3">
+              <h2 className="text-lg font-bold">Liga Antifascista de Futebol</h2>
+              <p className="text-sm text-muted-foreground">
+                Organização dedicada ao futebol comunitário, antifascista e popular. Reunindo times de todo o Brasil que acreditam no esporte como ferramenta de transformação social.
+              </p>
+              <p className="text-xs text-muted-foreground">Versão 1.0.0</p>
             </div>
-            <div>
-              <p className="text-sm font-semibold">{item.label}</p>
-              <p className="text-xs text-muted-foreground">{item.desc}</p>
-            </div>
-          </button>
-        ))}
+          </DialogContent>
+        </Dialog>
+
       </div>
     </div>
   );

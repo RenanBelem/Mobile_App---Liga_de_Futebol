@@ -11,6 +11,7 @@ import Tournaments from "./pages/Tournaments";
 import TournamentDetail from "./pages/TournamentDetail";
 import Media from "./pages/Media";
 import More from "./pages/More";
+import Debug from "./pages/Debug";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/tournaments/:id" element={<TournamentDetail />} />
               <Route path="/media" element={<Media />} />
               <Route path="/more" element={<More />} />
+              <Route path="/debug" element={<Debug />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <BottomNav />

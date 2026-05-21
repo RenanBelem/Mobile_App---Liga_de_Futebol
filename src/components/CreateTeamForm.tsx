@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Shield, Type, Image as ImageIcon, Calendar, UploadCloud } from "lucide-react";
+import { addTeam } from "@/data/state";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 // 1. Atualizamos o schema: sai "logoUrl", entra "logo"
 const teamSchema = z.object({
@@ -14,6 +17,8 @@ const teamSchema = z.object({
 type TeamFormValues = z.infer<typeof teamSchema>;
 
 export default function CreateTeamForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
   const form = useForm<TeamFormValues>({
     resolver: zodResolver(teamSchema),
     defaultValues: {
@@ -30,11 +35,31 @@ export default function CreateTeamForm() {
   const previewUrl = logoFile && logoFile.length > 0 ? URL.createObjectURL(logoFile[0]) : null;
 
   function onSubmit(data: TeamFormValues) {
-    // Quando integrarmos com o Supabase, enviaremos data.logo[0] para o Storage
-    console.log("Dados prontos para salvar:", {
-      ...data,
-      logoArquivo: data.logo && data.logo.length > 0 ? data.logo[0] : null
-    });
+    try {
+      setIsLoading(true);
+      
+      // Salva o time em localStorage
+      const newTeam = addTeam({
+        name: data.name,
+        shortName: data.shortName,
+        foundationYear: data.foundationYear || undefined,
+      });
+
+      toast({
+        title: "Sucesso!",
+        description: `Time ${data.name} cadastrado com sucesso!`,
+      });
+
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Falha ao cadastrar time. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
