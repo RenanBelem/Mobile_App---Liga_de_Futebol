@@ -1,6 +1,7 @@
 import { Match } from '@/types/league';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { getTeamById } from '@/data/mock';
 
 interface MatchCardProps {
   match: Match;
@@ -8,6 +9,10 @@ interface MatchCardProps {
 
 const MatchCard = ({ match }: MatchCardProps) => {
   const isFinished = match.status === 'finished';
+  const homeTeam = getTeamById(match.homeTeamId);
+  const awayTeam = getTeamById(match.awayTeamId);
+
+  if (!homeTeam || !awayTeam) return null;
 
   return (
     <div className="glass-card rounded-lg p-3">
@@ -16,7 +21,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
       )}
       <div className="flex items-center justify-between">
         <div className="flex-1 text-right">
-          <p className="text-sm font-semibold truncate">{match.homeTeam.name}</p>
+          <p className="text-sm font-semibold truncate">{homeTeam.name}</p>
         </div>
         <div className="mx-4 min-w-[60px] text-center">
           {isFinished ? (
@@ -30,7 +35,7 @@ const MatchCard = ({ match }: MatchCardProps) => {
           )}
         </div>
         <div className="flex-1 text-left">
-          <p className="text-sm font-semibold truncate">{match.awayTeam.name}</p>
+          <p className="text-sm font-semibold truncate">{awayTeam.name}</p>
         </div>
       </div>
     </div>
