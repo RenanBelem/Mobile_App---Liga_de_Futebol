@@ -1,0 +1,173 @@
+{
+  "application_data_structure": {
+    "title": "Liga AF de Futebol - JSON Data Structure",
+    "version": "1.0.0",
+    "description": "Complete normalized data structure for a football league management system",
+    "last_updated": "2026-05-21",
+    "total_files": 11,
+    "files_overview": [
+      {
+        "filename": "leagues.json",
+        "records": 2,
+        "description": "Ligas principais - Estruturas organizacionais de alto nível",
+        "primary_key": "id",
+        "relationships": ["has_many: tournaments", "has_many: teams"]
+      },
+      {
+        "filename": "tournaments.json",
+        "records": 4,
+        "description": "Torneios e competições dentro das ligas",
+        "primary_key": "id",
+        "foreign_keys": ["league_id"],
+        "relationships": ["belongs_to: leagues", "has_many: matches", "has_many: phases"]
+      },
+      {
+        "filename": "teams.json",
+        "records": 6,
+        "description": "Times participantes",
+        "primary_key": "id",
+        "foreign_keys": ["league_id"],
+        "relationships": ["belongs_to: leagues", "has_many: players", "has_many: matches"]
+      },
+      {
+        "filename": "players.json",
+        "records": 10,
+        "description": "Jogadores / Elenco dos times",
+        "primary_key": "id",
+        "foreign_keys": ["team_id"],
+        "relationships": ["belongs_to: teams", "has_many: match_events"]
+      },
+      {
+        "filename": "phases.json",
+        "records": 10,
+        "description": "Fases/Rodadas/Turnos dos torneios",
+        "primary_key": "id",
+        "foreign_keys": ["tournament_id"],
+        "relationships": ["belongs_to: tournaments", "has_many: matches"]
+      },
+      {
+        "filename": "matches.json",
+        "records": 11,
+        "description": "Partidas/Jogos com placar, data e status",
+        "primary_key": "id",
+        "foreign_keys": ["tournament_id", "phase_id", "home_team_id", "away_team_id"],
+        "relationships": ["belongs_to: tournaments", "belongs_to: phases", "has_many: match_events"]
+      },
+      {
+        "filename": "match_events.json",
+        "records": 18,
+        "description": "Eventos dentro de partidas - gols, assistências, cartões",
+        "primary_key": "id",
+        "foreign_keys": ["match_id", "player_id", "team_id", "assist_by_player_id"],
+        "relationships": ["belongs_to: matches", "belongs_to: players"]
+      },
+      {
+        "filename": "standings.json",
+        "records": 8,
+        "description": "Tabela de classificação dos torneios",
+        "primary_key": "id",
+        "foreign_keys": ["tournament_id", "team_id"],
+        "relationships": ["belongs_to: tournaments", "belongs_to: teams"],
+        "unique_constraints": ["(tournament_id, team_id)"]
+      },
+      {
+        "filename": "podiums.json",
+        "records": 2,
+        "description": "Pódios/Campeões dos torneios finalizados",
+        "primary_key": "id",
+        "foreign_keys": ["tournament_id"],
+        "relationships": ["belongs_to: tournaments"],
+        "unique_constraints": ["tournament_id"]
+      },
+      {
+        "filename": "media.json",
+        "records": 8,
+        "description": "Galeria de fotos e vídeos dos torneios",
+        "primary_key": "id",
+        "foreign_keys": ["tournament_id", "match_id (optional)"],
+        "relationships": ["belongs_to: tournaments"]
+      },
+      {
+        "filename": "users.json",
+        "records": 8,
+        "description": "Usuários do sistema com diferentes permissões",
+        "primary_key": "id",
+        "foreign_keys": ["team_id (optional)"],
+        "relationships": ["belongs_to: teams (optional)"],
+        "unique_constraints": ["email"]
+      }
+    ],
+    "data_summary": {
+      "leagues": 2,
+      "tournaments": 4,
+      "teams": 6,
+      "players": 10,
+      "phases": 10,
+      "matches": 11,
+      "match_events": 18,
+      "standings_entries": 8,
+      "podiums": 2,
+      "media_items": 8,
+      "users": 8,
+      "total_records": 87
+    },
+    "entity_diagram": {
+      "leagues": ["tournaments[]", "teams[]"],
+      "tournaments": ["matches[]", "phases[]", "standings[]", "podiums", "media[]"],
+      "phases": ["matches[]"],
+      "teams": ["players[]", "users[]", "matches[] (home & away)"],
+      "matches": ["match_events[]"],
+      "players": ["match_events[]"],
+      "users": ["team? (optional)"]
+    },
+    "key_features": {
+      "normalization": "Full 3NF - no data duplication",
+      "referential_integrity": "All relationships via foreign keys",
+      "status_tracking": "Comprehensive status enums for tournaments and matches",
+      "role_based_access": "Admin, Moderator, Player, Fan roles",
+      "audit_trail": "created_at and updated_at timestamps on all entities",
+      "media_support": "Photos and videos with captions and tags",
+      "real_time_stats": "Match events, standings updates, and scorecards"
+    },
+    "recommended_database_systems": [
+      {
+        "system": "Supabase/PostgreSQL",
+        "pros": ["Full ACID compliance", "Complex queries", "Built-in auth"],
+        "setup": "Create tables with FOREIGN KEY constraints and indices"
+      },
+      {
+        "system": "Firebase/Firestore",
+        "pros": ["Real-time updates", "Scalability", "Easy deployment"],
+        "setup": "Create collections for each entity, use document references"
+      },
+      {
+        "system": "MongoDB",
+        "pros": ["Flexible schema", "Good performance", "Easy clustering"],
+        "setup": "Create collections, use ObjectId references, add indexes"
+      }
+    ],
+    "implementation_checklist": [
+      "Choose database system",
+      "Create database schema from SCHEMA.json",
+      "Set up foreign key relationships",
+      "Create indices for performance",
+      "Implement data validation rules",
+      "Set up API endpoints for CRUD operations",
+      "Implement authentication (JWT)",
+      "Add authorization checks based on role",
+      "Set up automated backups",
+      "Implement data import from JSON files",
+      "Add logging and error handling",
+      "Set up monitoring and alerting"
+    ],
+    "quick_reference": {
+      "primary_entity": "leagues",
+      "main_competition_entity": "tournaments",
+      "core_action_entity": "matches",
+      "detailed_action_tracking": "match_events",
+      "user_management": "users",
+      "content_storage": "media",
+      "performance_tracking": "standings"
+    }
+  }
+}

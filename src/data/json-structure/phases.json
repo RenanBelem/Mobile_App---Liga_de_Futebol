@@ -1,0 +1,124 @@
+{
+  "phases": [
+    {
+      "id": "ph1",
+      "tournament_id": "t1",
+      "name": "Rodada 1",
+      "phase_number": 1,
+      "type": "round-robin",
+      "start_date": "2026-03-10",
+      "end_date": "2026-03-12",
+      "status": "finished",
+      "description": "Primeira rodada da competição",
+      "created_at": "2026-01-15T00:00:00Z"
+    },
+    {
+      "id": "ph2",
+      "tournament_id": "t1",
+      "name": "Rodada 2",
+      "phase_number": 2,
+      "type": "round-robin",
+      "start_date": "2026-03-17",
+      "end_date": "2026-03-19",
+      "status": "finished",
+      "description": "Segunda rodada da competição",
+      "created_at": "2026-01-15T00:00:00Z"
+    },
+    {
+      "id": "ph3",
+      "tournament_id": "t1",
+      "name": "Rodada 3",
+      "phase_number": 3,
+      "type": "round-robin",
+      "start_date": "2026-03-24",
+      "end_date": "2026-03-26",
+      "status": "ongoing",
+      "description": "Terceira rodada da competição",
+      "created_at": "2026-01-15T00:00:00Z"
+    },
+    {
+      "id": "ph4",
+      "tournament_id": "t1",
+      "name": "Rodada 4",
+      "phase_number": 4,
+      "type": "round-robin",
+      "start_date": "2026-03-31",
+      "end_date": "2026-04-02",
+      "status": "scheduled",
+      "description": "Quarta rodada da competição",
+      "created_at": "2026-01-15T00:00:00Z"
+    },
+    {
+      "id": "ph5",
+      "tournament_id": "t1",
+      "name": "Rodada 5",
+      "phase_number": 5,
+      "type": "round-robin",
+      "start_date": "2026-04-07",
+      "end_date": "2026-04-09",
+      "status": "scheduled",
+      "description": "Quinta rodada da competição",
+      "created_at": "2026-01-15T00:00:00Z"
+    },
+    {
+      "id": "ph6",
+      "tournament_id": "t1",
+      "name": "Rodada 6",
+      "phase_number": 6,
+      "type": "round-robin",
+      "start_date": "2026-04-14",
+      "end_date": "2026-04-16",
+      "status": "scheduled",
+      "description": "Sexta rodada da competição",
+      "created_at": "2026-01-15T00:00:00Z"
+    },
+    {
+      "id": "ph7",
+      "tournament_id": "t2",
+      "name": "Quartas de Final",
+      "phase_number": 1,
+      "type": "knockout",
+      "start_date": "2025-11-01",
+      "end_date": "2025-11-08",
+      "status": "finished",
+      "description": "Quartas de final da Copa",
+      "created_at": "2025-10-01T00:00:00Z"
+    },
+    {
+      "id": "ph8",
+      "tournament_id": "t2",
+      "name": "Semifinais",
+      "phase_number": 2,
+      "type": "knockout",
+      "start_date": "2025-11-15",
+      "end_date": "2025-11-22",
+      "status": "finished",
+      "description": "Semifinais da Copa",
+      "created_at": "2025-10-01T00:00:00Z"
+    },
+    {
+      "id": "ph9",
+      "tournament_id": "t2",
+      "name": "Final",
+      "phase_number": 3,
+      "type": "knockout",
+      "start_date": "2025-12-15",
+      "end_date": "2025-12-20",
+      "status": "finished",
+      "description": "Final da Copa",
+      "created_at": "2025-10-01T00:00:00Z"
+    },
+    {
+      "id": "ph10",
+      "tournament_id": "t3",
+      "name": "Jogo Único",
+      "phase_number": 1,
+      "type": "knockout",
+      "start_date": "2025-12-25",
+      "end_date": "2025-12-25",
+      "status": "finished",
+      "description": "Jogo único da Supercopa",
+      "created_at": "2025-11-01T00:00:00Z"
+    }
+  ]
+}

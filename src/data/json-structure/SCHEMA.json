@@ -1,0 +1,283 @@
+{
+  "schema_documentation": {
+    "description": "Documentação completa da estrutura de dados para integração com banco de dados",
+    "version": "1.0.0",
+    "entities": {
+      "leagues": {
+        "description": "Ligas de futebol principais",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "name": "STRING(255) | NOT NULL | Nome da liga",
+          "slug": "STRING(255) | NOT NULL | URL-friendly identifier",
+          "description": "TEXT | Descrição da liga",
+          "founded_year": "INTEGER | Ano de fundação",
+          "country": "STRING(100) | País onde a liga opera",
+          "website": "STRING(255) | Website oficial",
+          "logo_url": "STRING(255) | URL do logo",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização",
+          "is_active": "BOOLEAN | Status da liga"
+        },
+        "relationships": {
+          "has_many": ["tournaments", "teams"]
+        }
+      },
+      "tournaments": {
+        "description": "Torneios e competições dentro das ligas",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "league_id": "UUID | FOREIGN KEY | Referência a ligues",
+          "name": "STRING(255) | NOT NULL | Nome do torneio",
+          "slug": "STRING(255) | NOT NULL | URL-friendly identifier",
+          "type": "ENUM(league, cup, playoff) | Tipo de competição",
+          "season": "STRING(10) | Temporada (ex: 2026)",
+          "status": "ENUM(scheduled, ongoing, finished, cancelled) | Status",
+          "description": "TEXT | Descrição do torneio",
+          "start_date": "DATE | Data de início",
+          "end_date": "DATE | Data de término",
+          "total_rounds": "INTEGER | Número total de rodadas",
+          "logo_url": "STRING(255) | Logo do torneio",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização"
+        },
+        "relationships": {
+          "belongs_to": ["leagues"],
+          "has_many": ["matches", "phases", "standings", "podiums", "media"]
+        },
+        "indexes": ["league_id", "status", "season"]
+      },
+      "teams": {
+        "description": "Times participantes",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "league_id": "UUID | FOREIGN KEY | Liga principal",
+          "name": "STRING(255) | NOT NULL | Nome do time",
+          "slug": "STRING(255) | NOT NULL | URL-friendly identifier",
+          "colors": "STRING(7) | Cor principal (hex)",
+          "secondary_color": "STRING(7) | Cor secundária (hex)",
+          "abbreviation": "STRING(5) | Abreviação (ex: TFC)",
+          "founded_year": "INTEGER | Ano de fundação",
+          "city": "STRING(100) | Cidade",
+          "state": "STRING(2) | Estado (sigla)",
+          "logo_url": "STRING(255) | Logo do time",
+          "banner_url": "STRING(255) | Banner do time",
+          "description": "TEXT | Descrição",
+          "stadium_name": "STRING(255) | Nome do estádio",
+          "president_name": "STRING(100) | Presidente",
+          "coach_name": "STRING(100) | Técnico",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização",
+          "is_active": "BOOLEAN | Status ativo"
+        },
+        "relationships": {
+          "belongs_to": ["leagues"],
+          "has_many": ["players", "users"]
+        },
+        "indexes": ["league_id", "name"]
+      },
+      "players": {
+        "description": "Jogadores dos times",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "team_id": "UUID | FOREIGN KEY | Time do jogador",
+          "name": "STRING(255) | NOT NULL | Nome completo",
+          "number": "INTEGER | NOT NULL | Número da camisa",
+          "position": "STRING(50) | Posição (ex: Atacante, Goleiro)",
+          "birth_date": "DATE | Data de nascimento",
+          "nationality": "STRING(100) | Nacionalidade",
+          "height_cm": "INTEGER | Altura em cm",
+          "weight_kg": "INTEGER | Peso em kg",
+          "dominant_foot": "ENUM(direito, esquerdo, ambidestro) | Pé dominante",
+          "biography": "TEXT | Biografia do jogador",
+          "avatar_url": "STRING(255) | Foto/avatar",
+          "status": "ENUM(active, inactive, injured, suspended) | Status",
+          "joined_date": "TIMESTAMP | Data de ingresso no time",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização"
+        },
+        "relationships": {
+          "belongs_to": ["teams"],
+          "has_many": ["match_events"]
+        },
+        "indexes": ["team_id", "number"]
+      },
+      "phases": {
+        "description": "Fases ou rodadas dos torneios",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "tournament_id": "UUID | FOREIGN KEY | Torneio",
+          "name": "STRING(255) | NOT NULL | Nome da fase",
+          "phase_number": "INTEGER | Número sequencial",
+          "type": "ENUM(round-robin, knockout, group, playoff) | Tipo de fase",
+          "start_date": "DATE | Data de início",
+          "end_date": "DATE | Data de término",
+          "status": "ENUM(scheduled, ongoing, finished) | Status",
+          "description": "TEXT | Descrição",
+          "created_at": "TIMESTAMP | Data de criação"
+        },
+        "relationships": {
+          "belongs_to": ["tournaments"],
+          "has_many": ["matches"]
+        },
+        "indexes": ["tournament_id"]
+      },
+      "matches": {
+        "description": "Partidas/jogos",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "tournament_id": "UUID | FOREIGN KEY | Torneio",
+          "phase_id": "UUID | FOREIGN KEY | Fase/Rodada",
+          "home_team_id": "UUID | FOREIGN KEY | Time mandante",
+          "away_team_id": "UUID | FOREIGN KEY | Time visitante",
+          "home_score": "INTEGER | Placar do time mandante (NULL se não finalizado)",
+          "away_score": "INTEGER | Placar do time visitante (NULL se não finalizado)",
+          "date": "DATE | NOT NULL | Data da partida",
+          "time": "TIME | Horário da partida",
+          "status": "ENUM(scheduled, live, finished, postponed, cancelled) | Status",
+          "round": "STRING(100) | Rodada/Turno",
+          "stadium": "STRING(255) | Local do jogo",
+          "attendance": "INTEGER | Público",
+          "referee": "STRING(100) | Árbitro",
+          "notes": "TEXT | Observações",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização"
+        },
+        "relationships": {
+          "belongs_to": ["tournaments", "phases", "teams (home_team_id)", "teams (away_team_id)"],
+          "has_many": ["match_events"]
+        },
+        "indexes": ["tournament_id", "phase_id", "date", "status"]
+      },
+      "match_events": {
+        "description": "Eventos dentro de uma partida (gols, assistências, cartões)",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "match_id": "UUID | FOREIGN KEY | Partida",
+          "player_id": "UUID | FOREIGN KEY | Jogador envolvido",
+          "team_id": "UUID | FOREIGN KEY | Time do jogador",
+          "type": "ENUM(goal, assist, yellow_card, red_card, own_goal, substitution) | Tipo de evento",
+          "minute": "INTEGER | Minuto do evento",
+          "is_penalty": "BOOLEAN | Se foi pênalti (para gols)",
+          "assist_by_player_id": "UUID | FOREIGN KEY | Jogador que deu assistência (opcional)",
+          "description": "TEXT | Descrição do evento",
+          "created_at": "TIMESTAMP | Data de criação"
+        },
+        "relationships": {
+          "belongs_to": ["matches", "players", "teams"],
+          "references": ["players (assist_by_player_id)"]
+        },
+        "indexes": ["match_id", "player_id", "type"]
+      },
+      "standings": {
+        "description": "Classificações de torneios",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "tournament_id": "UUID | FOREIGN KEY | Torneio",
+          "team_id": "UUID | FOREIGN KEY | Time",
+          "position": "INTEGER | Colocação na tabela",
+          "matches_played": "INTEGER | Jogos disputados",
+          "wins": "INTEGER | Vitórias",
+          "draws": "INTEGER | Empates",
+          "losses": "INTEGER | Derrotas",
+          "goals_for": "INTEGER | Gols pró",
+          "goals_against": "INTEGER | Gols contra",
+          "goals_difference": "INTEGER | Saldo de gols",
+          "points": "INTEGER | Pontos acumulados",
+          "updated_at": "TIMESTAMP | Última atualização"
+        },
+        "relationships": {
+          "belongs_to": ["tournaments", "teams"]
+        },
+        "constraints": ["UNIQUE(tournament_id, team_id)"],
+        "indexes": ["tournament_id", "position"]
+      },
+      "podiums": {
+        "description": "Pódios/campeões de torneios",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "tournament_id": "UUID | FOREIGN KEY NOT NULL | Torneio",
+          "season": "STRING(10) | Temporada",
+          "first_place": "JSON | Objeto com team_id, team_name, color, medal, prize",
+          "second_place": "JSON | Objeto com team_id, team_name, color, medal, prize",
+          "third_place": "JSON | Objeto com team_id, team_name, color, medal, prize (opcional)",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização"
+        },
+        "relationships": {
+          "belongs_to": ["tournaments"]
+        },
+        "constraints": ["UNIQUE(tournament_id)"],
+        "indexes": ["tournament_id"]
+      },
+      "media": {
+        "description": "Mídia (fotos e vídeos)",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "tournament_id": "UUID | FOREIGN KEY | Torneio associado",
+          "match_id": "UUID | FOREIGN KEY (opcional) | Partida (se houver)",
+          "type": "ENUM(photo, video) | NOT NULL | Tipo de mídia",
+          "title": "STRING(255) | NOT NULL | Título",
+          "description": "TEXT | Descrição",
+          "url": "STRING(255) | NOT NULL | URL do arquivo",
+          "thumbnail_url": "STRING(255) | URL da miniatura",
+          "photographer": "STRING(100) | Fotógrafo/Criador",
+          "date": "DATE | Data da mídia",
+          "duration_seconds": "INTEGER | Duração em segundos (para vídeos)",
+          "tags": "JSON ARRAY | Tags de categorização",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização"
+        },
+        "relationships": {
+          "belongs_to": ["tournaments", "matches (opcional)"]
+        },
+        "indexes": ["tournament_id", "match_id", "type"]
+      },
+      "users": {
+        "description": "Usuários do sistema",
+        "fields": {
+          "id": "UUID | PRIMARY KEY | Identificador único",
+          "email": "STRING(255) | NOT NULL | Email único",
+          "name": "STRING(255) | NOT NULL | Nome",
+          "password_hash": "STRING(255) | NOT NULL | Hash da senha (bcrypt)",
+          "role": "ENUM(admin, moderator, player, fan) | NOT NULL | Papel",
+          "avatar_url": "STRING(255) | Foto de perfil",
+          "phone": "STRING(20) | Telefone",
+          "bio": "TEXT | Biografia",
+          "date_of_birth": "DATE | Data de nascimento",
+          "status": "ENUM(active, inactive, suspended, deleted) | Status",
+          "email_verified": "BOOLEAN | Email verificado",
+          "two_factor_enabled": "BOOLEAN | 2FA habilitado",
+          "team_id": "UUID | FOREIGN KEY (opcional) | Time associado",
+          "last_login": "TIMESTAMP | Último login",
+          "created_at": "TIMESTAMP | Data de criação",
+          "updated_at": "TIMESTAMP | Data de atualização"
+        },
+        "relationships": {
+          "belongs_to": ["teams (opcional)"]
+        },
+        "constraints": ["UNIQUE(email)"],
+        "indexes": ["email", "role", "status"]
+      }
+    },
+    "relationships_summary": {
+      "one_to_many": [
+        "leagues → tournaments",
+        "leagues → teams",
+        "tournaments → matches",
+        "tournaments → phases",
+        "tournaments → standings",
+        "tournaments → podiums",
+        "tournaments → media",
+        "teams → players",
+        "teams → users",
+        "teams → matches (home & away)",
+        "phases → matches",
+        "matches → match_events"
+      ],
+      "many_to_many": [
+        "teams ← → tournaments (through standings)",
+        "players ← → matches (through match_events)"
+      ]
+    }
+  }
+}

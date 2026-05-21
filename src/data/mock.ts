@@ -87,7 +87,7 @@ export const tournaments: Tournament[] = [
 
 export const league: League = {
   id: 'l1',
-  name: 'Liga de Futebol Antifascista',
+  name: 'Liga de Futebol',
   season: '2026',
 };
 
