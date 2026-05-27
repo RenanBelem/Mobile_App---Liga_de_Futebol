@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/CREATEUSERFORM.TSX
+ * ===============================
+ * PROPÓSITO: Formulário para criar/registrar novos usuários
+ * - Captura dados de cadastro (nome, email, senha, função)
+ * - Valida informações com Zod schema
+ * - Salva usuário no localStorage via state.ts
+ * MOTIVO: Componente de CRUD essencial para gerência de acesso,
+ * permitindo registro de novos usuários (jogadores, fãs, moderadores)
+ */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";

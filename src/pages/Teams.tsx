@@ -1,6 +1,17 @@
+/**
+ * SRC/PAGES/TEAMS.TSX
+ * ===============================
+ * PROPÓSITO: Página de listagem de todos os times da liga
+ * - Exibe todos os 25 times cadastrados
+ * - Mostra quantidade de jogadores por time
+ * - Botão para criar novo time (acesso admin)
+ * - Navega para detalhes do time ao clicar
+ * MOTIVO: Página importante para visualizar todos os times,
+ * oferecendo entrada para detalhe de cada time e gestão
+ */
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Users, Plus } from 'lucide-react'; // Adicionei o ícone Plus
+import { Shield, Users, Plus } from 'lucide-react';
 import { teams, getPlayersByTeam } from '@/data/mock';
 import PageHeader from '@/components/PageHeader';
 import CreateTeamForm from '@/components/CreateTeamForm';

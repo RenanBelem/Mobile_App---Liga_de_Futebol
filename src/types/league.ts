@@ -1,3 +1,13 @@
+/**
+ * SRC/TYPES/LEAGUE.TS
+ * ===============================
+ * PROPÓSITO: Definição de tipos/interfaces do projeto
+ * - Define entidades: User, Team, Player, League, Tournament, Match, Podium
+ * - Normaliza estrutura de dados para toda a aplicação
+ * - Fornece type safety ao utilizar dados em componentes
+ * MOTIVO: Arquivo central de tipos que garante type safety,
+ * documenta estrutura de dados e facilita manutenção
+ */
 // src/types/league.ts
 
 // ==========================================

@@ -1,3 +1,13 @@
+/**
+ * SRC/HOOKS/USE-MOBILE.TSX
+ * ===============================
+ * PROPÓSITO: Hook para detectar se dispositivo é mobile
+ * - Usa media queries para determinar se tela é menor que 768px
+ * - Retorna boolean que atualiza em real-time
+ * - Ütil para layouts responsivos e componentes condicionais
+ * MOTIVO: Hook essencial para app mobile-first, permitindo
+ * renderização condicional e estilos baseados em tamanho de tela
+ */
 import * as React from "react";
 
 const MOBILE_BREAKPOINT = 768;

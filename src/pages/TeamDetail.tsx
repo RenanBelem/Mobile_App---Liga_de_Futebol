@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/TEAMDETAIL.TSX
+ * ===============================
+ * PROPÓSITO: Página de detalhes de um time específico
+ * - Exibe informações do time (nome, cores, fundação)
+ * - Lista todos os jogadores cadastrados para o time
+ * - Botão voltar e navegação de volta para Times
+ * MOTIVO: Página de detalhe que oferece informações aprofundadas
+ * sobre cada time e seus integrantes
+ */
 import { useParams } from 'react-router-dom';
 import { Shield } from 'lucide-react';
 import { teams } from '@/data/mock';

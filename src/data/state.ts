@@ -1,3 +1,13 @@
+/**
+ * SRC/DATA/STATE.TS
+ * ===============================
+ * PROPÓSITO: Gerenciamento de estado global persistente
+ * - CRUD de usuários, jogadores e times
+ * - Persiste dados em localStorage (antes integração com Supabase)
+ * - Oferece funções para adicionar, recuperar, atualizar dados
+ * MOTIVO: Camada de persistência local essencial, oferecendo
+ * estado global centralizado para toda a aplicação
+ */
 // Gerenciamento de estado global para dados do app
 // Persiste em localStorage (antes da integração com Supabase)
 

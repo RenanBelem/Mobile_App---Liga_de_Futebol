@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/ADMIN/CREATETEAM.TSX
+ * ===============================
+ * PROPÓSITO: Página/componente admin para criar time
+ * - Formulário de criação de times com validação
+ * - Define schema com Zod para validar dados
+ * - Integra com React Hook Form para gestão de formulário
+ * MOTIVO: Componente de admin para gestão de times,
+ * permitindo que admins criem novos times na liga
+ */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";

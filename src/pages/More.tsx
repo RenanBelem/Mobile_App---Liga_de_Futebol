@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/MORE.TSX
+ * ===============================
+ * PROPÓSITO: Página de administração e configurações
+ * - Oferece acessos a formulários CRUD (criar usuários, times, jogadores)
+ * - Menu de configurações e opções adicionais
+ * - Restrita a usuários com permissão (admin/moderador)
+ * MOTIVO: Página central para gerão de dados da aplicação,
+ * permitindo admins gerenciar times, usuários e jogadores
+ */
 import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import CreateUserForm from '@/components/CreateUserForm';

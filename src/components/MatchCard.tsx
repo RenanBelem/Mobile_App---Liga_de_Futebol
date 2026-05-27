@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/MATCHCARD.TSX
+ * ===============================
+ * PROPÓSITO: Componente de card para exibir informações de uma partida
+ * - Mostra times, placar e data da partida
+ * - Indica se a partida está concluída ou agendada
+ * - Exibe eventos importantes da partida (gols, cartões)
+ * MOTIVO: Reutilizável em várias páginas (Home, detalhe de torneio, etc)
+ * para exibir dados de partidas de forma consistente
+ */
 import { Match } from '@/types/league';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';

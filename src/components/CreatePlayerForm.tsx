@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/CREATEPLAYERFORM.TSX
+ * ===============================
+ * PROPÓSITO: Formulário para criar/adicionar novos jogadores
+ * - Captura dados do jogador (nome, número, posição, time)
+ * - Valida informações com Zod schema
+ * - Salva jogador no localStorage via state.ts
+ * MOTIVO: Componente de CRUD essencial para gerência de jogadores,
+ * permitindo admins e moderadores adicionar atletas à liga
+ */
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

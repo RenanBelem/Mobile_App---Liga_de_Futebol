@@ -1,3 +1,14 @@
+/**
+ * TAILWIND.CONFIG.TS
+ * ===============================
+ * PROPÓSITO: Configuração do Tailwind CSS
+ * - Define tema de cores (primária, secundária, campeões)
+ * - Tipografia (Outfit para display, Space Grotesk para body)
+ * - Dark mode automático baseado em classe
+ * - Componentes customizados (glass-card, gradients, etc)
+ * MOTIVO: Tailwind é o framework CSS utilizado para estilização eficiente,
+ * mantendo consistência visual e facilitando responsividade
+ */
 import type { Config } from "tailwindcss";
 
 export default {

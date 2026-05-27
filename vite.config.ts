@@ -1,3 +1,14 @@
+/**
+ * VITE.CONFIG.TS
+ * ===============================
+ * PROPÓSITO: Configuração do Vite
+ * - Servidor de desenvolvimento na porta 8080
+ * - Build otimizado com React SWC
+ * - Aliases para importações (@ -> src/)
+ * - Component Tagging para desenvolvimento
+ * MOTIVO: Vite é o bundler e servidor de desenvolvimento da aplicação,
+ * essencial para desenvolvimento rápido, HMR (Hot Module Replacement) e builds eficientes
+ */
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";

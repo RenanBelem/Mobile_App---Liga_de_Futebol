@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/NOTFOUND.TSX
+ * ===============================
+ * PROPÓSITO: Página 404 (rota não encontrada)
+ * - Exibida quando usuário tenta acessar URL inexistente
+ * - Oferece navegação de volta à home
+ * - Log de erros para fins de debugging
+ * MOTIVO: Página de contingência que oferece feedback amigável
+ * quando usuário navega para rota inválida
+ */
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 

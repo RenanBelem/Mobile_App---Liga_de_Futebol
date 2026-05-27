@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/TOURNAMENTS.TSX
+ * ===============================
+ * PROPÓSITO: Página de listagem de todos os torneios da liga
+ * - Exibe todos os torneios (em andamento, encerrados, em breve)
+ * - Mostra status de cada torneio com cores diferenciadas
+ * - Navega para detalhes do torneio ao clicar
+ * MOTIVO: Página central para acompanhar competições,
+ * permitindo usuários ver torneios e seus resultados
+ */
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Trophy, Calendar } from 'lucide-react';

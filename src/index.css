@@ -1,3 +1,14 @@
+/**
+ * SRC/INDEX.CSS
+ * ===============================
+ * PROPÓSITO: Estilos globais da aplicação
+ * - Importa tipografias customizadas (Outfit e Space Grotesk)
+ * - Aplica Tailwind CSS (base, components, utilities)
+ * - Define variáveis de cores CSS customizadas
+ * - Define estilos base para elementos HTML
+ * MOTIVO: CSS global é carregado uma única vez e afeta toda a aplicação,
+ * fornecendo consistência visual e variáveis reutilizáveis de tema
+ */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;

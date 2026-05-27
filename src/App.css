@@ -1,3 +1,12 @@
+/**
+ * SRC/APP.CSS
+ * ===============================
+ * PROPÓSITO: Estilos específicos do componente App
+ * - Estilos de layout do container raíz (#root)
+ * - Estilos de logo e componentes visuais principais
+ * MOTIVO: Separar estilos específicos do App facilita manutenção
+ * e evita conflitos com estilos globais
+ */
 #root {
   max-width: 1280px;
   margin: 0 auto;

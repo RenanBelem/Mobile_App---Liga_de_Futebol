@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/BOTTOMNAV.TSX
+ * ===============================
+ * PROPÓSITO: Barra de navegação fixa no rodapé da aplicação
+ * - Fornece acesso rápido às páginas principais (Home, Torneios, Times, Mídias, Mais)
+ * - Destaca a página ativa com animações
+ * - Design mobile-first com atalhos de navegação por cones
+ * MOTIVO: Componente essencial para navegação em apps mobile,
+ * oferecendo acesso intuitivo sem ocupar espaço da tela principal
+ */
 import { Home, Users, Trophy, Image, Menu } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';

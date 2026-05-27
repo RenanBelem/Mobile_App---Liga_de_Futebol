@@ -1,3 +1,13 @@
+/**
+ * TSCONFIG.APP.JSON
+ * ===============================
+ * PROPÓSITO: Configuração TypeScript específica para código da aplicação
+ * - Estende configurações de tsconfig.json
+ * - Define target como ES2020
+ * - Configura JSX para React 17+
+ * MOTIVO: Configuração especializada para código-fonte da aplicação,
+ * diferenciando de configurações de ferramentas de build
+ */
 {
   "compilerOptions": {
     "allowImportingTsExtensions": true,

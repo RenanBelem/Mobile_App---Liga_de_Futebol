@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/CREATETEAMFORM.TSX
+ * ===============================
+ * PROPÓSITO: Formulário para criar/adicionar novos times
+ * - Captura dados do time (nome, sigla, fundação, logo)
+ * - Valida informações com Zod schema
+ * - Salva time no localStorage via state.ts
+ * MOTIVO: Componente de CRUD essencial para gerência de times,
+ * permitindo admins cadastrar novos times na liga
+ */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";

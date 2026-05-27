@@ -1,3 +1,13 @@
+/**
+ * ESLINT.CONFIG.JS
+ * ===============================
+ * PROPÓSITO: Configuração do ESLint (linter de código)
+ * - Valida padrões de código TypeScript
+ * - Verifica boas práticas React (hooks, refresh)
+ * - Aplica regras de estilo consistentes
+ * MOTIVO: ESLint garante qualidade, consistência e evita bugs comuns
+ * no código, essencial para manutenibilidade do projeto
+ */
 import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";

@@ -1,3 +1,13 @@
+/**
+ * TSCONFIG.JSON
+ * ===============================
+ * PROPÓSITO: Configuração base de TypeScript
+ * - Define opções globais compartilhadas
+ * - Relaxa algumas verificações (noImplicitAny=false)
+ * - Define aliases de path (@/* -> ./src/*)
+ * MOTIVO: Arquivo base de configuração do TypeScript,
+ * oferecendo setup compartilhado para toda aplicação
+ */
 {
   "compilerOptions": {
     "allowJs": true,

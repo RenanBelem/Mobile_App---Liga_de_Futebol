@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/STANDINGSTABLE.TSX
+ * ===============================
+ * PROPÓSITO: Tabela de classificação de times em um torneio
+ * - Exibe posição, time, pontos, vitórias, empates, derrotas
+ * - Destaca top-3 com cores de podium (ouro, prata, bronze)
+ * - Formata dados para visualização em tela pequena
+ * MOTIVO: Componente essencial para exibir standings em torneios,
+ * permitindo usuários acompanhar classificação em tempo real
+ */
 import { StandingEntry } from '@/types/league';
 
 interface StandingsTableProps {

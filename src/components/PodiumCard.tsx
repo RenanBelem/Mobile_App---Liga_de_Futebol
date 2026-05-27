@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/PODIUMCARD.TSX
+ * ===============================
+ * PROPÓSITO: Componente visual para exibir pódio de campeões
+ * - Mostra 1º, 2º e 3º colocados em um pódio visual
+ * - Usa cores de ouro, prata e bronze
+ * - Inclui animações com Framer Motion
+ * MOTIVO: Componente reutilizável para exibir resultados finais de torneios,
+ * criando experiência visual atrativa para os usuários
+ */
 import { Trophy } from 'lucide-react';
 import { Podium } from '@/types/league';
 import { motion } from 'framer-motion';

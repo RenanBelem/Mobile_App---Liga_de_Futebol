@@ -1,3 +1,14 @@
+/**
+ * SRC/APP.TSX
+ * ===============================
+ * PROPÓSITO: Componente raiz da aplicação
+ * - Configura roteamento com React Router
+ * - Fornece providers globais (QueryClient, Toaster, Tooltip)
+ * - Define estrutura de layout principal com BottomNav
+ * - Gerencia todas as rotas da aplicação (home, times, torneios, mídias, etc)
+ * MOTIVO: App é o componente central que orquestra toda a arquitetura
+ * e estrutura da aplicação, conectando providers e rotas
+ */
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";

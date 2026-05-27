@@ -1,3 +1,13 @@
+/**
+ * SRC/HOOKS/USE-TOAST.TS
+ * ===============================
+ * PROPÓSITO: Hook customizado para gerenciar notificações (toasts)
+ * - Fornece interface programmática para exibir toasts
+ * - Gerencia fila de toasts com limite e timeout
+ * - Integra com componente Toaster do shadcn/ui
+ * MOTIVO: Hook reutilizável que centraliza lógica de notificações,
+ * permitindo feedback consistente ao usuário em toda aplicação
+ */
 import * as React from "react";
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";

@@ -1,3 +1,13 @@
+/**
+ * SRC/COMPONENTS/PAGEHEADER.TSX
+ * ===============================
+ * PROPÓSITO: Cabeçalho reutilizável para páginas
+ * - Exibe título e subtítulo da página
+ * - Fornece botão voltar optional
+ * - Está fixo no topo com estilos glass-morphism
+ * MOTIVO: Componente reutilizável que padroniza cabeçalhos de páginas,
+ * mantendo consistência visual e facilitando navegação
+ */
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

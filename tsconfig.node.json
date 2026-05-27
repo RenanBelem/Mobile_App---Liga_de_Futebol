@@ -1,3 +1,13 @@
+/**
+ * TSCONFIG.NODE.JSON
+ * ===============================
+ * PROPÓSITO: Configuração TypeScript para ferramentas de build (Node.js)
+ * - Usado por Vite, Vitest e outras ferramentas Node.js
+ * - Target ES2022 para melhor performance
+ * - Configurações de moduleResolution para bundlers
+ * MOTIVO: Configuração separada para código de ferramentas/build,
+ * evitando conflitos com configuração da aplicação
+ */
 {
   "compilerOptions": {
     "target": "ES2022",

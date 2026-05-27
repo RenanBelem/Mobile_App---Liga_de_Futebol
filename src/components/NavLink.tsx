@@ -1,3 +1,12 @@
+/**
+ * SRC/COMPONENTS/NAVLINK.TSX
+ * ===============================
+ * PROPÓSITO: Wrapper customizado do React Router NavLink
+ * - Fornece compatibilidade com estilos activeClassName e pendingClassName
+ * - Integra com utilitários CSS (cn) para melhor gerenciamento de classes
+ * MOTIVO: Componente reutilizável que padroniza links de navegação,
+ * oferecendo estilos consistentes para links ativos/pendentes
+ */
 import { NavLink as RouterNavLink, NavLinkProps } from "react-router-dom";
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";

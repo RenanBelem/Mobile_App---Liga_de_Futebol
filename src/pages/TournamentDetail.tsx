@@ -1,7 +1,17 @@
+/**
+ * SRC/PAGES/TOURNAMENTDETAIL.TSX
+ * ===============================
+ * PROPÓSITO: Página de detalhes de um torneio específico
+ * - Exibe informações do torneio (nome, datas, status)
+ * - Mostra abas para: Partidas, Classificação, Estatísticas, Mídias
+ * - Exibe pódio se torneio está encerrado
+ * MOTIVO: Página crucial para visualizar todos os dados de um torneio,
+ * incluindo partidas, standings e resultados finais
+ */
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { tournaments, teams, currentUser } from '@/data/mock'; // Importe o currentUser
-import { Button } from '@/components/ui/button'; // Supondo que você use shadcn ou similar
+import { tournaments, teams, currentUser } from '@/data/mock';
+import { Button } from '@/components/ui/button';
 import { Plus, Edit2 } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import MatchCard from '@/components/MatchCard';

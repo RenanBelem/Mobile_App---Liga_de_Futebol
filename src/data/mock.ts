@@ -1,3 +1,14 @@
+/**
+ * SRC/DATA/MOCK.TS
+ * ===============================
+ * PROPÓSITO: Dados mockados/simulados para desenvolvimento
+ * - Fornece 25 times da liga com cores, logos e nomes
+ * - Inclui usuário admin simulado
+ * - Contém dados de jogadores, torneios, partidas e mídias
+ * - Facilita desenvolvimento sem dependência de backend
+ * MOTIVO: Arquivo essencial para desenvolvimento local sem API,
+ * permitindo testar UI e lógica com dados realistas
+ */
 import { 
   Team, 
   Tournament, 

@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/MEDIA.TSX
+ * ===============================
+ * PROPÓSITO: Página de galéria de mídias (fotos e vídeos)
+ * - Exibe mídias da liga (fotos de partidas, celebrações, eventos)
+ * - Mostra ícones para distinguir tipo de mídia (foto/vídeo)
+ * - Preserva memória visual e históricos da liga
+ * MOTIVO: Página importante para preservar memória da liga,
+ * oferecendo forma visual atrativa de acessar acervo fotográfico
+ */
 import { Image, Film } from 'lucide-react';
 import { mediaItems } from '@/data/mock';
 import PageHeader from '@/components/PageHeader';

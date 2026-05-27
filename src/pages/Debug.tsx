@@ -1,3 +1,13 @@
+/**
+ * SRC/PAGES/DEBUG.TSX
+ * ===============================
+ * PROPÓSITO: Página de debug para desenvolvimento
+ * - Exibe todos os dados salvos no localStorage
+ * - Mostra usuários, times e jogadores cadastrados
+ * - Facilita visualização rápida do estado da aplicação
+ * MOTIVO: Página útil para desenvolvimento e testes,
+ * permitindo devs inspecionarem dados em tempo real
+ */
 import { getAllData } from '@/data/state';
 import PageHeader from '@/components/PageHeader';
 
