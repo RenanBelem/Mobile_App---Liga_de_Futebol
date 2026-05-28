@@ -1,14 +1,3 @@
-/**
- * COMPONENTS.JSON
- * ===============================
- * PROPÓSITO: Configuração do shadcn/ui para instalação de componentes
- * - Define estilo de componentes (default)
- * - Configuração de Tailwind CSS
- * - Aliases para componentes e utils
- * - Habilita suporte a TypeScript
- * MOTIVO: Arquivo de configuração do shadcn/ui que permite instalação
- * automática de componentes UI reutilizáveis baseados em Radix UI
- */
 {
   "$schema": "https://ui.shadcn.com/schema.json",
   "style": "default",
