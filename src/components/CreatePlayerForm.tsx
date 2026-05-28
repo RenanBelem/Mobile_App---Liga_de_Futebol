@@ -4,7 +4,7 @@
  * PROPÓSITO: Formulário para criar/adicionar novos jogadores
  * - Captura dados do jogador (nome, número, posição, time)
  * - Valida informações com Zod schema
- * - Salva jogador no localStorage via state.ts
+ * - Salva jogador em localStorage via state.ts
  * MOTIVO: Componente de CRUD essencial para gerência de jogadores,
  * permitindo admins e moderadores adicionar atletas à liga
  */
@@ -39,8 +39,6 @@ const playerSchema = z.object({
   ),
   position: z.string().optional(),
   teamId: z.string().min(1, "Selecione um time"),
-  photoUrl: z.string().url("URL de foto inválida").optional().or(z.literal('')),
-  userId: z.string().optional(),
 });
 
 type PlayerFormValues = z.infer<typeof playerSchema>;
@@ -56,8 +54,6 @@ export function CreatePlayerForm() {
       shirtNumber: undefined,
       position: "",
       teamId: "",
-      photoUrl: "",
-      userId: "",
     },
   });
 
@@ -71,8 +67,6 @@ export function CreatePlayerForm() {
         number: data.shirtNumber,
         position: data.position || undefined,
         teamId: data.teamId,
-        photoUrl: data.photoUrl || undefined,
-        userId: data.userId || undefined,
       });
 
       toast({
@@ -153,61 +147,31 @@ export function CreatePlayerForm() {
                   </Select>
                   <FormMessage />
                 </FormItem>
-                  {/* URL da foto */}
-            <FormField
-              control={form.control}
-                    name="photoUrl"
-              render={({ field }) => (
-                <FormItem>
-                        <FormLabel>URL da Foto (Opcional)</FormLabel>
-                  <FormControl>
-                          <Input type="url" placeholder="Ex: https://meusite.com/jogador.jpg" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-                  {/* ID de usuário */}
-              control={form.control}
-              name="weight"
-                    name="userId"
-                <FormItem>
-                  <FormLabel>Peso (kg)</FormLabel>
-                        <FormLabel>ID de Usuário Vinculado (Opcional)</FormLabel>
-                    <Input type="number" placeholder="Ex: 75" min="40" max="150" step="0.1" {...field} />
-                          <Input placeholder="Ex: u1717070707000" {...field} />
-                  <FormMessage />
-                </FormItem>
               )}
             />
           </div>
 
-          {/* Data de Nascimento */}
+          {/* Time */}
           <FormField
             control={form.control}
-            name="birthDate"
+            name="teamId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Data de Nascimento</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* CPF (Opcional) */}
-          <FormField
-            control={form.control}
-            name="cpf"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>CPF (Opcional)</FormLabel>
-                <FormControl>
-                  <Input placeholder="Ex: 123.456.789-00" {...field} />
-                </FormControl>
+                <FormLabel>Time</FormLabel>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione um time" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="max-h-64">
+                    {teams.map((team) => (
+                      <SelectItem key={team.id} value={team.id}>
+                        {team.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
