@@ -11,7 +11,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { UserPlus, Mail, Lock, User, Phone, Shield } from "lucide-react";
+import { UserPlus, Mail, User, Shield, Image as ImageIcon } from "lucide-react";
 import { addUser } from "@/data/state";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -19,15 +19,10 @@ import { useState } from "react";
 const userSchema = z.object({
   name: z.string().min(3, { message: "Nome precisa ter pelo menos 3 letras." }),
   email: z.string().email({ message: "E-mail inválido." }),
-  password: z.string().min(6, { message: "Senha precisa ter pelo menos 6 caracteres." }),
-  confirmPassword: z.string(),
   role: z.enum(["player", "fan", "moderator", "admin"], {
     required_error: "Selecione uma função.",
   }),
-  phone: z.string().optional(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "As senhas não coincidem.",
-  path: ["confirmPassword"],
+  avatarUrl: z.string().url({ message: "URL de avatar inválida." }).optional().or(z.literal("")),
 });
 
 type UserFormValues = z.infer<typeof userSchema>;
@@ -40,10 +35,8 @@ export default function CreateUserForm() {
     defaultValues: {
       name: "",
       email: "",
-      password: "",
-      confirmPassword: "",
       role: "fan",
-      phone: "",
+      avatarUrl: "",
     },
   });
 
@@ -56,7 +49,7 @@ export default function CreateUserForm() {
         name: data.name,
         email: data.email,
         role: data.role as 'admin' | 'moderator' | 'player' | 'fan',
-        phone: data.phone || undefined,
+        avatarUrl: data.avatarUrl || undefined,
       });
 
       toast({
@@ -124,17 +117,20 @@ export default function CreateUserForm() {
           )}
         </div>
 
-        {/* Telefone */}
+        {/* Avatar */}
         <div>
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-            <Phone className="w-3 h-3" /> Telefone <span className="text-muted-foreground/50 normal-case">(opcional)</span>
+            <ImageIcon className="w-3 h-3" /> URL do avatar <span className="text-muted-foreground/50 normal-case">(opcional)</span>
           </label>
           <input
-            {...form.register("phone")}
-            type="tel"
+            {...form.register("avatarUrl")}
+            type="url"
             className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
-            placeholder="Ex: (11) 99999-0000"
+            placeholder="Ex: https://meusite.com/avatar.jpg"
           />
+          {form.formState.errors.avatarUrl && (
+            <span className="text-destructive text-xs mt-1 block">{form.formState.errors.avatarUrl.message}</span>
+          )}
         </div>
 
         {/* Função */}
@@ -157,43 +153,12 @@ export default function CreateUserForm() {
           )}
         </div>
 
-        {/* Senha */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-              <Lock className="w-3 h-3" /> Senha
-            </label>
-            <input
-              {...form.register("password")}
-              type="password"
-              className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
-              placeholder="••••••"
-            />
-            {form.formState.errors.password && (
-              <span className="text-destructive text-xs mt-1 block">{form.formState.errors.password.message}</span>
-            )}
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 block">
-              Confirmar
-            </label>
-            <input
-              {...form.register("confirmPassword")}
-              type="password"
-              className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
-              placeholder="••••••"
-            />
-            {form.formState.errors.confirmPassword && (
-              <span className="text-destructive text-xs mt-1 block">{form.formState.errors.confirmPassword.message}</span>
-            )}
-          </div>
-        </div>
-
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full bg-primary text-primary-foreground font-bold py-2.5 rounded-md hover:bg-primary/90 transition-colors mt-2"
         >
-          Cadastrar Usuário
+          {isLoading ? "Cadastrando..." : "Cadastrar Usuário"}
         </button>
       </form>
     </div>

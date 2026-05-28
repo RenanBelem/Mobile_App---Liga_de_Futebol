@@ -13,6 +13,7 @@ import PageHeader from '@/components/PageHeader';
 import CreateUserForm from '@/components/CreateUserForm';
 import CreateTeamForm from '@/components/CreateTeamForm';
 import CreatePlayerForm from '@/components/CreatePlayerForm';
+import CreateTournamentForm from '@/components/CreateTournamentForm';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 const More = () => {
@@ -75,19 +76,23 @@ const More = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Cadastrar Torneio — em breve */}
-        <button
-          disabled
-          className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left opacity-50 cursor-not-allowed"
-        >
-          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-            <Trophy className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Cadastrar Torneio</p>
-            <p className="text-xs text-muted-foreground">Em breve</p>
-          </div>
-        </button>
+        {/* Cadastrar Torneio */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                <Trophy className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Cadastrar Torneio</p>
+                <p className="text-xs text-muted-foreground">Criar novo torneio</p>
+              </div>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md bg-background border-border p-0 overflow-hidden">
+            <CreateTournamentForm />
+          </DialogContent>
+        </Dialog>
 
         {/* Configurações — em breve */}
         <button

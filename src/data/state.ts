@@ -11,11 +11,12 @@
 // Gerenciamento de estado global para dados do app
 // Persiste em localStorage (antes da integração com Supabase)
 
-import { User, Player, Team } from '@/types/league';
+import { User, Player, Team, Tournament } from '@/types/league';
 
 const STORAGE_USERS = 'lfa_users';
 const STORAGE_PLAYERS = 'lfa_players';
 const STORAGE_TEAMS = 'lfa_teams';
+const STORAGE_TOURNAMENTS = 'lfa_tournaments';
 
 // ==========================================
 // USUÁRIOS
@@ -78,6 +79,26 @@ export function getTeams(): Team[] {
 }
 
 // ==========================================
+// TORNEIOS
+// ==========================================
+export function addTournament(tournament: Omit<Tournament, 'id'>) {
+  const tournaments = getTournaments();
+  const newTournament: Tournament = {
+    ...tournament,
+    id: `tr${Date.now()}`,
+  };
+  tournaments.push(newTournament);
+  localStorage.setItem(STORAGE_TOURNAMENTS, JSON.stringify(tournaments));
+  console.log('✅ Torneio salvo em localStorage:', newTournament);
+  return newTournament;
+}
+
+export function getTournaments(): Tournament[] {
+  const stored = localStorage.getItem(STORAGE_TOURNAMENTS);
+  return stored ? JSON.parse(stored) : [];
+}
+
+// ==========================================
 // EXPORTAR DADOS
 // ==========================================
 export function getAllData() {
@@ -85,6 +106,7 @@ export function getAllData() {
     users: getUsers(),
     players: getPlayers(),
     teams: getTeams(),
+    tournaments: getTournaments(),
   };
 }
 
@@ -97,5 +119,6 @@ export function clearAll() {
   localStorage.removeItem(STORAGE_USERS);
   localStorage.removeItem(STORAGE_PLAYERS);
   localStorage.removeItem(STORAGE_TEAMS);
+  localStorage.removeItem(STORAGE_TOURNAMENTS);
   console.log('✅ Todos os dados foram limpos');
 }

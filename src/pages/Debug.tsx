@@ -70,6 +70,23 @@ const Debug = () => {
           )}
         </div>
 
+        {/* Torneios */}
+        <div className="glass-card rounded-lg p-4 border border-border">
+          <h2 className="text-lg font-bold mb-3">🏆 Torneios ({data.tournaments.length})</h2>
+          {data.tournaments.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nenhum torneio cadastrado</p>
+          ) : (
+            <div className="space-y-2">
+              {data.tournaments.map((tournament) => (
+                <div key={tournament.id} className="bg-background/50 p-2 rounded text-sm">
+                  <p><strong>{tournament.name}</strong> ({tournament.season})</p>
+                  <p className="text-xs text-muted-foreground">{tournament.type} • {tournament.status}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* JSON */}
         <div className="glass-card rounded-lg p-4 border border-border">
           <h2 className="text-lg font-bold mb-3">📋 JSON Bruto</h2>

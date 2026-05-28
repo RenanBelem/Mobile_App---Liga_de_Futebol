@@ -11,16 +11,16 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Plus, Shield, Type, Image as ImageIcon, Calendar, UploadCloud } from "lucide-react";
+import { Plus, Shield, Type, Image as ImageIcon, Calendar, Palette } from "lucide-react";
 import { addTeam } from "@/data/state";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
-// 1. Atualizamos o schema: sai "logoUrl", entra "logo"
 const teamSchema = z.object({
   name: z.string().min(3, { message: "O nome do time precisa ter pelo menos 3 letras." }),
-  shortName: z.string().max(4, { message: "A sigla deve ter no máximo 4 letras." }),
-  logo: z.any().optional(), // Usamos "any" por enquanto para aceitar o objeto FileList do HTML
+  shortName: z.string().max(4, { message: "A sigla deve ter no máximo 4 letras." }).optional().or(z.literal('')),
+  logoUrl: z.string().url({ message: "URL do escudo inválida." }).optional().or(z.literal('')),
+  primaryColor: z.string().optional(),
   foundationYear: z.string().regex(/^\d{4}$/, { message: "Ano inválido." }).optional().or(z.literal('')),
 });
 
@@ -34,15 +34,11 @@ export default function CreateTeamForm() {
     defaultValues: {
       name: "",
       shortName: "",
+      logoUrl: "",
+      primaryColor: "",
       foundationYear: "",
     },
   });
-
-  // 2. Observamos o campo "logo" em tempo real
-  const logoFile = form.watch("logo");
-  
-  // 3. Geramos uma URL temporária no navegador para mostrar o preview
-  const previewUrl = logoFile && logoFile.length > 0 ? URL.createObjectURL(logoFile[0]) : null;
 
   function onSubmit(data: TeamFormValues) {
     try {
@@ -51,7 +47,9 @@ export default function CreateTeamForm() {
       // Salva o time em localStorage
       const newTeam = addTeam({
         name: data.name,
-        shortName: data.shortName,
+        shortName: data.shortName?.toUpperCase() || undefined,
+        logoUrl: data.logoUrl || undefined,
+        colors: data.primaryColor || undefined,
         foundationYear: data.foundationYear || undefined,
       });
 
@@ -131,42 +129,40 @@ export default function CreateTeamForm() {
           </div>
         </div>
 
-        {/* 4. Novo Campo: Upload de Escudo com Preview */}
+        {/* Cor principal */}
         <div>
-          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <ImageIcon className="w-3 h-3" /> Escudo do Time
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <Palette className="w-3 h-3" /> Cor principal <span className="text-muted-foreground/50 normal-case">(opcional)</span>
           </label>
-          
-          <div className="flex items-center gap-4">
-            {/* Círculo de Preview */}
-            <div className="w-16 h-16 rounded-full bg-background/40 border-2 border-dashed border-border flex items-center justify-center overflow-hidden shrink-0">
-              {previewUrl ? (
-                <img src={previewUrl} alt="Preview do escudo" className="w-full h-full object-cover" />
-              ) : (
-                <UploadCloud className="w-6 h-6 text-muted-foreground/50" />
-              )}
-            </div>
+          <input
+            {...form.register("primaryColor")}
+            className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
+            placeholder="Ex: #dc2626"
+          />
+        </div>
 
-            {/* Input de Arquivo Customizado com Tailwind */}
-            <input 
-              type="file" 
-              accept="image/*"
-              {...form.register("logo")} 
-              className="w-full text-sm text-foreground 
-                file:mr-4 file:py-2.5 file:px-4 
-                file:rounded-md file:border-0 
-                file:text-xs file:font-semibold file:uppercase file:tracking-wider
-                file:bg-primary/20 file:text-primary 
-                hover:file:bg-primary/30 transition-all cursor-pointer"
-            />
-          </div>
+        {/* URL do escudo */}
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <ImageIcon className="w-3 h-3" /> URL do escudo <span className="text-muted-foreground/50 normal-case">(opcional)</span>
+          </label>
+          <input
+            {...form.register("logoUrl")}
+            type="url"
+            className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
+            placeholder="Ex: https://meusite.com/escudo.png"
+          />
+          {form.formState.errors.logoUrl && (
+            <span className="text-destructive text-xs mt-1 block">{form.formState.errors.logoUrl.message}</span>
+          )}
         </div>
 
         <button 
           type="submit" 
+          disabled={isLoading}
           className="w-full bg-primary text-primary-foreground p-3 rounded-md font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 mt-6"
         >
-          <Plus className="w-5 h-5" /> Salvar Time
+          <Plus className="w-5 h-5" /> {isLoading ? "Salvando..." : "Salvar Time"}
         </button>
       </form>
     </div>

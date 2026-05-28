@@ -33,30 +33,14 @@ const positions = [
 
 const playerSchema = z.object({
   name: z.string().min(3, "Nome deve ter ao menos 3 caracteres"),
-  shirtNumber: z.coerce.number().min(1).max(99, "Número deve estar entre 1 e 99"),
-  position: z.enum(
-    [
-      "Goleiro",
-      "Zagueiro",
-      "Lateral-Esquerdo",
-      "Lateral-Direito",
-      "Meio-Campista",
-      "Meia-Atacante",
-      "Atacante",
-    ] as const,
-    { errorMap: () => ({ message: "Selecione uma posição válida" }) }
+  shirtNumber: z.preprocess(
+    (value) => (value === '' || value === undefined ? undefined : Number(value)),
+    z.number().min(1).max(99, "Número deve estar entre 1 e 99").optional()
   ),
+  position: z.string().optional(),
   teamId: z.string().min(1, "Selecione um time"),
-  height: z.coerce.number().min(150).max(230, "Altura deve estar entre 150cm e 230cm"),
-  weight: z.coerce.number().min(40).max(150, "Peso deve estar entre 40kg e 150kg"),
-  birthDate: z.string().min(1, "Selecione uma data").refine((date) => {
-    if (!date) return false;
-    const birth = new Date(date);
-    if (isNaN(birth.getTime())) return false;
-    const age = new Date().getFullYear() - birth.getFullYear();
-    return age >= 13 && age <= 80;
-  }, "Idade deve estar entre 13 e 80 anos"),
-  cpf: z.string().optional(),
+  photoUrl: z.string().url("URL de foto inválida").optional().or(z.literal('')),
+  userId: z.string().optional(),
 });
 
 type PlayerFormValues = z.infer<typeof playerSchema>;
@@ -70,12 +54,10 @@ export function CreatePlayerForm() {
     defaultValues: {
       name: "",
       shirtNumber: undefined,
-      position: "Atacante",
+      position: "",
       teamId: "",
-      height: undefined,
-      weight: undefined,
-      birthDate: "",
-      cpf: "",
+      photoUrl: "",
+      userId: "",
     },
   });
 
@@ -87,8 +69,10 @@ export function CreatePlayerForm() {
       const newPlayer = addPlayer({
         name: data.name,
         number: data.shirtNumber,
-        position: data.position,
+        position: data.position || undefined,
         teamId: data.teamId,
+        photoUrl: data.photoUrl || undefined,
+        userId: data.userId || undefined,
       });
 
       toast({
@@ -155,10 +139,11 @@ export function CreatePlayerForm() {
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder="Selecione" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
+                      <SelectItem value="">Não informar</SelectItem>
                       {positions.map((pos) => (
                         <SelectItem key={pos} value={pos}>
                           {pos}
@@ -168,61 +153,30 @@ export function CreatePlayerForm() {
                   </Select>
                   <FormMessage />
                 </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Time */}
-          <FormField
-            control={form.control}
-            name="teamId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Time</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione um time" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="max-h-64">
-                    {teams.map((team) => (
-                      <SelectItem key={team.id} value={team.id}>
-                        {team.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Altura e Peso */}
-          <div className="grid grid-cols-2 gap-3">
+                  {/* URL da foto */}
             <FormField
               control={form.control}
-              name="height"
+                    name="photoUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Altura (cm)</FormLabel>
+                        <FormLabel>URL da Foto (Opcional)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Ex: 180" min="150" max="230" {...field} />
+                          <Input type="url" placeholder="Ex: https://meusite.com/jogador.jpg" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <FormField
+                  {/* ID de usuário */}
               control={form.control}
               name="weight"
-              render={({ field }) => (
+                    name="userId"
                 <FormItem>
                   <FormLabel>Peso (kg)</FormLabel>
-                  <FormControl>
+                        <FormLabel>ID de Usuário Vinculado (Opcional)</FormLabel>
                     <Input type="number" placeholder="Ex: 75" min="40" max="150" step="0.1" {...field} />
-                  </FormControl>
+                          <Input placeholder="Ex: u1717070707000" {...field} />
                   <FormMessage />
                 </FormItem>
               )}
