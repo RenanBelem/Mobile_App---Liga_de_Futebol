@@ -2,7 +2,7 @@
  * SRC/TYPES/LEAGUE.TS
  * ===============================
  * PROPÓSITO: Definição de tipos/interfaces do projeto
- * - Define entidades: User, Team, Player, League, Tournament, Match, Podium
+ * - Define entidades conforme schema de banco de dados em PT-BR
  * - Normaliza estrutura de dados para toda a aplicação
  * - Fornece type safety ao utilizar dados em componentes
  * MOTIVO: Arquivo central de tipos que garante type safety,
@@ -11,12 +11,220 @@
 // src/types/league.ts
 
 // ==========================================
-// 1. USUÁRIOS E ACESSOS
+// TIPOS COMPARTILHADOS
+// ==========================================
+export type TipoPapelUsuario = 'admin' | 'moderador' | 'jogador' | 'torcedor';
+export type TipoCompeticao = 'campeonato' | 'copa' | 'playoff';
+export type FormatoCompeticao = 'turno_unico' | 'eliminacao_direta' | 'grupos_playoff';
+export type StatusTemporada = 'rascunho' | 'em_andamento' | 'finalizada';
+export type StatusCompeticao = 'rascunho' | 'em_andamento' | 'finalizada' | 'cancelada';
+export type StatusPartida = 'agendada' | 'ao_vivo' | 'finalizada' | 'cancelada';
+export type TipoEvento = 'gol' | 'assistencia' | 'cartao_amarelo' | 'cartao_vermelho' | 'gol_contra';
+export type TipoMidia = 'foto' | 'video';
+
+// ==========================================
+// 1. TABELA: USUÁRIOS
+// ==========================================
+export interface Usuario {
+  id: string;
+  nome: string;
+  email: string;
+  papel: TipoPapelUsuario;
+  url_avatar?: string;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 2. TABELA: LIGAS (Entidade permanente)
+// ==========================================
+export interface Liga {
+  id: string;
+  nome: string;
+  url_logo?: string;
+  cidade?: string;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 3. TABELA: TEMPORADAS (Edições: Apertura/Clausura)
+// ==========================================
+export interface Temporada {
+  id: string;
+  liga_id: string; // FK
+  nome: string; // Ex: "Apertura 25"
+  slug: string; // Ex: "apertura-25"
+  ano: number;
+  semestre: 'apertura' | 'clausura';
+  data_inicio: string;
+  data_fim: string;
+  status: StatusTemporada;
+  descricao?: string;
+  url_banner?: string;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 4. TABELA: COMPETIÇÕES (Dentro de cada temporada)
+// ==========================================
+export interface Competicao {
+  id: string;
+  temporada_id: string; // FK
+  nome: string; // Ex: "Campeonato Principal"
+  tipo: TipoCompeticao; // 'campeonato', 'copa', 'playoff'
+  formato: FormatoCompeticao;
+  data_inicio: string;
+  data_fim: string;
+  status: StatusCompeticao;
+  ordem: number; // Ordenação visual
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 5. TABELA: TIMES (Entidade permanente)
+// ==========================================
+export interface Time {
+  id: string;
+  nome: string;
+  nome_curto?: string; // Ex: "LOKM"
+  url_logo?: string;
+  cor_primaria?: string; // Hex
+  cor_secundaria?: string; // Hex
+  ano_fundacao?: number;
+  ativo: boolean;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 6. TABELA: TIMES_TEMPORADA (Participação)
+// ==========================================
+export interface TimeTemporada {
+  id: string;
+  temporada_id: string; // FK
+  time_id: string; // FK
+  inscrito_em: string;
+}
+
+// ==========================================
+// 7. TABELA: JOGADORES (Entidade permanente)
+// ==========================================
+export interface Jogador {
+  id: string;
+  usuario_id?: string; // FK opcional
+  nome: string;
+  apelido?: string;
+  url_foto?: string;
+  data_nascimento?: string;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 8. TABELA: REGISTROS_JOGADOR (Vínculo jogador × time × temporada)
+// ==========================================
+export interface RegistroJogador {
+  id: string;
+  jogador_id: string; // FK
+  time_id: string; // FK
+  temporada_id: string; // FK
+  numero_camisa: number;
+  posicao: string;
+  ativo: boolean;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 9. TABELA: PARTIDAS
+// ==========================================
+export interface Partida {
+  id: string;
+  competicao_id: string; // FK
+  time_casa_id: string; // FK
+  time_visitante_id: string; // FK
+  placar_casa?: number;
+  placar_visitante?: number;
+  data_hora: string;
+  rodada: string; // Ex: "Rodada 5", "Semifinal"
+  local?: string;
+  status: StatusPartida;
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 10. TABELA: EVENTOS_PARTIDA
+// ==========================================
+export interface EventoPartida {
+  id: string;
+  partida_id: string; // FK
+  jogador_id: string; // FK
+  time_id: string; // FK
+  tipo: TipoEvento;
+  minuto: number;
+  criado_em: string;
+}
+
+// ==========================================
+// 11. TABELA: CLASSIFICAÇÃO (Cacheada/Calculada)
+// ==========================================
+export interface Classificacao {
+  id: string;
+  competicao_id: string; // FK
+  time_id: string; // FK
+  jogos: number;
+  vitorias: number;
+  empates: number;
+  derrotas: number;
+  gols_pro: number;
+  gols_contra: number;
+  pontos: number;
+  atualizado_em: string;
+}
+
+// ==========================================
+// 12. TABELA: MÍDIA
+// ==========================================
+export interface Midia {
+  id: string;
+  liga_id: string; // FK (sempre preenchido)
+  temporada_id?: string; // FK opcional
+  partida_id?: string; // FK opcional
+  time_id?: string; // FK opcional
+  tipo: TipoMidia;
+  url: string;
+  url_thumbnail?: string;
+  legenda?: string;
+  carregado_por: string; // FK usuario_id
+  criado_em: string;
+}
+
+// ==========================================
+// 13. TABELA: PÓDIOS
+// ==========================================
+export interface Podio {
+  id: string;
+  competicao_id: string; // FK UNIQUE
+  time_primeiro_id: string; // FK
+  time_segundo_id: string; // FK
+  time_terceiro_id: string; // FK
+  jogador_artilheiro_id?: string; // FK
+  jogador_melhor_id?: string; // FK
+  criado_em: string;
+  atualizado_em: string;
+}
+
+// ==========================================
+// TIPOS LEGADOS (Retrocompatibilidade)
 // ==========================================
 export type UserRole = 'admin' | 'moderator' | 'player' | 'fan';
 
 export interface User {
-  id: string; // Vai espelhar auth.users.id do Supabase
+  id: string;
   name: string;
   email: string;
   role: UserRole;
@@ -24,31 +232,25 @@ export interface User {
   createdAt: string;
 }
 
-// ==========================================
-// 2. ENTIDADES PRINCIPAIS (Normalizadas)
-// ==========================================
 export interface Team {
   id: string;
   name: string;
-  shortName?: string; // Limite de 4 caracteres (ex: PALM)
+  shortName?: string;
   logoUrl?: string;
   foundationYear?: string;
-  colors?: string; // Para a UI (ex: '#22c55e')
+  colors?: string;
 }
 
 export interface Player {
   id: string;
-  teamId: string; // Chave estrangeira
-  userId?: string; // Opcional, vincula o jogador a um usuário real do app
+  teamId: string;
+  userId?: string;
   name: string;
   number?: number;
   position?: string;
   photoUrl?: string;
 }
 
-// ==========================================
-// 3. COMPETIÇÕES
-// ==========================================
 export interface League {
   id: string;
   name: string;
@@ -58,7 +260,7 @@ export interface League {
 
 export interface Tournament {
   id: string;
-  leagueId: string; // Chave estrangeira
+  leagueId: string;
   name: string;
   type: 'league' | 'cup';
   season: string;
@@ -67,9 +269,9 @@ export interface Tournament {
 
 export interface Match {
   id: string;
-  tournamentId: string; // Chave estrangeira
-  homeTeamId: string; // Chave estrangeira (substitui o objeto inteiro Team)
-  awayTeamId: string; // Chave estrangeira (substitui o objeto inteiro Team)
+  tournamentId: string;
+  homeTeamId: string;
+  awayTeamId: string;
   homeScore?: number;
   awayScore?: number;
   date: string;
@@ -77,33 +279,27 @@ export interface Match {
   status: 'scheduled' | 'live' | 'finished';
 }
 
-// ==========================================
-// 4. EVENTOS E ESTATÍSTICAS (Novo Modelo Relacional)
-// ==========================================
 export type EventType = 'goal' | 'assist' | 'yellow_card' | 'red_card';
 
 export interface MatchEvent {
   id: string;
-  matchId: string; // Chave estrangeira
-  playerId: string; // Chave estrangeira
+  matchId: string;
+  playerId: string;
   type: EventType;
   minute?: number;
 }
 
 export interface Podium {
   id: string;
-  tournamentId: string; // Chave estrangeira
-  firstPlaceId: string; // Chave estrangeira
-  secondPlaceId: string; // Chave estrangeira
-  thirdPlaceId: string; // Chave estrangeira
+  tournamentId: string;
+  firstPlaceId: string;
+  secondPlaceId: string;
+  thirdPlaceId: string;
 }
 
-// ==========================================
-// 5. MÍDIA E AUDITORIA
-// ==========================================
 export interface MediaItem {
   id: string;
-  tournamentId?: string; // Chave estrangeira
+  tournamentId?: string;
   type: 'photo' | 'video';
   url: string;
   caption?: string;
@@ -112,7 +308,7 @@ export interface MediaItem {
 
 export interface AuditLog {
   id: string;
-  userId: string; // Chave estrangeira
+  userId: string;
   action: 'create' | 'update' | 'delete';
   entity: 'team' | 'player' | 'match' | 'tournament';
   entityId: string;
