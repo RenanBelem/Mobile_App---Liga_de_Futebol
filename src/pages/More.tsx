@@ -8,15 +8,26 @@
  * MOTIVO: Página central para gerão de dados da aplicação,
  * permitindo admins gerenciar times, usuários e jogadores
  */
-import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users } from 'lucide-react';
+import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users, LogOut } from 'lucide-react';
 import PageHeader from '@/components/PageHeader';
 import CreateUserForm from '@/components/CreateUserForm';
 import CreateTeamForm from '@/components/CreateTeamForm';
 import CreatePlayerForm from '@/components/CreatePlayerForm';
 import CreateTournamentForm from '@/components/CreateTournamentForm';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 const More = () => {
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    localStorage.removeItem('lfa_authenticated_user');
+    toast({
+      title: "Desconectado",
+      description: "Você foi desconectado da aplicação.",
+    });
+    window.location.href = '/';
+  };
   return (
     <div className="pb-20">
       <PageHeader title="Mais" subtitle="Administração e configurações" />
@@ -132,6 +143,19 @@ const More = () => {
           </DialogContent>
         </Dialog>
 
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-destructive/30 hover:bg-destructive/5 transition-colors"
+        >
+          <div className="w-10 h-10 rounded-full bg-destructive/20 flex items-center justify-center">
+            <LogOut className="w-5 h-5 text-destructive" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold">Sair</p>
+            <p className="text-xs text-muted-foreground">Desconectar da aplicação</p>
+          </div>
+        </button>
       </div>
     </div>
   );
