@@ -27,7 +27,7 @@ const More = () => {
           <DialogTrigger asChild>
             <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
               <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <UserPlus className="w-5 h-5 text-primary" />
+                <UserPlus className="w-5 h-5 text-[rgb(0,0,0)]" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Cadastrar Usuário</p>
@@ -45,7 +45,7 @@ const More = () => {
           <DialogTrigger asChild>
             <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
               <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <ShieldPlus className="w-5 h-5 text-primary" />
+                <ShieldPlus className="w-5 h-5 text-[rgb(0,0,0)]" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Cadastrar Time</p>
@@ -63,7 +63,7 @@ const More = () => {
           <DialogTrigger asChild>
             <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
               <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
+                <Users className="w-5 h-5 text-[rgb(0,0,0)]" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Cadastrar Jogador</p>
@@ -81,7 +81,7 @@ const More = () => {
           <DialogTrigger asChild>
             <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
               <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <Trophy className="w-5 h-5 text-primary" />
+                <Trophy className="w-5 h-5 text-[rgb(0,0,0)]" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Cadastrar Torneio</p>
@@ -100,7 +100,7 @@ const More = () => {
           className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left opacity-50 cursor-not-allowed"
         >
           <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-            <Settings className="w-5 h-5 text-primary" />
+            <Settings className="w-5 h-5 text-[rgb(0,0,0)]" />
           </div>
           <div>
             <p className="text-sm font-semibold">Configurações</p>
@@ -113,7 +113,7 @@ const More = () => {
           <DialogTrigger asChild>
             <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
               <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
-                <Info className="w-5 h-5 text-primary" />
+                <Info className="w-5 h-5 text-[rgb(0,0,0)]" />
               </div>
               <div>
                 <p className="text-sm font-semibold">Sobre</p>
