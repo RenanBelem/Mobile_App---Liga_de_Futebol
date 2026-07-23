@@ -136,9 +136,9 @@ const More = () => {
             <div className="p-5 space-y-3">
               <h2 className="text-lg font-bold">Liga Antifascista de Futebol</h2>
               <p className="text-sm text-muted-foreground">
-                Organização dedicada ao futebol comunitário, antifascista e popular. Reunindo times de todo o Brasil que acreditam no esporte como ferramenta de transformação social.
+                Organização dedicada ao futebol comunitário, antifascista e popular. Reunindo times de Curitiba e Região Metropolitana que acreditam no esporte para além do lazer, como ferramenta de transformação social.
               </p>
-              <p className="text-xs text-muted-foreground">Versão 1.0.0</p>
+              {/* <p className="text-xs text-muted-foreground">Versão 1.0.0</p> */}
             </div>
           </DialogContent>
         </Dialog>
