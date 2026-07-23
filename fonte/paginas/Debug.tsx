@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/DEBUG.TSX
+ * SRC/paginas/DEBUG.TSX
  * ===============================
  * PROPÓSITO: Página de debug para desenvolvimento
  * - Exibe todos os dados salvos no localStorage
@@ -8,8 +8,8 @@
  * MOTIVO: Página útil para desenvolvimento e testes,
  * permitindo devs inspecionarem dados em tempo real
  */
-import { getAllData } from '@/data/state';
-import PageHeader from '@/components/PageHeader';
+import { getAllData } from '@/dados/state';
+import PageHeader from '@/componentes/PageHeader';
 
 const Debug = () => {
   const data = getAllData();

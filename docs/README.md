@@ -108,7 +108,7 @@ Documentação de APIs (Supabase, Pocketbase, etc)
 ### 📝 Pasta: `changelog/`
 Histórico de mudanças e versões
 
-- **v1.0.0 - MVP** → [v1.0.0.md](./changelog/v1.0.0.md) ✅
+- **v1.0.0 - MVP** → [v1.0.0.md](.logs/v1.0.0.md) ✅
 - **v1.1.0** → (futuro Q3 2026)
 - **v2.0.0** → (futuro Q3-Q4 2026)
 

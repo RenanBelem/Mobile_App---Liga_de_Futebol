@@ -1207,7 +1207,7 @@ const playerSchema = z.object({
 ### Estratégia Atual (localStorage)
 
 ```typescript
-// src/data/state.ts
+// src/dados/state.ts
 const STORAGE_USERS = 'lfa_users';
 const STORAGE_PLAYERS = 'lfa_players';
 const STORAGE_TEAMS = 'lfa_teams';
@@ -1299,7 +1299,7 @@ export function CreatePlayerForm() {
 ```typescript
 // hooks/usePlayer.ts
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/liv/supabase';
 
 export function usePlayers(teamId?: string) {
   return useQuery({

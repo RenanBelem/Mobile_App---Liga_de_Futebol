@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/MATCHCARD.TSX
+ * SRC/componentes/MATCHCARD.TSX
  * ===============================
  * PROPÓSITO: Componente de card para exibir informações de uma partida
  * - Mostra times, placar e data da partida
@@ -11,7 +11,7 @@
 import { Match } from '@/types/league';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { getTeamById } from '@/data/mock';
+import { getTeamById } from '@/dados/mock';
 
 interface MatchCardProps {
   match: Match;

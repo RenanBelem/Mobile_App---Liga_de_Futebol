@@ -43,7 +43,7 @@ Funcionar como um **aplicativo mobile-first** que permite:
 
 ## 🏗️ 2. ESTRUTURA DE COMPONENTES PRINCIPAIS
 
-### 📄 Páginas (`src/pages/`)
+### 📄 Páginas (`src/paginas/`)
 
 | Página | Arquivo | Funcionalidade |
 |--------|---------|---|
@@ -58,7 +58,7 @@ Funcionar como um **aplicativo mobile-first** que permite:
 | **Não Encontrado** | `NotFound.tsx` | Página 404 |
 | **Admin** | `admin/CreateTeam.tsx` | [Em desenvolvimento] Formulário CRUD para times |
 
-### 🧩 Componentes Reutilizáveis (`src/components/`)
+### 🧩 Componentes Reutilizáveis (`src/componentes/`)
 
 #### Core Components
 | Componente | Propósito |
@@ -73,7 +73,7 @@ Funcionar como um **aplicativo mobile-first** que permite:
 | `CreateTeamForm.tsx` | [Em desenvolvimento] Formulário de cadastro de time |
 | `CreateUserForm.tsx` | [Em desenvolvimento] Formulário de cadastro de usuário |
 
-#### UI Components (`src/components/ui/`)
+#### UI Components (`src/componentes/ui/`)
 Componentes Shadcn/UI baseados em Radix UI (30+ componentes):
 - Layouts: `accordion`, `sidebar`, `card`, `sheet`, `drawer`
 - Inputs: `input`, `button`, `checkbox`, `radio-group`, `select`, `textarea`
@@ -100,7 +100,7 @@ Componentes Shadcn/UI baseados em Radix UI (30+ componentes):
 
 ## 📊 3. ORGANIZAÇÃO DE DADOS E TIPOS
 
-### 📁 Estrutura de Dados (`src/data/`)
+### 📁 Estrutura de Dados (`src/dados/`)
 
 | Arquivo | Conteúdo | Linhas |
 |---------|----------|--------|
@@ -254,7 +254,7 @@ plugins:
   - componentTagger()     // Lovable tagger (dev only)
 
 resolve:
-  alias: '@' → './src/'   // Importações com @
+  alias: '@' → './fonte/'   // Importações com @
   dedupe: react, react-dom
 ```
 
@@ -289,7 +289,7 @@ compilerOptions:
   strictNullChecks: false  // Flexível para mockups
   
 paths:
-  '@/*': './src/*'       // Alias para imports
+  '@/*': './fonte/*'       // Alias para imports
 ```
 
 ### 📦 Configurações Adicionais
@@ -339,17 +339,17 @@ paths:
 
 ## 📂 7. TIPOS DE ARQUIVOS POR SEÇÃO
 
-### **src/pages/** - Páginas Completas
+### **src/paginas/** - Páginas Completas
 - Componentes de página toda
 - Lógica específica de rota
 - Integração com estado global
 
-### **src/components/** - Componentes Reutilizáveis
+### **src/componentes/** - Componentes Reutilizáveis
 - Componentes funcionais (`.tsx`)
 - Componentes UI do Shadcn em pasta `ui/`
 - Componentes compostos (MatchCard, PodiumCard, etc.)
 
-### **src/data/** - Dados e Mock
+### **src/dados/** - Dados e Mock
 - Tipagens e dados estáticos
 - Mockups de BD (sem persistência real)
 - Simulação de usuário autenticado
@@ -359,11 +359,11 @@ paths:
 - Tipos de usuário e acesso
 - Schemas de dados normalizados
 
-### **src/hooks/** - Hooks Customizados
+### **src/ganchoss/** - Hooks Customizados
 - `use-mobile.tsx`: Detectar viewport mobile
 - `use-toast.ts`: Gerenciar notificações
 
-### **src/lib/** - Utilitários
+### **src/liv/** - Utilitários
 - `utils.ts`: Funções auxiliares (classNames, etc.)
 
 ### **root/** - Configurações
@@ -401,7 +401,7 @@ npm run test:watch      # Vitest (watch mode)
 - `zod@3.25.76` (Validação)
 - `framer-motion@12.38.0` (Animações)
 
-### UI/Components (Radix)
+### UI/componentes (Radix)
 - 30+ packages `@radix-ui/*`
 - `shadcn/ui` (wrapper dos componentes Radix)
 

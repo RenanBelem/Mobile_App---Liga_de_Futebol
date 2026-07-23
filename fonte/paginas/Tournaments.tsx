@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/TOURNAMENTS.TSX
+ * SRC/paginas/TOURNAMENTS.TSX
  * ===============================
  * PROPÓSITO: Página de listagem de todos os torneios da liga
  * - Exibe todos os torneios (em andamento, encerrados, em breve)
@@ -11,8 +11,8 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Trophy, Calendar } from 'lucide-react';
-import { tournaments } from '@/data/mock';
-import PageHeader from '@/components/PageHeader';
+import { tournaments } from '@/dados/mock';
+import PageHeader from '@/componentes/PageHeader';
 
 const statusLabel: Record<string, string> = {
   ongoing: 'Em andamento',

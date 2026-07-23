@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/TEAMS.TSX
+ * SRC/paginas/TEAMS.TSX
  * ===============================
  * PROPÓSITO: Página de listagem de todos os times da liga
  * - Exibe todos os 25 times cadastrados
@@ -12,16 +12,16 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Users, Plus } from 'lucide-react';
-import { teams, getPlayersByTeam } from '@/data/mock';
-import PageHeader from '@/components/PageHeader';
-import CreateTeamForm from '@/components/CreateTeamForm';
+import { teams, getPlayersByTeam } from '@/dados/mock';
+import PageHeader from '@/componentes/PageHeader';
+import CreateTeamForm from '@/componentes/CreateTeamForm';
 
 // Importações do shadcn/ui
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/componentes/ui/dialog";
 
 const Teams = () => {
   const navigate = useNavigate();

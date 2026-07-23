@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/PAGEHEADER.TSX
+ * SRC/componentes/PAGEHEADER.TSX
  * ===============================
  * PROPÓSITO: Cabeçalho reutilizável para páginas
  * - Exibe título e subtítulo da página

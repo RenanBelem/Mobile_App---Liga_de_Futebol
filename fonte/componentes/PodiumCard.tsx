@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/PODIUMCARD.TSX
+ * SRC/componentes/PODIUMCARD.TSX
  * ===============================
  * PROPÓSITO: Componente visual para exibir pódio de campeões
  * - Mostra 1º, 2º e 3º colocados em um pódio visual

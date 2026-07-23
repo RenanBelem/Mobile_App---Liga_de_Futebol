@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/BOTTOMNAV.TSX
+ * SRC/componentes/BOTTOMNAV.TSX
  * ===============================
  * PROPÓSITO: Barra de navegação fixa no rodapé da aplicação
  * - Fornece acesso rápido às páginas principais (Home, Torneios, Times, Mídias, Mais)

@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/CREATEPLAYERFORM.TSX
+ * SRC/componentes/CREATEPLAYERFORM.TSX
  * ===============================
  * PROPÓSITO: Formulário para criar/adicionar novos jogadores
  * - Captura dados do jogador (nome, número, posição, time)
@@ -12,13 +12,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
-import { teams } from "@/data/mock";
-import { addPlayer } from "@/data/state";
+import { Button } from "@/componentes/ui/button";
+import { Input } from "@/componentes/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/componentes/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/componentes/ui/form";
+import { useToast } from "@/ganchoss/use-toast";
+import { teams } from "@/dados/mock";
+import { addPlayer } from "@/dados/state";
 import { Users } from "lucide-react";
 
 const positions = [

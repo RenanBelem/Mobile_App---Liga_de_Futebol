@@ -1,5 +1,5 @@
 /**
- * SRC/HOOKS/USE-TOAST.TS
+ * SRC/ganchosS/USE-TOAST.TS
  * ===============================
  * PROPÓSITO: Hook customizado para gerenciar notificações (toasts)
  * - Fornece interface programmática para exibir toasts
@@ -10,7 +10,7 @@
  */
 import * as React from "react";
 
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
+import type { ToastActionElement, ToastProps } from "@/componentes/ui/toast";
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;

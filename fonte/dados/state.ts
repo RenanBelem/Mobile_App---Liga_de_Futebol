@@ -1,5 +1,5 @@
 /**
- * SRC/DATA/STATE.TS
+ * SRC/dados/STATE.TS
  * ===============================
  * PROPÓSITO: Gerenciamento de estado global persistente
  * - CRUD de usuários, jogadores e times

@@ -64,7 +64,7 @@ Implementar as recomendações da **Opção B**: Corrigir links + Adicionar 3 do
 
 ---
 
-#### `docs/changelog/v1.0.0.md` ✅
+#### `docslogs/v1.0.0.md` ✅
 - **Propósito:** Documentar a versão 1.0.0 MVP
 - **Conteúdo:**
   - O que é MVP
@@ -199,12 +199,12 @@ docs/
 
 ### Médio Prazo (Q4 2026)
 - 🔄 Criar `docs/guias/GUIA_PWA.md`
-- 🔄 Criar `docs/changelog/v1.1.0.md`
+- 🔄 Criar `docslogs/v1.1.0.md`
 - 🔄 Criar `docs/api/ENDPOINTS.md`
 
 ### Longo Prazo (Q1 2027)
 - 🔄 Criar `docs/guias/GUIA_REACT_NATIVE.md`
-- 🔄 Criar `docs/changelog/v2.0.0.md`
+- 🔄 Criar `docslogs/v2.0.0.md`
 - 🔄 Criar `docs/api/WEBHOOKS.md`
 
 ---

@@ -184,7 +184,7 @@
 ```
 1. Leia docs/projeto/PLANO_DE_PROJETO.md - Visão Geral (20 min)
 2. Leia docs/projeto/EVOLUCAO_RECOMENDADA.md - Próximos passos (30 min)
-3. Consulte docs/changelog/ para atualizações
+3. Consulte docslogs/ para atualizações
 ```
 
 ### Para Arquiteto

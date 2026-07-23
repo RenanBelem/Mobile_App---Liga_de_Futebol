@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/MEDIA.TSX
+ * SRC/paginas/MEDIA.TSX
  * ===============================
  * PROPÓSITO: Página de galéria de mídias (fotos e vídeos)
  * - Exibe mídias da liga (fotos de partidas, celebrações, eventos)
@@ -9,8 +9,8 @@
  * oferecendo forma visual atrativa de acessar acervo fotográfico
  */
 import { Image, Film } from 'lucide-react';
-import { mediaItems } from '@/data/mock';
-import PageHeader from '@/components/PageHeader';
+import { mediaItems } from '@/dados/mock';
+import PageHeader from '@/componentes/PageHeader';
 
 const Media = () => {
   return (

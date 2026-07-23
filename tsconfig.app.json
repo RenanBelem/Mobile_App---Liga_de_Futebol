@@ -28,7 +28,7 @@
     "noUnusedParameters": false,
     "paths": {
       "@/*": [
-        "./src/*"
+        "./fonte/*"
       ]
     },
     "skipLibCheck": true,

@@ -1,5 +1,5 @@
 /**
- * SRC/DATA/DATABASE.TS
+ * SRC/dados/dadosBASE.TS
  * ===============================
  * PROPÓSITO: Dados mockados completos seguindo schema de banco de dados (PT-BR)
  * - Tabelas: ligas, temporadas, competicoes, times, times_temporada

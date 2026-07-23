@@ -64,7 +64,7 @@
 ```
 1. PLANO_DE_PROJETO.md (projeto/)
    ├─ Visão geral
-   ├─ Frontend/Backend/Database
+   ├─ Frontend/Backend/dadosbase
    └─ Roadmap
 
 2. COMPARACAO_TECNICA.md (decisoes/)

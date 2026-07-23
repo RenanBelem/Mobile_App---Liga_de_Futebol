@@ -1,5 +1,5 @@
 /**
- * SRC/DATA/MOCK.TS
+ * SRC/dados/MOCK.TS
  * ===============================
  * PROPÓSITO: Dados mockados/simulados para desenvolvimento
  * - Fornece 25 times da liga com cores, logos e nomes

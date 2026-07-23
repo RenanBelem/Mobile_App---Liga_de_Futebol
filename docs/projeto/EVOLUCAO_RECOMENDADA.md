@@ -65,7 +65,7 @@ Supabase + PostgreSQL
 # 4. Instalar SDK
 npm install @supabase/supabase-js
 
-# 5. Criar arquivo src/lib/supabase.ts
+# 5. Criar arquivo src/liv/supabase.ts
 ```
 
 ---
@@ -102,7 +102,7 @@ Segunda:
 ├── Criar conta Supabase (30 min)
 ├── Criar projeto (10 min)
 ├── Copiar credenciais (5 min)
-└── Criar src/lib/supabase.ts (30 min)
+└── Criar src/liv/supabase.ts (30 min)
 
 Terça-Quarta:
 ├── Criar tabelas PostgreSQL (1h)
@@ -438,7 +438,7 @@ npm install @supabase/supabase-js
 VITE_SUPABASE_URL=your_project_url
 VITE_SUPABASE_ANON_KEY=your_anon_key
 
-# 6. Criar src/lib/supabase.ts
+# 6. Criar src/liv/supabase.ts
 # 7. Testar conexão
 ```
 

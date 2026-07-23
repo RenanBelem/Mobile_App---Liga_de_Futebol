@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/CREATEUSERFORM.TSX
+ * SRC/componentes/CREATEUSERFORM.TSX
  * ===============================
  * PROPÓSITO: Formulário para criar/registrar novos usuários
  * - Captura dados de cadastro (nome, email, senha, função)
@@ -12,8 +12,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { UserPlus, Mail, User, Shield, Image as ImageIcon } from "lucide-react";
-import { addUser } from "@/data/state";
-import { useToast } from "@/hooks/use-toast";
+import { addUser } from "@/dados/state";
+import { useToast } from "@/ganchoss/use-toast";
 import { useState } from "react";
 
 const userSchema = z.object({

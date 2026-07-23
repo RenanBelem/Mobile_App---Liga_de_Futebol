@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { addTournament } from "@/data/state";
-import { useToast } from "@/hooks/use-toast";
+import { addTournament } from "@/dados/state";
+import { useToast } from "@/ganchoss/use-toast";
 import { useState } from "react";
 import { Trophy, CalendarDays, Flag, Layers, CircleDot } from "lucide-react";
 

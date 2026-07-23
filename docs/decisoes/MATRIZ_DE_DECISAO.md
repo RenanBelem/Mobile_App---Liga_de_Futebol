@@ -192,7 +192,7 @@ NÃO  → Firebase (queries simples funcionam)
 3. Criar tabelas básicas (users, teams, players)
 4. Gerar SDK keys
 5. Instalar @supabase/supabase-js
-6. Criar src/lib/supabase.ts
+6. Criar src/liv/supabase.ts
 
 # B. Se escolheu Pocketbase
 1. Fazer download pocketbase.io
@@ -200,7 +200,7 @@ NÃO  → Firebase (queries simples funcionam)
 3. Acessar http://localhost:8090/_/
 4. Criar coleções (users, teams, players)
 5. Instalar pocketbase JS SDK
-6. Criar src/lib/pocketbase.ts
+6. Criar src/liv/pocketbase.ts
 ```
 
 **Tempo:** 4-6 horas

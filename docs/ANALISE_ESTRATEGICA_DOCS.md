@@ -131,7 +131,7 @@ Recomendado (bom ter):
    ├── Offline support
    └── Testing PWA
 
-9. 📄 docs/changelog/v1.1.0.md (BETA)
+9. 📄 docslogs/v1.1.0.md (BETA)
    ├── O que foi adicionado
    ├── Bugs corrigidos
    ├── Breaking changes
@@ -190,7 +190,7 @@ Recomendado (bom ter):
 
 #### Recomendado
 ```
-16. 📄 docs/changelog/v2.0.0.md
+16. 📄 docslogs/v2.0.0.md
     ├── Backend integrado
     ├── Features novas
     ├── Migration guide
@@ -225,7 +225,7 @@ Recomendado (bom ter):
     ├── Performance
     └── Security
 
-20. 📄 docs/changelog/v3.0.0.md
+20. 📄 docslogs/v3.0.0.md
     ├── Desktop app
     ├── Performance improvements
     ├── Feature completeness

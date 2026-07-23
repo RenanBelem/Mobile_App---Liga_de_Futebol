@@ -1,5 +1,5 @@
 /**
- * SRC/DATA/INDEX.TS
+ * SRC/dados/INDEX.TS
  * ===============================
  * Ponto de entrada centralizado para todos os dados
  * Exporta dados mockados em PT-BR conforme schema de banco de dados
@@ -24,7 +24,7 @@ export {
   getPartidas_PorCompeticao,
   getCompeticoes_PorTemporada,
   getTimes_PorTemporada,
-} from './database';
+} from './dadosbase';
 
 // Dados legados (retrocompatibilidade)
 export {

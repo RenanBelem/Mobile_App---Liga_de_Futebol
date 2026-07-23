@@ -322,9 +322,9 @@ npm run dev
 
 1. **[docs/README.md](../README.md)** - Índice geral
 2. **[docs/PLANO_DE_PROJETO.md](../projeto/PLANO_DE_PROJETO.md)** - Visão completa
-3. **[src/App.tsx](../../src/App.tsx)** - Rotas da aplicação
-4. **[src/pages/](../../src/pages/)** - Explore uma página
-5. **[src/components/](../../src/components/)** - Explore um componente
+3. **[src/App.tsx](../../fonte/App.tsx)** - Rotas da aplicação
+4. **[src/paginas/](../../fonte/paginas/)** - Explore uma página
+5. **[src/componentes/](../../fonte/componentes/)** - Explore um componente
 
 ---
 
@@ -332,7 +332,7 @@ npm run dev
 
 **R:** Passo-a-passo:
 
-1. Edite o arquivo (ex: `src/pages/Index.tsx`)
+1. Edite o arquivo (ex: `src/paginas/Index.tsx`)
 2. Salve (`Ctrl+S`)
 3. Vite faz hot reload automático
 4. Veja mudança no navegador

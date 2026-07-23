@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/ADMIN/CREATETEAM.TSX
+ * SRC/paginas/ADMIN/CREATETEAM.TSX
  * ===============================
  * PROPÓSITO: Página/componente admin para criar time
  * - Formulário de criação de times com validação

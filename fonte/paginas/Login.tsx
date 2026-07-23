@@ -1,8 +1,8 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-import { useToast } from "@/hooks/use-toast";
-import { getUsers } from "@/data/state";
+import { useToast } from "@/ganchoss/use-toast";
+import { getUsers } from "@/dados/state";
 
 type LoginProps = {
   onLoginSuccess: (login: string) => void;

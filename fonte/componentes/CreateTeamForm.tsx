@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/CREATETEAMFORM.TSX
+ * SRC/componentes/CREATETEAMFORM.TSX
  * ===============================
  * PROPÓSITO: Formulário para criar/adicionar novos times
  * - Captura dados do time (nome, sigla, fundação, logo)
@@ -12,8 +12,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Shield, Type, Image as ImageIcon, Calendar, Palette } from "lucide-react";
-import { addTeam } from "@/data/state";
-import { useToast } from "@/hooks/use-toast";
+import { addTeam } from "@/dados/state";
+import { useToast } from "@/ganchoss/use-toast";
 import { useState } from "react";
 
 const teamSchema = z.object({

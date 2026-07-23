@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/TOURNAMENTDETAIL.TSX
+ * SRC/paginas/TOURNAMENTDETAIL.TSX
  * ===============================
  * PROPÓSITO: Página de detalhes de um torneio específico
  * - Exibe informações do torneio (nome, datas, status)
@@ -10,13 +10,13 @@
  */
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { tournaments, teams, currentUser } from '@/data/mock';
-import { Button } from '@/components/ui/button';
+import { tournaments, teams, currentUser } from '@/dados/mock';
+import { Button } from '@/componentes/ui/button';
 import { Plus, Edit2 } from 'lucide-react';
-import PageHeader from '@/components/PageHeader';
-import MatchCard from '@/components/MatchCard';
-import StandingsTable from '@/components/StandingsTable';
-import PodiumCard from '@/components/PodiumCard';
+import PageHeader from '@/componentes/PageHeader';
+import MatchCard from '@/componentes/MatchCard';
+import StandingsTable from '@/componentes/StandingsTable';
+import PodiumCard from '@/componentes/PodiumCard';
 import { Player } from '@/types/league';
 
 

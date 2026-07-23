@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/MORE.TSX
+ * SRC/paginas/MORE.TSX
  * ===============================
  * PROPÓSITO: Página de administração e configurações
  * - Oferece acessos a formulários CRUD (criar usuários, times, jogadores)
@@ -9,13 +9,13 @@
  * permitindo admins gerenciar times, usuários e jogadores
  */
 import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users, LogOut } from 'lucide-react';
-import PageHeader from '@/components/PageHeader';
-import CreateUserForm from '@/components/CreateUserForm';
-import CreateTeamForm from '@/components/CreateTeamForm';
-import CreatePlayerForm from '@/components/CreatePlayerForm';
-import CreateTournamentForm from '@/components/CreateTournamentForm';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/hooks/use-toast';
+import PageHeader from '@/componentes/PageHeader';
+import CreateUserForm from '@/componentes/CreateUserForm';
+import CreateTeamForm from '@/componentes/CreateTeamForm';
+import CreatePlayerForm from '@/componentes/CreatePlayerForm';
+import CreateTournamentForm from '@/componentes/CreateTournamentForm';
+import { Dialog, DialogContent, DialogTrigger } from '@/componentes/ui/dialog';
+import { useToast } from '@/ganchoss/use-toast';
 
 const More = () => {
   const { toast } = useToast();

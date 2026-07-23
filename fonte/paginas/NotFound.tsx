@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/NOTFOUND.TSX
+ * SRC/paginas/NOTFOUND.TSX
  * ===============================
  * PROPÓSITO: Página 404 (rota não encontrada)
  * - Exibida quando usuário tenta acessar URL inexistente

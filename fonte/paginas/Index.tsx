@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/INDEX.TSX
+ * SRC/paginas/INDEX.TSX
  * ===============================
  * PROPÓSITO: Página inicial (Home) da aplicação
  * - Exibe informações gerais da liga (nome, temporada, quantidade de torneios/jogos)
@@ -12,9 +12,9 @@
 import { Trophy, ChevronRight, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { league, matches, tournaments } from '@/data/mock';
-import MatchCard from '@/components/MatchCard';
-import PodiumCard from '@/components/PodiumCard';
+import { league, matches, tournaments } from '@/dados/mock';
+import MatchCard from '@/componentes/MatchCard';
+import PodiumCard from '@/componentes/PodiumCard';
 
 const Index = () => {
   const navigate = useNavigate();

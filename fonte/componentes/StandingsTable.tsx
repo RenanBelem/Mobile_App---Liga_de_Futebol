@@ -1,5 +1,5 @@
 /**
- * SRC/COMPONENTS/STANDINGSTABLE.TSX
+ * SRC/componentes/STANDINGSTABLE.TSX
  * ===============================
  * PROPÓSITO: Tabela de classificação de times em um torneio
  * - Exibe posição, time, pontos, vitórias, empates, derrotas

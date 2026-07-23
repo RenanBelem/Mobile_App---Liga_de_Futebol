@@ -4,7 +4,7 @@
 
 Todos os tipos estão em PT-BR em `src/types/league.ts` com campos **`criado_em`** e **`atualizado_em`** em todas as tabelas.
 
-Dados mockados em `src/data/database.ts` com 3 temporadas completas (Apertura 25, Clausura 25, Apertura 26).
+Dados mockados em `src/dados/dadosbase.ts` com 3 temporadas completas (Apertura 25, Clausura 25, Apertura 26).
 
 ---
 
@@ -152,9 +152,9 @@ Resolvido via `RegistroJogador`:
 | Arquivo | Conteúdo |
 |---------|----------|
 | `src/types/league.ts` | Interfaces TypeScript (13 tabelas + tipos legados) |
-| `src/data/database.ts` | Dados mockados completos em PT-BR |
-| `src/data/index.ts` | Índice de exportação |
-| `src/data/mock.ts` | Dados legados (retrocompatibilidade) |
+| `src/dados/dadosbase.ts` | Dados mockados completos em PT-BR |
+| `src/dados/index.ts` | Índice de exportação |
+| `src/dados/mock.ts` | Dados legados (retrocompatibilidade) |
 
 ---
 
@@ -176,10 +176,10 @@ import {
   midia,
   podios,
   usuarios,
-} from '@/data';
+} from '@/dados';
 
 // Ou específico
-import { getJogadoresPorTimeTemporada, getTimes_PorTemporada } from '@/data/database';
+import { getJogadoresPorTimeTemporada, getTimes_PorTemporada } from '@/dados/dadosbase';
 ```
 
 ---

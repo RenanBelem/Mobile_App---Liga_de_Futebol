@@ -1,5 +1,5 @@
 /**
- * SRC/PAGES/TEAMDETAIL.TSX
+ * SRC/paginas/TEAMDETAIL.TSX
  * ===============================
  * PROPÓSITO: Página de detalhes de um time específico
  * - Exibe informações do time (nome, cores, fundação)
@@ -10,8 +10,8 @@
  */
 import { useParams } from 'react-router-dom';
 import { Shield } from 'lucide-react';
-import { teams } from '@/data/mock';
-import PageHeader from '@/components/PageHeader';
+import { teams } from '@/dados/mock';
+import PageHeader from '@/componentes/PageHeader';
 
 const TeamDetail = () => {
   const { id } = useParams();

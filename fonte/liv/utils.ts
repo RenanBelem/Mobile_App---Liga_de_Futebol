@@ -1,5 +1,5 @@
 /**
- * SRC/LIB/UTILS.TS
+ * SRC/liv/UTILS.TS
  * ===============================
  * PROPÓSITO: Funções utilitárias gerais da aplicação
  * - Função 'cn': merge de classes Tailwind sem conflitos

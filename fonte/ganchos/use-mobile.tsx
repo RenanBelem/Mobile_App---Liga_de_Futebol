@@ -1,5 +1,5 @@
 /**
- * SRC/HOOKS/USE-MOBILE.TSX
+ * SRC/ganchosS/USE-MOBILE.TSX
  * ===============================
  * PROPÓSITO: Hook para detectar se dispositivo é mobile
  * - Usa media queries para determinar se tela é menor que 768px
