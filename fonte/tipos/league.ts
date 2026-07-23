@@ -20,7 +20,22 @@ export type StatusTemporada = 'rascunho' | 'em_andamento' | 'finalizada';
 export type StatusCompeticao = 'rascunho' | 'em_andamento' | 'finalizada' | 'cancelada';
 export type StatusPartida = 'agendada' | 'ao_vivo' | 'finalizada' | 'cancelada';
 export type TipoEvento = 'gol' | 'assistencia' | 'cartao_amarelo' | 'cartao_vermelho' | 'gol_contra';
-export type TipoMidia = 'foto' | 'video';
+export type TipoMidia = 'foto' | 'video' | 'logo' | 'banner' | 'uniforme';
+
+export interface HistoricoTime {
+  competencia: string;
+  temporada: string;
+  posicao: 'campeao' | 'vice' | 'terceiro' | 'quarto';
+}
+
+export interface ResumoCompeticaoTemporada {
+  nome: string;
+  campeao_id?: string;
+  vice_id?: string;
+  terceiro_id?: string;
+  quarto_id?: string;
+  temporada_slug?: string;
+}
 
 // ==========================================
 // 1. TABELA: USUÁRIOS
@@ -62,6 +77,7 @@ export interface Temporada {
   status: StatusTemporada;
   descricao?: string;
   url_banner?: string;
+  resumo_competicoes?: ResumoCompeticaoTemporada[];
   criado_em: string;
   atualizado_em: string;
 }
@@ -73,12 +89,17 @@ export interface Competicao {
   id: string;
   temporada_id: string; // FK
   nome: string; // Ex: "Campeonato Principal"
+  slug: string;
   tipo: TipoCompeticao; // 'campeonato', 'copa', 'playoff'
   formato: FormatoCompeticao;
   data_inicio: string;
   data_fim: string;
   status: StatusCompeticao;
   ordem: number; // Ordenação visual
+  descricao?: string;
+  organizador?: string;
+  url_logo?: string;
+  url_banner?: string;
   criado_em: string;
   atualizado_em: string;
 }
@@ -89,12 +110,22 @@ export interface Competicao {
 export interface Time {
   id: string;
   nome: string;
+  slug?: string;
   nome_curto?: string; // Ex: "LOKM"
   url_logo?: string;
+  url_foto_capa?: string;
+  url_uniforme_titular?: string;
   cor_primaria?: string; // Hex
   cor_secundaria?: string; // Hex
   ano_fundacao?: number;
+  cidade?: string;
+  alinhamento?: string;
+  descricao?: string;
+  historia?: string;
+  origem?: string;
   ativo: boolean;
+  titulos?: HistoricoTime[];
+  campanhas_destaque?: HistoricoTime[];
   criado_em: string;
   atualizado_em: string;
 }
@@ -199,6 +230,9 @@ export interface Midia {
   url: string;
   url_thumbnail?: string;
   legenda?: string;
+  titulo?: string;
+  categoria?: string;
+  escopo?: 'liga' | 'temporada' | 'time' | 'competicao' | 'partida';
   carregado_por: string; // FK usuario_id
   criado_em: string;
 }
@@ -239,6 +273,15 @@ export interface Team {
   logoUrl?: string;
   foundationYear?: string;
   colors?: string;
+  description?: string;
+  biography?: string;
+  history?: string;
+  coverImageUrl?: string;
+  uniformUrl?: string;
+  slug?: string;
+  titles?: Array<{ competition: string; season: string; position: 'campeao' | 'vice' | 'terceiro' | 'quarto' }>;
+  highlights?: Array<{ competition: string; season: string; position: 'campeao' | 'vice' | 'terceiro' | 'quarto' }>;
+  photos?: Array<{ url: string; caption?: string }>;
 }
 
 export interface Player {
@@ -265,6 +308,13 @@ export interface Tournament {
   type: 'league' | 'cup';
   season: string;
   status: 'draft' | 'ongoing' | 'finished';
+  description?: string;
+  format?: string;
+  history?: string;
+  logoUrl?: string;
+  bannerUrl?: string;
+  editions?: Array<{ season: string; result: string; champion?: string }>;
+  resultsSummary?: string[];
 }
 
 export interface Match {
@@ -304,6 +354,28 @@ export interface MediaItem {
   url: string;
   caption?: string;
   date: string;
+}
+
+export interface DocumentationItem {
+  id: string;
+  title: string;
+  summary: string;
+  category: string;
+  content: string;
+}
+
+export interface SeasonCompetitionSummary {
+  id: string;
+  name: string;
+  status: string;
+  description?: string;
+}
+
+export interface SeasonSummary {
+  seasonId: string;
+  seasonName: string;
+  description?: string;
+  competitions: SeasonCompetitionSummary[];
 }
 
 export interface AuditLog {

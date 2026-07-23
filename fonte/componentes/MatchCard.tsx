@@ -8,10 +8,10 @@
  * MOTIVO: Reutilizável em várias páginas (Home, detalhe de torneio, etc)
  * para exibir dados de partidas de forma consistente
  */
-import { Match } from '@/types/league';
+import { Match } from '@/tipos/league';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { getTeamById } from '@/dados/mock';
+import { teamService } from '@/servicos/apiRoutes';
 
 interface MatchCardProps {
   match: Match;
@@ -19,8 +19,8 @@ interface MatchCardProps {
 
 const MatchCard = ({ match }: MatchCardProps) => {
   const isFinished = match.status === 'finished';
-  const homeTeam = getTeamById(match.homeTeamId);
-  const awayTeam = getTeamById(match.awayTeamId);
+  const homeTeam = teamService.getById(match.homeTeamId);
+  const awayTeam = teamService.getById(match.awayTeamId);
 
   if (!homeTeam || !awayTeam) return null;
 

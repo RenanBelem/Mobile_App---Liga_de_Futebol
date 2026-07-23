@@ -20,7 +20,7 @@ import {
   MatchEvent,
   Podium,
   UserRole
-} from '@/types/league';
+} from '@/tipos/league';
 
 // ==========================================
 // 1. USUÁRIOS

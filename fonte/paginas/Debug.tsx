@@ -8,11 +8,18 @@
  * MOTIVO: Página útil para desenvolvimento e testes,
  * permitindo devs inspecionarem dados em tempo real
  */
-import { getAllData } from '@/dados/state';
+import { authService, matchService, mediaService, playerService, teamService, tournamentService } from '@/servicos/apiRoutes';
 import PageHeader from '@/componentes/PageHeader';
 
 const Debug = () => {
-  const data = getAllData();
+  const data = {
+    users: authService.list(),
+    players: playerService.list(),
+    teams: teamService.list(),
+    tournaments: tournamentService.list(),
+    matches: matchService.list(),
+    media: mediaService.list(),
+  };
 
   return (
     <div className="pb-20">

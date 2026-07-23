@@ -11,7 +11,7 @@
 // Gerenciamento de estado global para dados do app
 // Persiste em localStorage (antes da integração com Supabase)
 
-import { User, Player, Team, Tournament } from '@/types/league';
+import { User, Player, Team, Tournament } from '@/tipos/league';
 
 const STORAGE_USERS = 'lfa_users';
 const STORAGE_PLAYERS = 'lfa_players';

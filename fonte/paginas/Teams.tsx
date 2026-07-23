@@ -11,10 +11,10 @@
  */
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Users, Plus } from 'lucide-react';
-import { teams, getPlayersByTeam } from '@/dados/mock';
+import { Shield, Users, Plus, Trophy } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
 import CreateTeamForm from '@/componentes/CreateTeamForm';
+import { teamService } from '@/servicos/apiRoutes';
 
 // Importações do shadcn/ui
 import {
@@ -25,6 +25,7 @@ import {
 
 const Teams = () => {
   const navigate = useNavigate();
+  const teams = teamService.list();
 
   return (
     <div className="pb-20">
@@ -53,7 +54,7 @@ const Teams = () => {
         {/* Lista de times (Intacta) */}
         <div className="space-y-3">
           {teams.map((team, i) => {
-            const teamPlayers = getPlayersByTeam(team.id);
+            const teamPlayers = teamService.getPlayersByTeam(team.id);
 
             return (
               <motion.button
@@ -64,17 +65,24 @@ const Teams = () => {
                 onClick={() => navigate(`/teams/${team.id}`)}
                 className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors"
               >
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: team.colors || 'hsl(var(--muted))' }}
-                >
-                  <Shield className="w-6 h-6 text-background" />
+                <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-border/80 bg-background/70">
+                  {team.logoUrl ? (
+                    <img src={team.logoUrl} alt={team.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: team.colors || 'hsl(var(--muted))' }}>
+                      <Shield className="w-6 h-6 text-background" />
+                    </div>
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-bold text-sm">{team.name}</p>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                    <Users className="w-3 h-3" /> {teamPlayers.length} jogadores
-                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{team.description}</p>
+                  <div className="flex items-center gap-3 mt-2 text-[11px] text-muted-foreground">
+                    <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {teamPlayers.length} jogadores</span>
+                    {team.titles && team.titles.length > 0 && (
+                      <span className="flex items-center gap-1"><Trophy className="w-3 h-3" /> {team.titles.length} títulos</span>
+                    )}
+                  </div>
                 </div>
               </motion.button>
             );

@@ -8,7 +8,8 @@
  * MOTIVO: Página central para gerão de dados da aplicação,
  * permitindo admins gerenciar times, usuários e jogadores
  */
-import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users, LogOut } from 'lucide-react';
+import { Settings, UserPlus, ShieldPlus, Trophy, Info, Users, LogOut, ScrollText, BookOpen } from 'lucide-react';
+import { documentationService } from '@/servicos/apiRoutes';
 import PageHeader from '@/componentes/PageHeader';
 import CreateUserForm from '@/componentes/CreateUserForm';
 import CreateTeamForm from '@/componentes/CreateTeamForm';
@@ -19,6 +20,7 @@ import { useToast } from '@/ganchos/use-toast';
 
 const More = () => {
   const { toast } = useToast();
+  const documentation = documentationService.list();
 
   const handleLogout = () => {
     localStorage.removeItem('lfa_authenticated_user');
@@ -32,6 +34,24 @@ const More = () => {
     <div className="pb-20">
       <PageHeader title="Mais" subtitle="Administração e configurações" />
       <div className="px-4 pt-4 space-y-2">
+        <div className="rounded-xl border border-border/70 bg-background/60 p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-primary" />
+            <h2 className="text-sm font-bold uppercase tracking-wider">Documentação institucional</h2>
+          </div>
+          <div className="space-y-2">
+            {documentation.map((item) => (
+              <div key={item.id} className="rounded-lg border border-border/60 bg-secondary/30 p-3">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
+                  <ScrollText className="w-3 h-3" />
+                  {item.category}
+                </div>
+                <p className="mt-1 text-sm font-semibold">{item.title}</p>
+                <p className="text-xs text-muted-foreground">{item.summary}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Cadastrar Usuário */}
         <Dialog>

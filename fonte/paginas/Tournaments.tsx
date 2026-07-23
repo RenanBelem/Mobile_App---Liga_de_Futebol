@@ -10,9 +10,9 @@
  */
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, Calendar } from 'lucide-react';
-import { tournaments } from '@/dados/mock';
+import { Trophy, Calendar, ScrollText } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
+import { tournamentService } from '@/servicos/apiRoutes';
 
 const statusLabel: Record<string, string> = {
   ongoing: 'Em andamento',
@@ -28,6 +28,7 @@ const statusColor: Record<string, string> = {
 
 const Tournaments = () => {
   const navigate = useNavigate();
+  const tournaments = tournamentService.list();
 
   return (
     <div className="pb-20">
@@ -44,17 +45,22 @@ const Tournaments = () => {
           >
             <div className="flex items-start justify-between mb-2">
               <div className="flex items-center gap-2">
-                <Trophy className="w-4 h-4 text-primary" />
-                <p className="font-bold text-sm">{t.name}</p>
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-border/60 bg-background/70">
+                  {t.logoUrl ? <img src={t.logoUrl} alt={t.name} className="w-full h-full object-cover" /> : <Trophy className="w-5 h-5 m-auto text-primary" />}
+                </div>
+                <div>
+                  <p className="font-bold text-sm">{t.name}</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">{t.description}</p>
+                </div>
               </div>
               <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${statusColor[t.status]}`}>
                 {statusLabel[t.status]}
               </span>
             </div>
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-3 text-xs text-muted-foreground mt-2">
               <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{t.season}</span>
               <span>{t.type === 'cup' ? 'Copa' : 'Liga'}</span>
-              <span>{t.matches.length} jogos</span>
+              <span className="flex items-center gap-1"><ScrollText className="w-3 h-3" />{t.format}</span>
             </div>
           </motion.button>
         ))}

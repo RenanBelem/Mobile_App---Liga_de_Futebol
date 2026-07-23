@@ -12,15 +12,16 @@
 import { Trophy, ChevronRight, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { league, matches, tournaments } from '@/dados/mock';
 import MatchCard from '@/componentes/MatchCard';
 import PodiumCard from '@/componentes/PodiumCard';
+import { overviewService } from '@/servicos/apiRoutes';
 
 const Index = () => {
   const navigate = useNavigate();
-  const recentMatches = matches.filter(m => m.status === 'finished').slice(0, 3);
-  const upcomingMatches = matches.filter(m => m.status === 'scheduled').slice(0, 2);
-  const finishedTournaments = tournaments.filter(t => t.podium);
+  const overview = overviewService.getHomeOverview();
+  const recentMatches = overview.recentMatches;
+  const upcomingMatches = overview.upcomingMatches;
+  const finishedTournaments = overview.finishedTournaments;
 
   return (
     <div className="pb-20">
@@ -34,11 +35,11 @@ const Index = () => {
         <div className="relative">
           <div className="flex items-center gap-2 mb-1">
             <Zap className="w-5 h-5 text-primary" />
-            <span className="text-xs font-medium text-primary uppercase tracking-wider">Temporada {league.season}</span>
+            <span className="text-xs font-medium text-primary uppercase tracking-wider">Temporada {overview.league.season}</span>
           </div>
-          <h1 className="text-3xl font-black leading-tight">{league.name}</h1>
+          <h1 className="text-3xl font-black leading-tight">{overview.league.name}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {tournaments.length} torneios · {matches.length} jogos
+            {overview.totalTournaments} torneios · {overview.totalMatches} jogos
           </p>
         </div>
       </motion.div>

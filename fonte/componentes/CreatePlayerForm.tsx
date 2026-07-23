@@ -17,8 +17,8 @@ import { Input } from "@/componentes/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/componentes/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/componentes/ui/form";
 import { useToast } from "@/ganchos/use-toast";
-import { teams } from "@/dados/mock";
 import { addPlayer } from "@/dados/state";
+import { teamService } from "@/servicos/apiRoutes";
 import { Users } from "lucide-react";
 
 const positions = [
@@ -46,6 +46,7 @@ type PlayerFormValues = z.infer<typeof playerSchema>;
 export function CreatePlayerForm() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const teams = teamService.list();
 
   const form = useForm<PlayerFormValues>({
     resolver: zodResolver(playerSchema),

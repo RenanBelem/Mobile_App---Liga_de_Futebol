@@ -10,99 +10,52 @@
  */
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { tournaments, teams, currentUser } from '@/dados/mock';
 import { Button } from '@/componentes/ui/button';
-import { Plus, Edit2 } from 'lucide-react';
+import { Plus, Edit2, History, BookOpenText } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
-import MatchCard from '@/componentes/MatchCard';
-import StandingsTable from '@/componentes/StandingsTable';
-import PodiumCard from '@/componentes/PodiumCard';
-import { Player } from '@/types/league';
+import { matchService, mediaService, tournamentService } from '@/servicos/apiRoutes';
+import { Player } from '@/tipos/league';
 
 
-type Tab = 'matches' | 'standings' | 'stats' | 'media';
+type Tab = 'matches' | 'standings' | 'stats' | 'media' | 'history';
 
 const TournamentDetail = () => {
   const { id } = useParams();
-  const tournament = tournaments.find(t => t.id === id);
+  const tournament = tournamentService.getById(id ?? '');
   const [activeTab, setActiveTab] = useState<Tab>('matches');
-  // Lógica de permissão simplificada
-  const canEdit = currentUser.role === 'admin' || currentUser.role === 'moderator';
-  const isAdmin = currentUser.role === 'admin';
-  const isModerator = currentUser.role === 'moderator' || isAdmin;
-  const isPlayer = currentUser.role === 'player';
-  const isFan = currentUser.role === 'fan';
 
   if (!tournament) return <div className="p-4 text-muted-foreground">Torneio não encontrado.</div>;
 
-  const allPlayers: Player[] = teams.flatMap(t => t.players);
-  const topScorers = [...allPlayers]
-    .filter(p => p.stats)
-    .sort((a, b) => (b.stats?.goals || 0) - (a.stats?.goals || 0))
-    .slice(0, 5);
+  const tournamentMatches = matchService.list().filter((match) => match.tournamentId === id);
+  const tournamentMedia = mediaService.list().slice(0, 4);
+  const tournamentPodium = undefined;
+  const standings: Array<{ id: string; teamName: string; points: number }> = [];
+  const allPlayers: Player[] = [];
+  const topScorers = [...allPlayers].slice(0, 5);
 
   const tabs: { key: Tab; label: string }[] = [
     { key: 'matches', label: 'Jogos' },
     { key: 'standings', label: 'Classificação' },
     { key: 'stats', label: 'Estatísticas' },
     { key: 'media', label: 'Mídias' },
+    { key: 'history', label: 'Histórico' },
   ];
 
   return (
     <div className="pb-20">
-      <div className="flex justify-between items-center pr-4">
-        
-        {/* 1. ACESSO DE ADMINISTRADOR: Edição Geral */}
-        {isAdmin && (
-          <div className="bg-red-100 p-2 text-red-700 text-xs font-bold text-center">
-            Modo Administrador: Controle total da aplicação ativado.
-          </div>
-        )}
-        
+      <div className="px-4 pt-2">
         <PageHeader title={tournament.name} subtitle={`${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}`} showBack />
-        
-        {/* 2. ACESSO DE MODERADOR/ADMIN: Gestão de Jogos e Mídia */}
-        {activeTab === 'matches' && isModerator && (
-          <Button className="w-full mb-4">Cadastrar Resultado de Jogo</Button>
-        )}
-
-        {/* 3. ACESSO DE JOGADOR: Ver destaque nas estatísticas */}
-        {activeTab === 'stats' && (
-          <div>
-            {isPlayer && (
-              <div className="mb-4 p-3 bg-blue-50 border-l-4 border-blue-500 text-sm">
-                Olá, <strong>{currentUser.name}</strong>! Confira seu desempenho nesta copa.
-              </div>
-            )}
-            {/* ... renderização da artilharia ... */}
-          </div>
-        )}
-
-        {/* 4. ACESSO DE TORCEDOR: Apenas visualização */}
-        {activeTab === 'media' && (
-          <div className="text-center">
-            {!isModerator && <p>Galeria de fotos oficial da temporada.</p>}
-            {isModerator && <Button>Fazer Upload de Nova Foto</Button>}
-          </div>
-        )}
-
-        <div className="m-4 p-2 bg-yellow-500 text-black font-bold rounded shadow-lg">
-          DEBUG: Usuário [{currentUser.name}] | Nível de Acesso: [{currentUser.role}]
-        </div>
-
-        {/* BOTÃO GLOBAL DE EDIÇÃO: Só aparece para Admin/Moderador */}
-        {canEdit && (
-          <Button variant="outline" size="sm" className="gap-2">
-            <Edit2 className="w-4 h-4" /> Editar Torneio
-          </Button>
-        )}
       </div>
 
-      {tournament.podium && (
-        <div className="px-4 pt-2">
-          <PodiumCard podium={tournament.podium} />
+      <div className="px-4 pt-4">
+        <div className="rounded-xl border border-border/70 bg-background/60 p-4 space-y-3">
+          <p className="text-sm text-muted-foreground">{tournament.description}</p>
+          <div className="rounded-lg bg-secondary/40 p-3 text-sm">
+            <p className="font-semibold">Temporada: {tournament.season}</p>
+            <p className="text-muted-foreground">Dados da competição carregados diretamente do fluxo JSON.</p>
+          </div>
         </div>
-      )}
+      </div>
 
       {/* Tabs */}
       <div className="px-4 pt-4">
@@ -124,34 +77,37 @@ const TournamentDetail = () => {
 
         {activeTab === 'matches' && (
           <div className="space-y-2">
-            {/* BOTÃO DE ADICIONAR JOGO: Restrito */}
-            {canEdit && (
-              <Button className="w-full mb-4 gap-2" variant="secondary">
-                <Plus className="w-4 h-4" /> Novo Jogo
-              </Button>
-            )}
-            
-            {tournament.matches.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">Nenhum jogo cadastrado.</p>
+            <Button className="w-full mb-4 gap-2" variant="secondary">
+              <Plus className="w-4 h-4" /> Novo Jogo
+            </Button>
+            {tournamentMatches.length > 0 ? (
+              <div className="space-y-2">
+                {tournamentMatches.map((match) => (
+                  <div key={match.id} className="rounded-lg bg-secondary/30 p-3 text-sm">
+                    <p className="font-semibold">{match.homeTeamId} x {match.awayTeamId}</p>
+                    <p className="text-muted-foreground">{match.date} · {match.status}</p>
+                  </div>
+                ))}
+              </div>
             ) : (
-              tournament.matches.map(m => (
-                <div key={m.id} className="relative group">
-                   <MatchCard match={m} />
-                   {/* Botão de edição rápida no card do jogo */}
-                   {canEdit && (
-                     <button className="absolute top-2 right-2 p-1 bg-primary text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                       <Edit2 className="w-3 h-3" />
-                     </button>
-                   )}
-                </div>
-              ))
+              <p className="text-sm text-muted-foreground">Nenhum jogo disponível para esta competição.</p>
             )}
           </div>
         )}
 
         {activeTab === 'standings' && (
-          tournament.standings.length > 0 ? (
-            <StandingsTable standings={tournament.standings} />
+          standings.length > 0 ? (
+            <div className="space-y-2">
+              {standings.map((item) => (
+                <div key={item.id} className="flex items-center justify-between rounded-lg bg-secondary/30 p-3 text-sm">
+                  <div>
+                    <p className="font-semibold">{item.teamName}</p>
+                    <p className="text-muted-foreground">Classificação disponível via fluxo JSON.</p>
+                  </div>
+                  <span className="font-bold text-primary">{item.points} pts</span>
+                </div>
+              ))}
+            </div>
           ) : (
             <p className="text-sm text-muted-foreground text-center py-8">Sem classificação disponível.</p>
           )
@@ -162,7 +118,7 @@ const TournamentDetail = () => {
             <h3 className="text-xs font-bold uppercase tracking-wider mb-3 text-muted-foreground">Artilharia</h3>
             <div className="space-y-2">
               {topScorers.map((player, i) => {
-                const team = teams.find(t => t.id === player.teamId);
+                const teamName = player.teamId;
                 return (
                   <div key={player.id} className="glass-card rounded-lg p-3 flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -176,16 +132,16 @@ const TournamentDetail = () => {
                       </span>
                       <div>
                         <p className="text-sm font-semibold">{player.name}</p>
-                        <p className="text-[10px] text-muted-foreground">{team?.name}</p>
+                        <p className="text-[10px] text-muted-foreground">{teamName}</p>
                       </div>
                     </div>
                     <div className="flex gap-4 text-center">
                       <div>
-                        <p className="text-sm font-bold text-primary">{player.stats?.goals}</p>
+                        <p className="text-sm font-bold text-primary">—</p>
                         <p className="text-[10px] text-muted-foreground">Gols</p>
                       </div>
                       <div>
-                        <p className="text-sm font-bold">{player.stats?.assists}</p>
+                        <p className="text-sm font-bold">—</p>
                         <p className="text-[10px] text-muted-foreground">Ass.</p>
                       </div>
                     </div>
@@ -197,17 +153,44 @@ const TournamentDetail = () => {
         )}
 
         {activeTab === 'media' && (
-          <div className="text-center py-8">
-            {/* BOTÃO DE ADICIONAR MÍDIA: Restrito conforme seu prompt */}
-            {canEdit ? (
-              <div className="space-y-4">
-                <p className="text-sm text-muted-foreground">Nenhuma mídia cadastrada.</p>
-                <Button variant="outline" className="gap-2">
-                   <Plus className="w-4 h-4" /> Upload de Foto/Vídeo
-                </Button>
+          <div className="space-y-3">
+            <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 text-sm text-muted-foreground">
+              A galeria desta competição é alimentada pelo fluxo JSON da liga.
+            </div>
+            {tournamentMedia.length > 0 ? (
+              <div className="grid gap-2">
+                {tournamentMedia.map((item) => (
+                  <div key={item.id} className="rounded-lg border border-border/60 bg-background/50 p-3 text-sm">
+                    <p className="font-semibold">{item.caption}</p>
+                    <p className="text-xs text-muted-foreground">{item.url}</p>
+                  </div>
+                ))}
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">Galeria de mídias vazia.</p>
+              <p className="text-sm text-muted-foreground">Nenhuma mídia disponível para esta competição.</p>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'history' && (
+          <div className="space-y-3">
+            <div className="rounded-xl border border-border/70 bg-background/60 p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <History className="w-4 h-4 text-primary" />
+                <h3 className="text-sm font-bold uppercase tracking-wider">Histórico da competição</h3>
+              </div>
+              <p className="text-sm text-muted-foreground">{tournament.history || tournament.description}</p>
+            </div>
+            {tournamentPodium && (
+              <div className="rounded-xl border border-border/70 bg-background/60 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpenText className="w-4 h-4 text-primary" />
+                  <h3 className="text-sm font-bold uppercase tracking-wider">Resumo da fase</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  A campanha desta edição é registrada como referência histórica para a temporada e para os clubes participantes.
+                </p>
+              </div>
             )}
           </div>
         )}

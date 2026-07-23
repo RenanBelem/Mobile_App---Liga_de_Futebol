@@ -8,7 +8,7 @@
  * MOTIVO: Componente essencial para exibir standings em torneios,
  * permitindo usuários acompanhar classificação em tempo real
  */
-import { StandingEntry } from '@/types/league';
+import { StandingEntry } from '@/tipos/league';
 
 interface StandingsTableProps {
   standings: StandingEntry[];

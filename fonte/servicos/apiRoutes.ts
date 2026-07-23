@@ -1,0 +1,352 @@
+import { Team, Player, Tournament, Match, DocumentationItem, SeasonSummary, Podium } from '@/tipos/league';
+import { jsonLeagueData } from '@/dados/jsonData';
+import { getPlayers, getTeams, getTournaments } from '@/dados/state';
+
+export type RouteEntity = 'teams' | 'players' | 'tournaments' | 'matches' | 'auth';
+
+export interface HomeTournamentSummary extends Tournament {
+  podium?: Podium;
+}
+
+export interface HomeOverview {
+  league: { id: string; name: string; season: string };
+  totalTournaments: number;
+  totalMatches: number;
+  recentMatches: Match[];
+  upcomingMatches: Match[];
+  finishedTournaments: HomeTournamentSummary[];
+}
+
+const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => ({
+  id: mediaItem.id,
+  liga_id: 'l1',
+  temporada_id: undefined,
+  partida_id: undefined,
+  time_id: undefined,
+  tipo: mediaItem.type === 'video' ? 'video' : 'foto',
+  url: mediaItem.url,
+  url_thumbnail: mediaItem.thumbnail_url,
+  legenda: mediaItem.description,
+  titulo: mediaItem.title,
+  categoria: 'json',
+  escopo: 'liga',
+  carregado_por: 'u-001',
+  criado_em: mediaItem.created_at,
+}));
+const sourceTeams = jsonLeagueData.teams.map((team) => ({
+  id: team.id,
+  nome: team.name,
+  nome_curto: team.abbreviation,
+  url_logo: team.logo_url,
+  url_foto_capa: team.banner_url,
+  url_uniforme_titular: team.logo_url,
+  cor_primaria: team.colors,
+  cor_secundaria: team.secondary_color,
+  ano_fundacao: team.founded_year,
+  cidade: team.city,
+  alinhamento: team.description,
+  descricao: team.description,
+  historia: team.description,
+  origem: team.city,
+  ativo: team.is_active,
+  slug: team.slug,
+  titulos: [],
+  campanhas_destaque: [],
+  criado_em: team.created_at,
+  atualizado_em: team.updated_at,
+}));
+const sourceCompetitions = jsonLeagueData.competitions.map((competition) => ({
+  id: competition.id,
+  temporada_id: competition.season_id,
+  nome: competition.name,
+  slug: competition.slug,
+  tipo: competition.type === 'copa' ? 'copa' : 'campeonato',
+  formato: competition.format === 'eliminacao_direta' ? 'eliminacao_direta' : 'turno_unico',
+  data_inicio: competition.start_date,
+  data_fim: competition.end_date,
+  status: competition.status === 'finalizada' ? 'finalizada' : competition.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
+  ordem: competition.order,
+  descricao: competition.description,
+  organizador: competition.organizer,
+  url_logo: competition.logo_url,
+  url_banner: competition.banner_url,
+  criado_em: competition.created_at,
+  atualizado_em: competition.updated_at,
+}));
+const sourceSeasons = jsonLeagueData.seasons.map((season) => ({
+  id: season.id,
+  liga_id: season.league_id,
+  nome: season.name,
+  slug: season.slug,
+  ano: season.year,
+  semestre: season.semester as 'apertura' | 'clausura',
+  data_inicio: season.start_date,
+  data_fim: season.end_date,
+  status: season.status === 'finalizada' ? 'finalizada' : season.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
+  descricao: season.description,
+  url_banner: season.banner_url,
+  criado_em: season.created_at,
+  atualizado_em: season.updated_at,
+}));
+const sourceMatches = (jsonLeagueData.matches ?? []).map((match) => ({
+  id: match.id,
+  competicao_id: match.tournament_id,
+  time_casa_id: match.home_team_id,
+  time_visitante_id: match.away_team_id,
+  placar_casa: match.score_home,
+  placar_visitante: match.score_away,
+  data_hora: match.date,
+  rodada: match.round ?? 'Rodada',
+  local: match.location,
+  status: match.status === 'finished' ? 'finalizada' : match.status === 'live' ? 'ao_vivo' : 'agendada',
+  criado_em: match.created_at,
+  atualizado_em: match.updated_at,
+}));
+const sourcePlayers = (jsonLeagueData.players ?? []).map((player) => ({
+  id: player.id,
+  team_id: player.team_id,
+  nome: player.name,
+  apelido: player.name,
+  url_foto: player.avatar_url,
+  data_nascimento: player.birth_date,
+  criado_em: player.created_at,
+  atualizado_em: player.updated_at,
+}));
+const sourceTeamIds = sourceTeams.map((team) => team.id);
+const sourceTournamentIds = sourceCompetitions.map((competicao) => competicao.id);
+
+const mapTeamIdToLegacy = (sourceId: string, index: number) => String(index + 1);
+const mapTournamentIdToLegacy = (sourceId: string, index: number) => `t${index + 1}`;
+const resolveTeamSourceId = (teamId: string) => {
+  const index = sourceTeamIds.findIndex((sourceId) => sourceId === teamId);
+  return index >= 0 ? teamId : sourceTeamIds[Number(teamId) - 1] ?? teamId;
+};
+const resolveTournamentSourceId = (tournamentId: string) => {
+  const index = sourceTournamentIds.findIndex((sourceId) => sourceId === tournamentId);
+  return index >= 0 ? tournamentId : sourceTournamentIds[Number(tournamentId.replace('t', '')) - 1] ?? tournamentId;
+};
+
+const normalizeTeam = (team: (typeof sourceTeams)[number], index: number): Team => ({
+  id: mapTeamIdToLegacy(team.id, index),
+  name: team.nome,
+  shortName: team.nome_curto,
+  logoUrl: team.url_logo,
+  foundationYear: team.ano_fundacao ? String(team.ano_fundacao) : undefined,
+  colors: team.cor_primaria,
+  description: team.descricao,
+  biography: team.historia,
+  history: team.historia,
+  coverImageUrl: team.url_foto_capa,
+  uniformUrl: team.url_uniforme_titular,
+  slug: team.slug,
+  titles: team.titulos,
+  highlights: team.campanhas_destaque,
+  photos: sourceMedia.filter((item) => item.time_id === team.id).map((item) => ({ url: item.url, caption: item.legenda }))
+});
+
+const normalizePlayer = (jogador: (typeof sourcePlayers)[number]): Player => {
+  return {
+    id: jogador.id,
+    teamId: jogador.team_id ?? '',
+    name: jogador.nome,
+    number: undefined,
+    position: undefined,
+    photoUrl: jogador.url_foto,
+  };
+};
+
+const normalizeTournament = (competicao: (typeof sourceCompetitions)[number], index: number): Tournament => {
+  const temporada = sourceSeasons.find((item) => item.id === competicao.temporada_id);
+  return {
+    id: mapTournamentIdToLegacy(competicao.id, index),
+    leagueId: 'liga-001',
+    name: competicao.nome.includes('Campeonato') ? competicao.nome : `Campeonato ${competicao.nome}`,
+    type: competicao.tipo === 'copa' ? 'cup' : 'league',
+    season: temporada?.nome ?? 'Temporada',
+    status: competicao.status === 'finalizada' ? 'finished' : competicao.status === 'em_andamento' ? 'ongoing' : 'draft',
+    description: competicao.descricao,
+    format: competicao.formato === 'turno_unico' ? 'Pontos corridos' : competicao.formato === 'eliminacao_direta' ? 'Mata-mata' : 'Grupos + playoff',
+    history: competicao.descricao,
+    logoUrl: competicao.url_logo,
+    bannerUrl: competicao.url_banner,
+    editions: [{ season: temporada?.nome ?? 'Temporada', result: competicao.nome }],
+    resultsSummary: [competicao.descricao ?? 'Resultados disponíveis na wiki'],
+  };
+};
+
+const normalizeMatch = (partida: (typeof sourceMatches)[number]): Match => ({
+  id: partida.id,
+  tournamentId: resolveTournamentSourceId(partida.competicao_id),
+  homeTeamId: resolveTeamSourceId(partida.time_casa_id),
+  awayTeamId: resolveTeamSourceId(partida.time_visitante_id),
+  homeScore: partida.placar_casa,
+  awayScore: partida.placar_visitante,
+  date: partida.data_hora,
+  round: partida.rodada,
+  status: partida.status === 'finalizada' ? 'finished' : partida.status === 'ao_vivo' ? 'live' : 'scheduled',
+});
+
+const baseTeams = sourceTeams.map((team, index) => normalizeTeam(team, index));
+const localTeams = getTeams();
+const teams = [...baseTeams, ...localTeams];
+const basePlayers = sourcePlayers.map(normalizePlayer);
+const localPlayers = getPlayers().map((player) => ({
+  id: player.id,
+  teamId: player.teamId ?? '',
+  name: player.name,
+  number: player.number,
+  position: player.position,
+  photoUrl: undefined,
+}));
+const players = [...basePlayers, ...localPlayers];
+const baseTournaments = sourceCompetitions.map((competicao, index) => normalizeTournament(competicao, index));
+const localTournaments = getTournaments().map((tournament) => ({
+  ...tournament,
+  id: tournament.id,
+  leagueId: tournament.leagueId || 'liga-001',
+  type: tournament.type || 'league',
+  season: tournament.season || 'Temporada',
+  status: tournament.status || 'draft',
+}));
+const tournaments = [...baseTournaments, ...localTournaments];
+const matches = sourceMatches.map(normalizeMatch);
+const documentation = [
+  {
+    id: 'doc-001',
+    title: 'Missão institucional',
+    summary: 'A Liga Antifascista de Futebol organiza competições comunitárias com forte vínculo social e político.',
+    category: 'institucional',
+    content: 'A liga nasceu para reunir times populares, fortalecer o futebol de bairro e criar espaços de convivência e disputa saudável.',
+  },
+  {
+    id: 'doc-002',
+    title: 'Regulamento geral',
+    summary: 'As competições seguem critérios de participação, fair play e respeito às pautas históricas da liga.',
+    category: 'regulamento',
+    content: 'Cada temporada é organizada em competições que valorizam a representatividade, o compromisso comunitário e a continuidade do projeto.',
+  },
+] satisfies DocumentationItem[];
+const seasonSummaries = sourceSeasons.map((temporada) => ({
+  seasonId: temporada.id,
+  seasonName: temporada.nome,
+  description: temporada.descricao ?? 'Resumo da temporada',
+  competitions: sourceCompetitions
+    .filter((competicao) => competicao.temporada_id === temporada.id)
+    .map((competicao) => ({
+      id: competicao.id,
+      name: competicao.nome,
+      status: competicao.status,
+      description: competicao.descricao,
+    })),
+})) satisfies SeasonSummary[];
+const users = (jsonLeagueData.users ?? []).map((raw: any) => ({
+  id: String(raw.id),
+  email: String(raw.email),
+  name: raw.name,
+  password: String(raw.senha),
+  role: String(raw.role),
+  avatarUrl: raw.avatar_url,
+}));
+
+export const teamService = {
+  list: (): Team[] => teams,
+  getById: (id: string): Team | undefined => teams.find((team) => team.id === id),
+  getPlayersByTeam: (teamId: string): Player[] => players.filter((player) => player.teamId === teamId),
+  getRecentResults: (teamId: string) => {
+    const sourceId = resolveTeamSourceId(teamId);
+    return sourceMatches
+      .filter((partida) => partida.time_casa_id === sourceId || partida.time_visitante_id === sourceId)
+      .slice(0, 3)
+      .map((partida) => {
+        const casa = sourceTeams.find((time) => time.id === partida.time_casa_id);
+        const visitante = sourceTeams.find((time) => time.id === partida.time_visitante_id);
+        const competicao = sourceCompetitions.find((item) => item.id === partida.competicao_id);
+        const resultado = partida.time_casa_id === teamId
+          ? `${partida.placar_casa ?? 0}x${partida.placar_visitante ?? 0}`
+          : `${partida.placar_visitante ?? 0}x${partida.placar_casa ?? 0}`;
+        const adversario = partida.time_casa_id === teamId ? visitante?.nome : casa?.nome;
+        return {
+          competitionName: competicao?.nome ?? 'Competição',
+          result: `${resultado} vs ${adversario ?? 'adversário'}`,
+          date: partida.data_hora,
+        };
+      });
+  },
+  getMedia: (teamId: string) => sourceMedia.filter((item) => item.time_id === resolveTeamSourceId(teamId)).map((item) => ({ url: item.url, caption: item.legenda })),
+};
+
+export const playerService = {
+  list: (): Player[] => players,
+  getById: (id: string): Player | undefined => players.find((player) => player.id === id),
+};
+
+export const tournamentService = {
+  list: (): Tournament[] => tournaments,
+  getById: (id: string): Tournament | undefined => tournaments.find((tournament) => tournament.id === id),
+  getMatchesByTournament: (tournamentId: string): Match[] => matches.filter((match) => match.tournamentId === resolveTournamentSourceId(tournamentId)),
+};
+
+export const matchService = {
+  list: (): Match[] => matches,
+  getById: (id: string): Match | undefined => matches.find((match) => match.id === id),
+};
+
+export const documentationService = {
+  list: (): DocumentationItem[] => documentation,
+  getById: (id: string): DocumentationItem | undefined => documentation.find((doc) => doc.id === id),
+};
+
+export const mediaService = {
+  list: () => sourceMedia.map((item) => ({ id: item.id, url: item.url, caption: item.legenda, type: item.tipo })),
+  getByTeam: (teamId: string) => teamService.getMedia(teamId),
+};
+
+export const seasonService = {
+  list: (): SeasonSummary[] => seasonSummaries,
+  getBySeason: (seasonId: string): SeasonSummary | undefined => seasonSummaries.find((item) => item.seasonId === seasonId),
+};
+
+export const overviewService = {
+  getHomeOverview: (): HomeOverview => {
+    const league = jsonLeagueData.leagues[0];
+    const currentSeason = sourceSeasons.find((item) => item.status === 'em_andamento') ?? sourceSeasons[0];
+    const recentMatches = matches.filter((match) => match.status === 'finished').slice(0, 3);
+    const upcomingMatches = matches.filter((match) => match.status === 'scheduled').slice(0, 2);
+    const finishedTournaments = tournaments
+      .map((tournament) => {
+        const sourceCompetition = sourceCompetitions.find((competicao) => competicao.nome === tournament.name.replace(/^Campeonato\s+/, '') || competicao.nome === tournament.name);
+        const podium = sourceCompetition ? jsonLeagueData.podiums.find((item) => item.tournament_id === sourceCompetition.id) : undefined;
+        return { ...tournament, podium };
+      })
+      .filter((tournament) => Boolean(tournament.podium)) as HomeTournamentSummary[];
+
+    return {
+      league: { id: league.id, name: league.name, season: currentSeason?.nome ?? 'Temporada' },
+      totalTournaments: tournaments.length,
+      totalMatches: matches.length,
+      recentMatches,
+      upcomingMatches,
+      finishedTournaments,
+    };
+  },
+};
+
+export const authService = {
+  list: () => users,
+  getByEmail: (email: string) => users.find((user) => user.email.toLowerCase() === email.trim().toLowerCase()),
+  validateCredentials: (email: string, password: string) => {
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = users.find((candidate) => candidate.email.toLowerCase() === normalizedEmail);
+    return Boolean(user && user.password === password);
+  },
+};
+
+export const routeService = {
+  teams: teamService,
+  players: playerService,
+  tournaments: tournamentService,
+  matches: matchService,
+  auth: authService,
+};
+
+export const getRouteData = (entity: RouteEntity) => routeService[entity];

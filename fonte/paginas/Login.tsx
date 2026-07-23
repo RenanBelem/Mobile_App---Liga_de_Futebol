@@ -2,7 +2,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/ganchos/use-toast";
-import { getUsers } from "@/dados/state";
+import { authService } from "@/servicos/apiRoutes";
 
 type LoginProps = {
   onLoginSuccess: (login: string) => void;
@@ -21,7 +21,7 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const localUsers = useMemo(() => getUsers(), []);
+  const localUsers = useMemo(() => authService.list(), []);
 
   const isValidCredentials = (loginValue: string, passwordValue: string) => {
     const normalizedLogin = loginValue.trim().toLowerCase();
@@ -33,7 +33,7 @@ const Login = ({ onLoginSuccess }: LoginProps) => {
     );
 
     const existsInLocalUsers =
-      passwordValue === "senha123" &&
+      passwordValue === "senha" &&
       localUsers.some((user) => user.email.toLowerCase() === normalizedLogin);
 
     return existsInDefault || existsInLocalUsers;
