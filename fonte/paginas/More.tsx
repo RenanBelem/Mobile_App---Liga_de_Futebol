@@ -15,7 +15,7 @@ import CreateTeamForm from '@/componentes/CreateTeamForm';
 import CreatePlayerForm from '@/componentes/CreatePlayerForm';
 import CreateTournamentForm from '@/componentes/CreateTournamentForm';
 import { Dialog, DialogContent, DialogTrigger } from '@/componentes/ui/dialog';
-import { useToast } from '@/ganchoss/use-toast';
+import { useToast } from '@/ganchos/use-toast';
 
 const More = () => {
   const { toast } = useToast();

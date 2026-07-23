@@ -19,7 +19,7 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./fonte/test/setup.ts"],
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    include: ["fonte/**/*.{test,spec}.{ts,tsx}"],
   },
   resolve: {
     alias: { "@": path.resolve(__dirname, "./fonte") },

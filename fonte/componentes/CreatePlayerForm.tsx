@@ -16,7 +16,7 @@ import { Button } from "@/componentes/ui/button";
 import { Input } from "@/componentes/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/componentes/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/componentes/ui/form";
-import { useToast } from "@/ganchoss/use-toast";
+import { useToast } from "@/ganchos/use-toast";
 import { teams } from "@/dados/mock";
 import { addPlayer } from "@/dados/state";
 import { Users } from "lucide-react";

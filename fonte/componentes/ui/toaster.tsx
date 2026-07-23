@@ -1,4 +1,4 @@
-import { useToast } from "@/ganchoss/use-toast";
+import { useToast } from "@/ganchos/use-toast";
 import { Toast, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from "@/componentes/ui/toast";
 
 export function Toaster() {

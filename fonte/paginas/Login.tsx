@@ -1,7 +1,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-import { useToast } from "@/ganchoss/use-toast";
+import { useToast } from "@/ganchos/use-toast";
 import { getUsers } from "@/dados/state";
 
 type LoginProps = {

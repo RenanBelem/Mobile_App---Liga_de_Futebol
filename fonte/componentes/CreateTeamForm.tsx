@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Shield, Type, Image as ImageIcon, Calendar, Palette } from "lucide-react";
 import { addTeam } from "@/dados/state";
-import { useToast } from "@/ganchoss/use-toast";
+import { useToast } from "@/ganchos/use-toast";
 import { useState } from "react";
 
 const teamSchema = z.object({

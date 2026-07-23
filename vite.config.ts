@@ -4,7 +4,7 @@
  * PROPÓSITO: Configuração do Vite
  * - Servidor de desenvolvimento na porta 8080
  * - Build otimizado com React SWC
- * - Aliases para importações (@ -> src/)
+ * - Aliases para importações (@ -> fonte/)
  * - Component Tagging para desenvolvimento
  * MOTIVO: Vite é o bundler e servidor de desenvolvimento da aplicação,
  * essencial para desenvolvimento rápido, HMR (Hot Module Replacement) e builds eficientes
