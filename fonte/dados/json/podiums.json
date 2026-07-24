@@ -1,3 +1,67 @@
 {
-  "podiums": []
+  "podiums": [
+    {
+      "id": "podium-001",
+      "tournament_id": "comp-001",
+      "first_place": { "team_id": "7", "team_name": "Pé de Pano" },
+      "second_place": { "team_id": "15", "team_name": "9-Dedos" },
+      "third_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" }
+    },
+    {
+      "id": "podium-002",
+      "tournament_id": "comp-002",
+      "first_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" },
+      "second_place": { "team_id": "2", "team_name": "Guairacá Futebol Ancestral" },
+      "third_place": { "team_id": "7", "team_name": "Pé de Pano" }
+    },
+    {
+      "id": "podium-003",
+      "tournament_id": "comp-003",
+      "first_place": { "team_id": "34", "team_name": "Imperial RSports" },
+      "second_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" },
+      "third_place": { "team_id": "3", "team_name": "Deportivo Oriental" }
+    },
+    {
+      "id": "podium-011",
+      "tournament_id": "comp-011",
+      "first_place": { "team_id": "7", "team_name": "Pé de Pano" },
+      "second_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" },
+      "third_place": { "team_id": "6", "team_name": "Teto Preto" }
+    },
+    {
+      "id": "podium-012",
+      "tournament_id": "comp-012",
+      "first_place": { "team_id": "7", "team_name": "Pé de Pano" },
+      "second_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" },
+      "third_place": { "team_id": "9", "team_name": "Resistência Alviverde" }
+    },
+    {
+      "id": "podium-013",
+      "tournament_id": "comp-013",
+      "first_place": { "team_id": "2", "team_name": "Guairacá Futebol Ancestral" },
+      "second_place": { "team_id": "5", "team_name": "Primavera" },
+      "third_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" }
+    },
+    {
+      "id": "podium-014",
+      "tournament_id": "comp-014",
+      "first_place": { "team_id": "2", "team_name": "Guairacá Futebol Ancestral" },
+      "second_place": { "team_id": "7", "team_name": "Pé de Pano" },
+      "third_place": { "team_id": "4", "team_name": "Sankara" }
+    },
+    {
+      "id": "podium-015",
+      "tournament_id": "comp-015",
+      "first_place": { "team_id": "2", "team_name": "Guairacá Futebol Ancestral" },
+      "second_place": { "team_id": "15", "team_name": "9-Dedos" },
+      "third_place": { "team_id": "1", "team_name": "CF Estrela Vermelha" }
+    },
+    {
+      "id": "podium-016",
+      "tournament_id": "comp-016",
+      "first_place": { "team_id": "2", "team_name": "Guairacá Futebol Ancestral" },
+      "second_place": { "team_id": "6", "team_name": "Teto Preto" },
+      "third_place": { "team_id": "3", "team_name": "Deportivo Oriental" }
+    }
+  ]
 }

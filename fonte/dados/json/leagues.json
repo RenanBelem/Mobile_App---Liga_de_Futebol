@@ -2,28 +2,15 @@
   "leagues": [
     {
       "id": "l1",
-      "name": "Liga AF de Futebol",
-      "slug": "liga-AF",
-      "description": "Principal liga de futebol da organização AF",
-      "founded_year": 2020,
-      "country": "Brasil",
-      "website": "https://xxx.com",
-      "logo_url": "/logos/xxx.png",
-      "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-05-21T00:00:00Z",
-      "is_active": true
-    },
-    {
-      "id": "l2",
-      "name": "Liga Regional Sudeste",
-      "slug": "liga-regional-sudeste",
-      "description": "Liga regional com times da região Sudeste",
+      "name": "Liga de Futebol Antifascista (LFA)",
+      "slug": "liga-de-futebol-antifascista",
+      "description": "Liga de futebol amador (Fut7) criada em 2022 para reunir times e pessoas em torno do futebol, da solidariedade e da luta antifeixista.",
       "founded_year": 2022,
       "country": "Brasil",
-      "website": "https://xxx.com",
-      "logo_url": "/logos/liga-sudeste.png",
-      "created_at": "2026-01-01T00:00:00Z",
-      "updated_at": "2026-05-21T00:00:00Z",
+      "website": "https://github.com/renanbelem/wiki-lfa",
+      "logo_url": "/logos/gerais/lfa.png",
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2026-07-23T00:00:00Z",
       "is_active": true
     }
   ]

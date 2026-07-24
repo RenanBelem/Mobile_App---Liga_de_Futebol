@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { authService, documentationService, mediaService, teamService, tournamentService } from './apiRoutes';
+import { authService, documentationService, mediaService, overviewService, teamService, tournamentService } from './apiRoutes';
 
 describe('api route services', () => {
   it('lists teams from the JSON-backed route layer', () => {
@@ -37,6 +37,14 @@ describe('api route services', () => {
       title: expect.any(String),
       summary: expect.any(String),
     });
+  });
+
+  it('exposes tournaments and podiums through the UI-friendly contract', () => {
+    const matches = tournamentService.getMatchesByTournament('t1');
+    const overview = overviewService.getHomeOverview();
+
+    expect(matches.length).toBeGreaterThan(0);
+    expect(overview.finishedTournaments.some((tournament) => tournament.podium?.firstPlaceId === '7')).toBe(true);
   });
 
   it('exposes media from the JSON-backed route layer', () => {

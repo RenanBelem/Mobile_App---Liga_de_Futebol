@@ -22,7 +22,7 @@ const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => ({
   liga_id: 'l1',
   temporada_id: undefined,
   partida_id: undefined,
-  time_id: undefined,
+  time_id: mediaItem.team_id ?? mediaItem.time_id ?? undefined,
   tipo: mediaItem.type === 'video' ? 'video' : 'foto',
   url: mediaItem.url,
   url_thumbnail: mediaItem.thumbnail_url,
@@ -32,7 +32,31 @@ const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => ({
   escopo: 'liga',
   carregado_por: 'u-001',
   criado_em: mediaItem.created_at,
+  tournament_id: mediaItem.tournament_id,
+  team_id: mediaItem.team_id ?? mediaItem.time_id ?? undefined,
 }));
+const wikiTeamAchievements: Record<string, { titles: Array<{ competition: string; season: string; position: 'campeao' | 'vice' | 'terceiro' | 'quarto' }>; highlights: Array<{ competition: string; season: string; position: 'campeao' | 'vice' | 'terceiro' | 'quarto' }> }> = {
+  '7': {
+    titles: [{ competition: 'Taça Cecília', season: '2022-A', position: 'campeao' }, { competition: 'Taça Cecília', season: '2022-C', position: 'campeao' }, { competition: 'Taça Cecília', season: '2025-A', position: 'campeao' }],
+    highlights: [{ competition: 'Copa Eric Cantona', season: '2025-A', position: 'campeao' }],
+  },
+  '15': {
+    titles: [],
+    highlights: [{ competition: 'Taça Cecília', season: '2025-A', position: 'vice' }],
+  },
+  '1': {
+    titles: [{ competition: 'Copa Eric Cantona', season: '2025-A', position: 'campeao' }],
+    highlights: [{ competition: 'Taça Cecília', season: '2025-A', position: 'terceiro' }],
+  },
+  '2': {
+    titles: [{ competition: 'Taça Cecília', season: '2023-A', position: 'campeao' }, { competition: 'Taça Cecília', season: '2023-C', position: 'campeao' }, { competition: 'Taça Cecília', season: '2024-A', position: 'campeao' }, { competition: 'Taça Cecília', season: '2024-C', position: 'campeao' }],
+    highlights: [{ competition: 'Taça Cecília', season: '2025-A', position: 'quarto' }],
+  },
+  '34': {
+    titles: [{ competition: 'Taça Cecília', season: '2025-C', position: 'campeao' }],
+    highlights: [{ competition: 'Taça Cecília', season: '2025-C', position: 'campeao' }],
+  },
+};
 const sourceTeams = jsonLeagueData.teams.map((team) => ({
   id: team.id,
   nome: team.name,
@@ -50,8 +74,8 @@ const sourceTeams = jsonLeagueData.teams.map((team) => ({
   origem: team.city,
   ativo: team.is_active,
   slug: team.slug,
-  titulos: [],
-  campanhas_destaque: [],
+  titulos: wikiTeamAchievements[team.id]?.titles ?? [],
+  campanhas_destaque: wikiTeamAchievements[team.id]?.highlights ?? [],
   criado_em: team.created_at,
   atualizado_em: team.updated_at,
 }));
@@ -102,6 +126,16 @@ const sourceMatches = (jsonLeagueData.matches ?? []).map((match) => ({
   criado_em: match.created_at,
   atualizado_em: match.updated_at,
 }));
+const sourcePodiums = (jsonLeagueData.podiums ?? []).map((podium) => ({
+  id: podium.id,
+  tournament_id: podium.tournament_id,
+  first_place_id: podium.first_place?.team_id,
+  second_place_id: podium.second_place?.team_id,
+  third_place_id: podium.third_place?.team_id,
+  first_place_name: podium.first_place?.team_name,
+  second_place_name: podium.second_place?.team_name,
+  third_place_name: podium.third_place?.team_name,
+}));
 const sourcePlayers = (jsonLeagueData.players ?? []).map((player) => ({
   id: player.id,
   team_id: player.team_id,
@@ -141,7 +175,14 @@ const normalizeTeam = (team: (typeof sourceTeams)[number], index: number): Team 
   slug: team.slug,
   titles: team.titulos,
   highlights: team.campanhas_destaque,
-  photos: sourceMedia.filter((item) => item.time_id === team.id).map((item) => ({ url: item.url, caption: item.legenda }))
+  photos: sourceMedia.filter((item) => item.time_id === team.id || item.team_id === team.id).map((item) => ({ url: item.url, caption: item.legenda }))
+});
+const normalizePodium = (podium: (typeof sourcePodiums)[number], index: number): Podium => ({
+  id: podium.id || `podium-${index + 1}`,
+  tournamentId: resolveTournamentSourceId(podium.tournament_id),
+  firstPlaceId: podium.first_place_id ?? '',
+  secondPlaceId: podium.second_place_id ?? '',
+  thirdPlaceId: podium.third_place_id ?? '',
 });
 
 const normalizePlayer = (jogador: (typeof sourcePlayers)[number]): Player => {
@@ -160,7 +201,7 @@ const normalizeTournament = (competicao: (typeof sourceCompetitions)[number], in
   return {
     id: mapTournamentIdToLegacy(competicao.id, index),
     leagueId: 'liga-001',
-    name: competicao.nome.includes('Campeonato') ? competicao.nome : `Campeonato ${competicao.nome}`,
+    name: competicao.tipo === 'copa' ? competicao.nome : `Campeonato ${competicao.nome}`,
     type: competicao.tipo === 'copa' ? 'cup' : 'league',
     season: temporada?.nome ?? 'Temporada',
     status: competicao.status === 'finalizada' ? 'finished' : competicao.status === 'em_andamento' ? 'ongoing' : 'draft',
@@ -189,6 +230,7 @@ const normalizeMatch = (partida: (typeof sourceMatches)[number]): Match => ({
 const baseTeams = sourceTeams.map((team, index) => normalizeTeam(team, index));
 const localTeams = getTeams();
 const teams = [...baseTeams, ...localTeams];
+const podiums = sourcePodiums.map((podium, index) => normalizePodium(podium, index));
 const basePlayers = sourcePlayers.map(normalizePlayer);
 const localPlayers = getPlayers().map((player) => ({
   id: player.id,
@@ -208,7 +250,7 @@ const localTournaments = getTournaments().map((tournament) => ({
   season: tournament.season || 'Temporada',
   status: tournament.status || 'draft',
 }));
-const tournaments = [...baseTournaments, ...localTournaments];
+const tournaments = [...new Map([...baseTournaments, ...localTournaments].map((tournament) => [tournament.id, tournament])).values()];
 const matches = sourceMatches.map(normalizeMatch);
 const documentation = [
   {
@@ -284,6 +326,22 @@ export const tournamentService = {
   list: (): Tournament[] => tournaments,
   getById: (id: string): Tournament | undefined => tournaments.find((tournament) => tournament.id === id),
   getMatchesByTournament: (tournamentId: string): Match[] => matches.filter((match) => match.tournamentId === resolveTournamentSourceId(tournamentId)),
+  getPodiumByTournament: (tournamentId: string): Podium | undefined => podiums.find((podium) => podium.tournamentId === resolveTournamentSourceId(tournamentId)),
+  getStandingsByTournament: (tournamentId: string) => {
+    const sourceTournamentId = resolveTournamentSourceId(tournamentId);
+    return (jsonLeagueData.standings ?? [])
+      .filter((standing) => standing.tournament_id === sourceTournamentId)
+      .map((standing) => ({
+        id: standing.id,
+        position: standing.position,
+        teamName: sourceTeams.find((team) => team.id === String(standing.team_id))?.nome ?? 'Equipe',
+        points: standing.points,
+        wins: standing.wins,
+        draws: standing.draws,
+        losses: standing.losses,
+        goalDifference: standing.goals_difference,
+      }));
+  },
 };
 
 export const matchService = {
@@ -297,7 +355,7 @@ export const documentationService = {
 };
 
 export const mediaService = {
-  list: () => sourceMedia.map((item) => ({ id: item.id, url: item.url, caption: item.legenda, type: item.tipo })),
+  list: () => sourceMedia.map((item) => ({ id: item.id, tournamentId: item.tournament_id, url: item.url, caption: item.legenda, type: item.tipo })),
   getByTeam: (teamId: string) => teamService.getMedia(teamId),
 };
 
@@ -315,7 +373,7 @@ export const overviewService = {
     const finishedTournaments = tournaments
       .map((tournament) => {
         const sourceCompetition = sourceCompetitions.find((competicao) => competicao.nome === tournament.name.replace(/^Campeonato\s+/, '') || competicao.nome === tournament.name);
-        const podium = sourceCompetition ? jsonLeagueData.podiums.find((item) => item.tournament_id === sourceCompetition.id) : undefined;
+        const podium = sourceCompetition ? podiums.find((item) => item.tournamentId === sourceCompetition.id) : undefined;
         return { ...tournament, podium };
       })
       .filter((tournament) => Boolean(tournament.podium)) as HomeTournamentSummary[];

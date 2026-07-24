@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '@/componentes/ui/button';
 import { Plus, Edit2, History, BookOpenText } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
-import { matchService, mediaService, tournamentService } from '@/servicos/apiRoutes';
+import { matchService, mediaService, teamService, tournamentService } from '@/servicos/apiRoutes';
 import { Player } from '@/tipos/league';
 
 
@@ -26,10 +26,10 @@ const TournamentDetail = () => {
 
   if (!tournament) return <div className="p-4 text-muted-foreground">Torneio não encontrado.</div>;
 
-  const tournamentMatches = matchService.list().filter((match) => match.tournamentId === id);
-  const tournamentMedia = mediaService.list().slice(0, 4);
-  const tournamentPodium = undefined;
-  const standings: Array<{ id: string; teamName: string; points: number }> = [];
+  const tournamentMatches = id ? tournamentService.getMatchesByTournament(id) : [];
+  const tournamentMedia = id ? mediaService.list().filter((item) => item.tournamentId === id).slice(0, 4) : [];
+  const tournamentPodium = id ? tournamentService.getPodiumByTournament(id) : undefined;
+  const standings = id ? tournamentService.getStandingsByTournament(id) : [];
   const allPlayers: Player[] = [];
   const topScorers = [...allPlayers].slice(0, 5);
 
@@ -82,12 +82,16 @@ const TournamentDetail = () => {
             </Button>
             {tournamentMatches.length > 0 ? (
               <div className="space-y-2">
-                {tournamentMatches.map((match) => (
-                  <div key={match.id} className="rounded-lg bg-secondary/30 p-3 text-sm">
-                    <p className="font-semibold">{match.homeTeamId} x {match.awayTeamId}</p>
-                    <p className="text-muted-foreground">{match.date} · {match.status}</p>
-                  </div>
-                ))}
+                {tournamentMatches.map((match) => {
+                  const homeTeam = teamService.getById(match.homeTeamId);
+                  const awayTeam = teamService.getById(match.awayTeamId);
+                  return (
+                    <div key={match.id} className="rounded-lg bg-secondary/30 p-3 text-sm">
+                      <p className="font-semibold">{homeTeam?.name ?? match.homeTeamId} {match.homeScore ?? '?'} x {match.awayScore ?? '?'} {awayTeam?.name ?? match.awayTeamId}</p>
+                      <p className="text-muted-foreground">{match.date} · {match.round || 'Partida'}</p>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">Nenhum jogo disponível para esta competição.</p>
@@ -101,8 +105,8 @@ const TournamentDetail = () => {
               {standings.map((item) => (
                 <div key={item.id} className="flex items-center justify-between rounded-lg bg-secondary/30 p-3 text-sm">
                   <div>
-                    <p className="font-semibold">{item.teamName}</p>
-                    <p className="text-muted-foreground">Classificação disponível via fluxo JSON.</p>
+                    <p className="font-semibold">{item.position}. {item.teamName}</p>
+                    <p className="text-muted-foreground">{item.wins}V · {item.draws}E · {item.losses}D</p>
                   </div>
                   <span className="font-bold text-primary">{item.points} pts</span>
                 </div>
@@ -187,9 +191,11 @@ const TournamentDetail = () => {
                   <BookOpenText className="w-4 h-4 text-primary" />
                   <h3 className="text-sm font-bold uppercase tracking-wider">Resumo da fase</h3>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  A campanha desta edição é registrada como referência histórica para a temporada e para os clubes participantes.
-                </p>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <p><span className="font-semibold text-foreground">Campeão:</span> {teamService.getById(tournamentPodium.firstPlaceId)?.name ?? 'Equipe'}</p>
+                  <p><span className="font-semibold text-foreground">Vice:</span> {teamService.getById(tournamentPodium.secondPlaceId)?.name ?? 'Equipe'}</p>
+                  <p><span className="font-semibold text-foreground">Terceiro:</span> {teamService.getById(tournamentPodium.thirdPlaceId)?.name ?? 'Equipe'}</p>
+                </div>
               </div>
             )}
           </div>
