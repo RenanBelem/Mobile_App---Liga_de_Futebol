@@ -67,7 +67,15 @@ const Teams = () => {
               >
                 <div className="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-border/80 bg-background/70">
                   {team.logoUrl ? (
-                    <img src={team.logoUrl} alt={team.name} className="w-full h-full object-cover" />
+                    <img
+                      src={team.logoUrl}
+                      alt={team.name}
+                      className="w-full h-full object-cover"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = '/logos/times/liga.PNG';
+                      }}
+                    />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: team.colors || 'hsl(var(--muted))' }}>
                       <Shield className="w-6 h-6 text-background" />

@@ -22,9 +22,9 @@ const PodiumCard = ({ podium }: PodiumCardProps) => {
   const secondTeam = teamService.getById(podium.secondPlaceId);
   const thirdTeam = teamService.getById(podium.thirdPlaceId);
   const entries = [
-    { place: 2, teamName: secondTeam?.name ?? 'Segundo', color: 'bg-champion-silver', label: '2º', height: 'h-20' },
-    { place: 1, teamName: firstTeam?.name ?? 'Primeiro', color: 'bg-champion-gold', label: '1º', height: 'h-28' },
-    { place: 3, teamName: thirdTeam?.name ?? 'Terceiro', color: 'bg-champion-bronze', label: '3º', height: 'h-16' },
+    { place: 2, teamName: secondTeam?.name ?? 'Segundo', logoUrl: secondTeam?.logoUrl, color: 'bg-champion-silver', label: '2º', height: 'h-20' },
+    { place: 1, teamName: firstTeam?.name ?? 'Primeiro', logoUrl: firstTeam?.logoUrl, color: 'bg-champion-gold', label: '1º', height: 'h-28' },
+    { place: 3, teamName: thirdTeam?.name ?? 'Terceiro', logoUrl: thirdTeam?.logoUrl, color: 'bg-champion-bronze', label: '3º', height: 'h-16' },
   ];
 
   return (
@@ -39,6 +39,17 @@ const PodiumCard = ({ podium }: PodiumCardProps) => {
         >
           <div className="flex flex-col items-center">
             {entry.place === 1 && <Trophy className="w-6 h-6 text-champion-gold mb-1" />}
+            {entry.logoUrl && (
+              <img
+                src={entry.logoUrl}
+                alt={entry.teamName}
+                className="mb-1 w-8 h-8 rounded-full object-cover border border-border/70 bg-background"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = '/logos/times/liga.PNG';
+                }}
+              />
+            )}
             <span className="text-xs font-bold text-muted-foreground">{entry.teamName}</span>
           </div>
           <div className={`${entry.height} w-20 ${entry.color} rounded-t-lg flex items-start justify-center pt-2`}>

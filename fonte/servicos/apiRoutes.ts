@@ -17,12 +17,70 @@ export interface HomeOverview {
   finishedTournaments: HomeTournamentSummary[];
 }
 
-const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => ({
+const normalizeForMatch = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const sourceTeamNameLookup = jsonLeagueData.teams.map((team) => ({
+  id: team.id,
+  normalizedName: normalizeForMatch(team.name),
+  normalizedSlug: normalizeForMatch(team.slug),
+  normalizedAbbreviation: normalizeForMatch(team.abbreviation),
+}));
+
+const defaultTeamLogoUrl = '/logos/times/liga.PNG';
+const knownTeamLogoByName: Array<{ match: string; path: string }> = [
+  { match: 'estrela vermelha', path: '/logos/times/estrela.JPG' },
+  { match: 'cf estrela vermelha', path: '/logos/times/estrela.JPG' },
+  { match: 'atleticomuna', path: '/logos/times/atleticomuna.jpg' },
+  { match: 'latinofuturista', path: '/logos/times/latinofuturista.png' },
+];
+
+const resolveTeamLogoUrl = (team: (typeof jsonLeagueData.teams)[number]): string => {
+  const normalizedName = normalizeForMatch(team.name);
+  const byName = knownTeamLogoByName.find((entry) => normalizedName.includes(entry.match));
+  if (byName) {
+    return byName.path;
+  }
+
+  const normalizedPath = (team.logo_url || '')
+    .replace('/logos/teams/', '/logos/times/')
+    .replace('/logos/time/', '/logos/times/');
+
+  return normalizedPath || defaultTeamLogoUrl;
+};
+
+const resolveTeamIdFromMediaByName = (mediaItem: (typeof jsonLeagueData.media)[number]): string | undefined => {
+  const normalizedBlob = normalizeForMatch([
+    mediaItem.title,
+    mediaItem.description,
+    mediaItem.url,
+    ...(mediaItem.tags ?? []),
+  ].filter(Boolean).join(' '));
+
+  const matched = sourceTeamNameLookup.find((team) =>
+    [team.normalizedName, team.normalizedSlug, team.normalizedAbbreviation]
+      .filter((token) => token.length >= 3)
+      .some((token) => normalizedBlob.includes(token))
+  );
+
+  return matched?.id;
+};
+
+const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => {
+  const explicitTeamId = 'team_id' in mediaItem ? mediaItem.team_id : undefined;
+  const resolvedTeamId = explicitTeamId ?? resolveTeamIdFromMediaByName(mediaItem);
+
+  return {
   id: mediaItem.id,
   liga_id: 'l1',
   temporada_id: undefined,
   partida_id: undefined,
-  time_id: mediaItem.team_id ?? mediaItem.time_id ?? undefined,
+  time_id: resolvedTeamId,
   tipo: mediaItem.type === 'video' ? 'video' : 'foto',
   url: mediaItem.url,
   url_thumbnail: mediaItem.thumbnail_url,
@@ -33,8 +91,9 @@ const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => ({
   carregado_por: 'u-001',
   criado_em: mediaItem.created_at,
   tournament_id: mediaItem.tournament_id,
-  team_id: mediaItem.team_id ?? mediaItem.time_id ?? undefined,
-}));
+  team_id: resolvedTeamId,
+};
+});
 const wikiTeamAchievements: Record<string, { titles: Array<{ competition: string; season: string; position: 'campeao' | 'vice' | 'terceiro' | 'quarto' }>; highlights: Array<{ competition: string; season: string; position: 'campeao' | 'vice' | 'terceiro' | 'quarto' }> }> = {
   '7': {
     titles: [{ competition: 'Taça Cecília', season: '2022-A', position: 'campeao' }, { competition: 'Taça Cecília', season: '2022-C', position: 'campeao' }, { competition: 'Taça Cecília', season: '2025-A', position: 'campeao' }],
@@ -61,7 +120,7 @@ const sourceTeams = jsonLeagueData.teams.map((team) => ({
   id: team.id,
   nome: team.name,
   nome_curto: team.abbreviation,
-  url_logo: team.logo_url,
+  url_logo: resolveTeamLogoUrl(team),
   url_foto_capa: team.banner_url,
   url_uniforme_titular: team.logo_url,
   cor_primaria: team.colors,
