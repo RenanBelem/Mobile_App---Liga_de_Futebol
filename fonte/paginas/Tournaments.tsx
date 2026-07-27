@@ -38,6 +38,15 @@ const getPriorityIndex = (normalizedName: string, priorities: string[]) => {
   return index === -1 ? Number.MAX_SAFE_INTEGER : index;
 };
 
+const isLeagueCompetition = (competition: { name: string }) => {
+  const normalizedName = normalizeText(competition.name);
+  return normalizedName.startsWith('taca') || normalizedName.startsWith('supertaca');
+};
+
+const isCupCompetition = (competition: { name: string }) => {
+  return !isLeagueCompetition(competition);
+};
+
 const resolveCompetitionLogo = (name: string, fallback?: string) => {
   const normalizedName = name.toLowerCase();
 
@@ -113,7 +122,7 @@ const Tournaments = () => {
 
   const tacas = useMemo(() => {
     return [...linkedSeasonCompetitions]
-      .filter((competition) => normalizeText(competition.name).startsWith('taca'))
+      .filter((competition) => isLeagueCompetition(competition))
       .sort((a, b) => {
         const normalizedA = normalizeText(a.name);
         const normalizedB = normalizeText(b.name);
@@ -134,7 +143,7 @@ const Tournaments = () => {
 
   const copas = useMemo(() => {
     return [...linkedSeasonCompetitions]
-      .filter((competition) => normalizeText(competition.name).startsWith('copa'))
+      .filter((competition) => isCupCompetition(competition))
       .sort((a, b) => {
         const normalizedA = normalizeText(a.name);
         const normalizedB = normalizeText(b.name);

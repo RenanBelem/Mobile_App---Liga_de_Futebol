@@ -64,6 +64,12 @@ const TournamentDetail = () => {
     navigate(-1);
   };
 
+  const emptyState = (
+    <div className="rounded-lg border border-dashed border-border/70 bg-background/40 p-4 text-center text-sm text-muted-foreground">
+      Sem dados cadastrados
+    </div>
+  );
+
   return (
     <div className="pb-20">
       <div className="px-4 pt-2">
@@ -88,40 +94,6 @@ const TournamentDetail = () => {
         </div>
       </div>
 
-      <div className="px-4 pt-3">
-        <div className="rounded-xl border border-border/70 bg-background/60 p-4 space-y-3">
-          <p className="text-sm text-muted-foreground">{tournament.description}</p>
-          <div className="rounded-lg bg-secondary/40 p-3 text-sm">
-            <p className="font-semibold">Temporada: {tournament.season}</p>
-            <p className="text-muted-foreground">Dados da competição carregados diretamente do fluxo JSON.</p>
-          </div>
-          {(tournament.logoUrl || tournament.bannerUrl) && (
-            <div className="grid gap-3">
-              {tournament.bannerUrl && (
-                <div className="rounded-lg overflow-hidden border border-border/60">
-                  <img src={tournament.bannerUrl} alt={`Banner de ${tournament.name}`} className="h-36 w-full object-cover" />
-                </div>
-              )}
-              <div className="flex items-center gap-3">
-                {tournament.logoUrl ? (
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-border/60 bg-background/70 shrink-0">
-                    <img src={tournament.logoUrl} alt={`Escudo de ${tournament.name}`} className="h-full w-full object-cover" />
-                  </div>
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center shrink-0">
-                    <ImageIcon className="w-5 h-5 text-muted-foreground" />
-                  </div>
-                )}
-                <div>
-                  <p className="text-sm font-semibold">Identidade visual</p>
-                  <p className="text-xs text-muted-foreground">Escudo e banner vinculados ao torneio.</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
       <div className="px-4 pt-4">
 
         {activeTab === 'matches' && (
@@ -139,7 +111,7 @@ const TournamentDetail = () => {
                   );
                 })}
               </div>
-            ) : null}
+            ) : emptyState}
           </div>
         )}
 
@@ -156,7 +128,7 @@ const TournamentDetail = () => {
                 </div>
               ))}
             </div>
-          ) : null
+          ) : emptyState
         )}
 
         {activeTab === 'stats' && (
@@ -199,7 +171,7 @@ const TournamentDetail = () => {
                     </tbody>
                   </table>
                 </div>
-              ) : null
+              ) : emptyState
             )}
 
             {activeStatsTab === 'bestPlayers' && (
@@ -224,7 +196,7 @@ const TournamentDetail = () => {
                     </tbody>
                   </table>
                 </div>
-              ) : null
+              ) : emptyState
             )}
 
             {activeStatsTab === 'penalties' && (
@@ -251,7 +223,7 @@ const TournamentDetail = () => {
                     </tbody>
                   </table>
                 </div>
-              ) : null
+              ) : emptyState
             )}
 
             {activeStatsTab === 'suspensions' && (
@@ -278,7 +250,7 @@ const TournamentDetail = () => {
                     </tbody>
                   </table>
                 </div>
-              ) : null
+              ) : emptyState
             )}
           </div>
         )}
@@ -305,7 +277,7 @@ const TournamentDetail = () => {
                   </div>
                 ))}
               </div>
-            ) : null}
+            ) : emptyState}
           </div>
         )}
       </div>

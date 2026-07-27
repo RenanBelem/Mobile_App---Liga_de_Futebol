@@ -15,6 +15,7 @@ import CreateUserForm from '@/componentes/CreateUserForm';
 import CreateTeamForm from '@/componentes/CreateTeamForm';
 import CreatePlayerForm from '@/componentes/CreatePlayerForm';
 import CreateTournamentForm from '@/componentes/CreateTournamentForm';
+import EditCompetitionDataForm from '@/componentes/EditCompetitionDataForm';
 import { Dialog, DialogContent, DialogTrigger } from '@/componentes/ui/dialog';
 import { useToast } from '@/ganchos/use-toast';
 
@@ -122,6 +123,24 @@ const More = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-md bg-background border-border p-0 overflow-hidden">
             <CreateTournamentForm />
+          </DialogContent>
+        </Dialog>
+
+        {/* Editar Liga / Temporadas / Campeonatos */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full glass-card rounded-lg p-4 flex items-center gap-4 text-left hover:border-primary/30 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center">
+                <Trophy className="w-5 h-5 text-[rgb(0,0,0)]" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Editar Liga/Temporada/Campeonato</p>
+                <p className="text-xs text-muted-foreground">Atualizar informações institucionais e competições</p>
+              </div>
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-2xl bg-background border-border p-0 overflow-hidden max-h-[90vh] overflow-y-auto">
+            <EditCompetitionDataForm />
           </DialogContent>
         </Dialog>
 

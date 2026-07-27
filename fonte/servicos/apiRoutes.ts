@@ -1,6 +1,6 @@
 import { Team, Player, Tournament, Match, DocumentationItem, SeasonSummary, Podium } from '@/tipos/league';
-import { jsonLeagueData } from '@/dados/jsonData';
 import { getPlayers, getTeams, getTournaments } from '@/dados/state';
+import { jsonRouteRepository } from '@/servicos/jsonRouteRepository';
 
 export type RouteEntity = 'teams' | 'players' | 'tournaments' | 'matches' | 'auth';
 
@@ -62,7 +62,10 @@ const normalizeForMatch = (value: string) =>
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 
-const sourceTeamNameLookup = jsonLeagueData.teams.map((team) => ({
+const routeDb = jsonRouteRepository.getDb();
+const sourceLeagues = routeDb.leagues;
+
+const sourceTeamNameLookup = routeDb.teams.map((team) => ({
   id: team.id,
   normalizedName: normalizeForMatch(team.name),
   normalizedSlug: normalizeForMatch(team.slug),
@@ -77,7 +80,7 @@ const knownTeamLogoByName: Array<{ match: string; path: string }> = [
   { match: 'latinofuturista', path: '/logos/times/latinofuturista.png' },
 ];
 
-const resolveTeamLogoUrl = (team: (typeof jsonLeagueData.teams)[number]): string => {
+const resolveTeamLogoUrl = (team: (typeof routeDb.teams)[number]): string => {
   const normalizedName = normalizeForMatch(team.name);
   const byName = knownTeamLogoByName.find((entry) => normalizedName.includes(entry.match));
   if (byName) {
@@ -91,7 +94,7 @@ const resolveTeamLogoUrl = (team: (typeof jsonLeagueData.teams)[number]): string
   return normalizedPath || defaultTeamLogoUrl;
 };
 
-const resolveTeamIdFromMediaByName = (mediaItem: (typeof jsonLeagueData.media)[number]): string | undefined => {
+const resolveTeamIdFromMediaByName = (mediaItem: (typeof routeDb.media)[number]): string | undefined => {
   const normalizedBlob = normalizeForMatch([
     mediaItem.title,
     mediaItem.description,
@@ -108,7 +111,7 @@ const resolveTeamIdFromMediaByName = (mediaItem: (typeof jsonLeagueData.media)[n
   return matched?.id;
 };
 
-const sourceMedia = (jsonLeagueData.media ?? []).map((mediaItem) => {
+const sourceMedia = (routeDb.media ?? []).map((mediaItem) => {
   const explicitTeamId = 'team_id' in mediaItem ? mediaItem.team_id : undefined;
   const resolvedTeamId = explicitTeamId ?? resolveTeamIdFromMediaByName(mediaItem);
 
@@ -153,7 +156,7 @@ const wikiTeamAchievements: Record<string, { titles: Array<{ competition: string
     highlights: [{ competition: 'Taça Cecília', season: '2025-C', position: 'campeao' }],
   },
 };
-const sourceTeams = jsonLeagueData.teams.map((team) => ({
+const sourceTeams = routeDb.teams.map((team) => ({
   id: team.id,
   nome: team.name,
   nome_curto: team.abbreviation,
@@ -175,40 +178,44 @@ const sourceTeams = jsonLeagueData.teams.map((team) => ({
   criado_em: team.created_at,
   atualizado_em: team.updated_at,
 }));
-const sourceCompetitions = jsonLeagueData.competitions.map((competition) => ({
-  id: competition.id,
-  temporada_id: competition.season_id,
-  nome: competition.name,
-  slug: competition.slug,
-  tipo: competition.type === 'copa' ? 'copa' : 'campeonato',
-  formato: competition.format === 'eliminacao_direta' ? 'eliminacao_direta' : 'turno_unico',
-  data_inicio: competition.start_date,
-  data_fim: competition.end_date,
-  status: competition.status === 'finalizada' ? 'finalizada' : competition.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
-  ordem: competition.order,
-  descricao: competition.description,
-  organizador: competition.organizer,
-  url_logo: competition.logo_url,
-  url_banner: competition.banner_url,
-  criado_em: competition.created_at,
-  atualizado_em: competition.updated_at,
-}));
-const sourceSeasons = jsonLeagueData.seasons.map((season) => ({
-  id: season.id,
-  liga_id: season.league_id,
-  nome: season.name,
-  slug: season.slug,
-  ano: season.year,
-  semestre: season.semester as 'apertura' | 'clausura',
-  data_inicio: season.start_date,
-  data_fim: season.end_date,
-  status: season.status === 'finalizada' ? 'finalizada' : season.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
-  descricao: season.description,
-  url_banner: season.banner_url,
-  criado_em: season.created_at,
-  atualizado_em: season.updated_at,
-}));
-const sourceMatches = (jsonLeagueData.matches ?? []).map((match) => ({
+const sourceCompetitions = routeDb.competitions.map((patchedCompetition) => {
+  return {
+    id: patchedCompetition.id,
+    temporada_id: patchedCompetition.season_id,
+    nome: patchedCompetition.name,
+    slug: patchedCompetition.slug,
+    tipo: patchedCompetition.type === 'copa' ? 'copa' : 'campeonato',
+    formato: patchedCompetition.format === 'eliminacao_direta' ? 'eliminacao_direta' : 'turno_unico',
+    data_inicio: patchedCompetition.start_date,
+    data_fim: patchedCompetition.end_date,
+    status: patchedCompetition.status === 'finalizada' ? 'finalizada' : patchedCompetition.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
+    ordem: patchedCompetition.order,
+    descricao: patchedCompetition.description,
+    organizador: patchedCompetition.organizer,
+    url_logo: patchedCompetition.logo_url,
+    url_banner: patchedCompetition.banner_url,
+    criado_em: patchedCompetition.created_at,
+    atualizado_em: patchedCompetition.updated_at,
+  };
+});
+const sourceSeasons = routeDb.seasons.map((patchedSeason) => {
+  return {
+    id: patchedSeason.id,
+    liga_id: patchedSeason.league_id,
+    nome: patchedSeason.name,
+    slug: patchedSeason.slug,
+    ano: patchedSeason.year,
+    semestre: patchedSeason.semester as 'apertura' | 'clausura',
+    data_inicio: patchedSeason.start_date,
+    data_fim: patchedSeason.end_date,
+    status: patchedSeason.status === 'finalizada' ? 'finalizada' : patchedSeason.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
+    descricao: patchedSeason.description,
+    url_banner: patchedSeason.banner_url,
+    criado_em: patchedSeason.created_at,
+    atualizado_em: patchedSeason.updated_at,
+  };
+});
+const sourceMatches = (routeDb.matches ?? []).map((match) => ({
   id: match.id,
   competicao_id: match.tournament_id,
   time_casa_id: match.home_team_id,
@@ -222,7 +229,7 @@ const sourceMatches = (jsonLeagueData.matches ?? []).map((match) => ({
   criado_em: match.created_at,
   atualizado_em: match.updated_at,
 }));
-const sourceMatchEvents = (jsonLeagueData.matchEvents ?? []).map((event) => ({
+const sourceMatchEvents = (routeDb.matchEvents ?? []).map((event) => ({
   id: event.id,
   match_id: event.match_id,
   player_id: event.player_id,
@@ -231,7 +238,7 @@ const sourceMatchEvents = (jsonLeagueData.matchEvents ?? []).map((event) => ({
   minute: event.minute,
   created_at: event.created_at,
 }));
-const sourcePodiums = (jsonLeagueData.podiums ?? []).map((podium) => ({
+const sourcePodiums = (routeDb.podiums ?? []).map((podium) => ({
   id: podium.id,
   tournament_id: podium.tournament_id,
   first_place_id: podium.first_place?.team_id,
@@ -241,7 +248,7 @@ const sourcePodiums = (jsonLeagueData.podiums ?? []).map((podium) => ({
   second_place_name: podium.second_place?.team_name,
   third_place_name: podium.third_place?.team_name,
 }));
-const sourcePlayers = (jsonLeagueData.players ?? []).map((player) => ({
+const sourcePlayers = (routeDb.players ?? []).map((player) => ({
   id: player.id,
   team_id: player.team_id,
   nome: player.name,
@@ -262,7 +269,25 @@ const resolveTeamSourceId = (teamId: string) => {
 };
 const resolveTournamentSourceId = (tournamentId: string) => {
   const index = sourceTournamentIds.findIndex((sourceId) => sourceId === tournamentId);
-  return index >= 0 ? tournamentId : sourceTournamentIds[Number(tournamentId.replace('t', '')) - 1] ?? tournamentId;
+  if (index >= 0) {
+    return tournamentId;
+  }
+
+  if (/^comp-\d+$/i.test(tournamentId)) {
+    return tournamentId;
+  }
+
+  if (/^t\d+$/i.test(tournamentId)) {
+    const numericId = Number(tournamentId.replace(/^t/i, ''));
+    const paddedCandidate = `comp-${String(numericId).padStart(3, '0')}`;
+    const candidateExists = sourceMatches.some((match) => match.competicao_id === paddedCandidate);
+
+    if (candidateExists) {
+      return paddedCandidate;
+    }
+  }
+
+  return sourceTournamentIds[Number(tournamentId.replace('t', '')) - 1] ?? tournamentId;
 };
 
 const normalizeTeam = (team: (typeof sourceTeams)[number], index: number): Team => ({
@@ -373,12 +398,79 @@ const documentation = [
     content: 'Cada temporada é organizada em competições que valorizam a representatividade, o compromisso comunitário e a continuidade do projeto.',
   },
 ] satisfies DocumentationItem[];
+const getSeasonWindowBounds = (season: (typeof sourceSeasons)[number]) => {
+  const year = String(season.ano).padStart(4, '0');
+
+  if (season.semestre === 'apertura') {
+    return {
+      start: `${year}-01-01`,
+      end: `${year}-07-31`,
+    };
+  }
+
+  return {
+    start: `${year}-06-01`,
+    end: `${year}-12-31`,
+  };
+};
+
+const parseIsoDate = (value: string) => {
+  const parsed = Date.parse(`${value}T00:00:00Z`);
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+const isCompetitionInsideSeasonWindow = (
+  competition: (typeof sourceCompetitions)[number],
+  season: (typeof sourceSeasons)[number],
+) => {
+  const { start, end } = getSeasonWindowBounds(season);
+  return competition.data_inicio >= start && competition.data_fim <= end;
+};
+
+const resolveCompetitionSeasonByRule = (
+  competition: (typeof sourceCompetitions)[number],
+  seasons: (typeof sourceSeasons),
+) => {
+  const candidates = seasons.filter((season) => isCompetitionInsideSeasonWindow(competition, season));
+
+  const matchedById = candidates.find((season) => season.id === competition.temporada_id);
+  if (matchedById) {
+    return matchedById.id;
+  }
+
+  if (candidates.length === 1) {
+    return candidates[0].id;
+  }
+
+  if (candidates.length > 1) {
+    const competitionStart = parseIsoDate(competition.data_inicio);
+    const closestSeason = [...candidates].sort((a, b) => {
+      const distanceA = Math.abs(parseIsoDate(a.data_inicio) - competitionStart);
+      const distanceB = Math.abs(parseIsoDate(b.data_inicio) - competitionStart);
+      return distanceA - distanceB;
+    })[0];
+
+    if (closestSeason) {
+      return closestSeason.id;
+    }
+  }
+
+  return competition.temporada_id;
+};
+
+const resolvedSeasonByCompetitionId = new Map(
+  sourceCompetitions.map((competition) => [
+    competition.id,
+    resolveCompetitionSeasonByRule(competition, sourceSeasons),
+  ]),
+);
+
 const seasonSummaries = sourceSeasons.map((temporada) => ({
   seasonId: temporada.id,
   seasonName: temporada.nome,
   description: temporada.descricao ?? 'Resumo da temporada',
   competitions: sourceCompetitions
-    .filter((competicao) => competicao.temporada_id === temporada.id)
+    .filter((competicao) => resolvedSeasonByCompetitionId.get(competicao.id) === temporada.id)
     .sort((a, b) => a.ordem - b.ordem)
     .map((competicao) => ({
       id: competicao.id,
@@ -531,7 +623,7 @@ const buildTournamentStatistics = (tournamentId: string): TournamentStatistics =
     suspensions,
   };
 };
-const users = (jsonLeagueData.users ?? []).map((raw: any) => ({
+const users = (routeDb.users ?? []).map((raw: any) => ({
   id: String(raw.id),
   email: String(raw.email),
   name: raw.name,
@@ -580,7 +672,7 @@ export const tournamentService = {
   getPodiumByTournament: (tournamentId: string): Podium | undefined => podiums.find((podium) => podium.tournamentId === resolveTournamentSourceId(tournamentId)),
   getStandingsByTournament: (tournamentId: string) => {
     const sourceTournamentId = resolveTournamentSourceId(tournamentId);
-    return (jsonLeagueData.standings ?? [])
+    return (routeDb.standings ?? [])
       .filter((standing) => standing.tournament_id === sourceTournamentId)
       .map((standing) => ({
         id: standing.id,
@@ -612,7 +704,7 @@ export const seasonService = {
 
 export const overviewService = {
   getHomeOverview: (): HomeOverview => {
-    const league = jsonLeagueData.leagues[0];
+    const league = sourceLeagues[0] ?? { id: 'l1', name: 'Liga', slug: 'liga' };
     const currentSeason = sourceSeasons.find((item) => item.status === 'em_andamento') ?? sourceSeasons[0];
     const recentMatches = matches.filter((match) => match.status === 'finished').slice(0, 3);
     const upcomingMatches = matches.filter((match) => match.status === 'scheduled').slice(0, 2);
