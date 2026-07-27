@@ -4,7 +4,7 @@ import * as z from "zod";
 import { addTournament } from "@/dados/state";
 import { useToast } from "@/ganchos/use-toast";
 import { useState } from "react";
-import { Trophy, CalendarDays, Flag, Layers, CircleDot } from "lucide-react";
+import { Trophy, CalendarDays, Flag, Layers, CircleDot, Image as ImageIcon } from "lucide-react";
 
 const tournamentSchema = z.object({
   name: z.string().min(3, { message: "Nome precisa ter pelo menos 3 letras." }),
@@ -16,6 +16,8 @@ const tournamentSchema = z.object({
   status: z.enum(["draft", "ongoing", "finished"], {
     required_error: "Selecione o status.",
   }),
+  logoUrl: z.string().url({ message: "URL do escudo inválida." }).optional().or(z.literal('')),
+  bannerUrl: z.string().url({ message: "URL do banner inválida." }).optional().or(z.literal('')),
 });
 
 type TournamentFormValues = z.infer<typeof tournamentSchema>;
@@ -32,6 +34,8 @@ export default function CreateTournamentForm() {
       type: "league",
       season: new Date().getFullYear().toString(),
       status: "draft",
+      logoUrl: "",
+      bannerUrl: "",
     },
   });
 
@@ -45,6 +49,8 @@ export default function CreateTournamentForm() {
         type: data.type,
         season: data.season,
         status: data.status,
+        logoUrl: data.logoUrl || undefined,
+        bannerUrl: data.bannerUrl || undefined,
       });
 
       toast({
@@ -149,6 +155,36 @@ export default function CreateTournamentForm() {
             <option value="ongoing" className="bg-background text-foreground">Em andamento</option>
             <option value="finished" className="bg-background text-foreground">Finalizado</option>
           </select>
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <ImageIcon className="w-3 h-3" /> URL do escudo <span className="text-muted-foreground/50 normal-case">(opcional)</span>
+          </label>
+          <input
+            {...form.register("logoUrl")}
+            type="url"
+            className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
+            placeholder="Ex: https://meusite.com/escudo.png"
+          />
+          {form.formState.errors.logoUrl && (
+            <span className="text-destructive text-xs mt-1 block">{form.formState.errors.logoUrl.message}</span>
+          )}
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <ImageIcon className="w-3 h-3" /> URL do banner <span className="text-muted-foreground/50 normal-case">(opcional)</span>
+          </label>
+          <input
+            {...form.register("bannerUrl")}
+            type="url"
+            className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
+            placeholder="Ex: https://meusite.com/banner.png"
+          />
+          {form.formState.errors.bannerUrl && (
+            <span className="text-destructive text-xs mt-1 block">{form.formState.errors.bannerUrl.message}</span>
+          )}
         </div>
 
         <button

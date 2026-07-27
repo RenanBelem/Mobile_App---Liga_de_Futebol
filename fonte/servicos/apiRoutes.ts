@@ -373,7 +373,6 @@ export const teamService = {
         };
       });
   },
-  getMedia: (teamId: string) => sourceMedia.filter((item) => item.time_id === resolveTeamSourceId(teamId)).map((item) => ({ url: item.url, caption: item.legenda })),
 };
 
 export const playerService = {
@@ -411,11 +410,6 @@ export const matchService = {
 export const documentationService = {
   list: (): DocumentationItem[] => documentation,
   getById: (id: string): DocumentationItem | undefined => documentation.find((doc) => doc.id === id),
-};
-
-export const mediaService = {
-  list: () => sourceMedia.map((item) => ({ id: item.id, tournamentId: item.tournament_id, url: item.url, caption: item.legenda, type: item.tipo })),
-  getByTeam: (teamId: string) => teamService.getMedia(teamId),
 };
 
 export const seasonService = {

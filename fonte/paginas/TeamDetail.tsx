@@ -18,7 +18,6 @@ const TeamDetail = () => {
   const team = teamService.getById(id ?? '');
   const teamPlayers = id ? teamService.getPlayersByTeam(id) : [];
   const recentResults = id ? teamService.getRecentResults(id) : [];
-  const media = id ? teamService.getMedia(id) : [];
 
   if (!team) return <div className="p-4 text-muted-foreground">Time não encontrado.</div>;
 
@@ -46,6 +45,12 @@ const TeamDetail = () => {
             </div>
           </div>
         </div>
+
+        {team.coverImageUrl && (
+          <div className="rounded-xl overflow-hidden border border-border/70 bg-background/60">
+            <img src={team.coverImageUrl} alt={`Capa de ${team.name}`} className="h-48 w-full object-cover" />
+          </div>
+        )}
 
         <div className="rounded-xl border border-border/70 bg-background/60 p-4">
           <h3 className="text-sm font-bold uppercase tracking-wider mb-2">Biografia</h3>
@@ -101,11 +106,11 @@ const TeamDetail = () => {
         <div className="rounded-xl border border-border/70 bg-background/60 p-4">
           <div className="flex items-center gap-2 mb-3">
             <ImageIcon className="w-4 h-4 text-primary" />
-            <h3 className="text-sm font-bold uppercase tracking-wider">Mídias</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider">Fotos do time</h3>
           </div>
-          {media.length > 0 ? (
+          {team.photos && team.photos.length > 0 ? (
             <div className="grid gap-3">
-              {media.map((item, index) => (
+              {team.photos.map((item, index) => (
                 <div key={`${item.url}-${index}`} className="rounded-lg overflow-hidden border border-border/60">
                   <img src={item.url} alt={item.caption || team.name} className="w-full h-40 object-cover" />
                   {item.caption && <p className="p-2 text-xs text-muted-foreground">{item.caption}</p>}

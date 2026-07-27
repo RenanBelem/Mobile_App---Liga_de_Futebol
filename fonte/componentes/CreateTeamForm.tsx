@@ -20,6 +20,8 @@ const teamSchema = z.object({
   name: z.string().min(3, { message: "O nome do time precisa ter pelo menos 3 letras." }),
   shortName: z.string().max(4, { message: "A sigla deve ter no máximo 4 letras." }).optional().or(z.literal('')),
   logoUrl: z.string().url({ message: "URL do escudo inválida." }).optional().or(z.literal('')),
+  coverImageUrl: z.string().url({ message: "URL da imagem de capa inválida." }).optional().or(z.literal('')),
+  uniformUrl: z.string().url({ message: "URL do uniforme inválida." }).optional().or(z.literal('')),
   primaryColor: z.string().optional(),
   foundationYear: z.string().regex(/^\d{4}$/, { message: "Ano inválido." }).optional().or(z.literal('')),
 });
@@ -35,6 +37,8 @@ export default function CreateTeamForm() {
       name: "",
       shortName: "",
       logoUrl: "",
+      coverImageUrl: "",
+      uniformUrl: "",
       primaryColor: "",
       foundationYear: "",
     },
@@ -49,6 +53,8 @@ export default function CreateTeamForm() {
         name: data.name,
         shortName: data.shortName?.toUpperCase() || undefined,
         logoUrl: data.logoUrl || undefined,
+        coverImageUrl: data.coverImageUrl || undefined,
+        uniformUrl: data.uniformUrl || undefined,
         colors: data.primaryColor || undefined,
         foundationYear: data.foundationYear || undefined,
       });
@@ -154,6 +160,36 @@ export default function CreateTeamForm() {
           />
           {form.formState.errors.logoUrl && (
             <span className="text-destructive text-xs mt-1 block">{form.formState.errors.logoUrl.message}</span>
+          )}
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <ImageIcon className="w-3 h-3" /> Imagem de capa <span className="text-muted-foreground/50 normal-case">(opcional)</span>
+          </label>
+          <input
+            {...form.register("coverImageUrl")}
+            type="url"
+            className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
+            placeholder="Ex: https://meusite.com/capa.png"
+          />
+          {form.formState.errors.coverImageUrl && (
+            <span className="text-destructive text-xs mt-1 block">{form.formState.errors.coverImageUrl.message}</span>
+          )}
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <ImageIcon className="w-3 h-3" /> Uniforme titular <span className="text-muted-foreground/50 normal-case">(opcional)</span>
+          </label>
+          <input
+            {...form.register("uniformUrl")}
+            type="url"
+            className="w-full p-2.5 bg-background/40 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground placeholder:text-muted-foreground/50 transition-all"
+            placeholder="Ex: https://meusite.com/uniforme.png"
+          />
+          {form.formState.errors.uniformUrl && (
+            <span className="text-destructive text-xs mt-1 block">{form.formState.errors.uniformUrl.message}</span>
           )}
         </div>
 

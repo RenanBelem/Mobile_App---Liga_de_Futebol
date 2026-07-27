@@ -36,7 +36,6 @@ export {
   podiums,
   tournaments,
   league,
-  mediaItems,
   getPlayersByTeam,
   getMatchesByTournament,
   getTeamById,

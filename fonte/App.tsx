@@ -5,7 +5,7 @@
  * - Configura roteamento com React Router
  * - Fornece providers globais (QueryClient, Toaster, Tooltip)
  * - Define estrutura de layout principal com BottomNav
- * - Gerencia todas as rotas da aplicação (home, times, torneios, mídias, etc)
+ * - Gerencia todas as rotas da aplicação (home, times, torneios, etc)
  * MOTIVO: App é o componente central que orquestra toda a arquitetura
  * e estrutura da aplicação, conectando providers e rotas
  */
@@ -22,7 +22,6 @@ import Teams from "./paginas/Teams";
 import TeamDetail from "./paginas/TeamDetail";
 import Tournaments from "./paginas/Tournaments";
 import TournamentDetail from "./paginas/TournamentDetail";
-import Media from "./paginas/Media";
 import More from "./paginas/More";
 import Debug from "./paginas/Debug";
 import NotFound from "./paginas/NotFound";
@@ -67,7 +66,6 @@ const App = () => {
               <Route path="/teams/:id" element={<TeamDetail />} />
               <Route path="/tournaments" element={<Tournaments />} />
               <Route path="/tournaments/:id" element={<TournamentDetail />} />
-              <Route path="/media" element={<Media />} />
               <Route path="/more" element={<More />} />
               <Route path="/debug" element={<Debug />} />
               <Route path="*" element={<NotFound />} />

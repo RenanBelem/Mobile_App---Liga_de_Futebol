@@ -3,7 +3,7 @@
  * ===============================
  * PROPÓSITO: Página de detalhes de um torneio específico
  * - Exibe informações do torneio (nome, datas, status)
- * - Mostra abas para: Partidas, Classificação, Estatísticas, Mídias
+ * - Mostra abas para: Partidas, Classificação, Estatísticas e Histórico
  * - Exibe pódio se torneio está encerrado
  * MOTIVO: Página crucial para visualizar todos os dados de um torneio,
  * incluindo partidas, standings e resultados finais
@@ -11,13 +11,13 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/componentes/ui/button';
-import { Plus, Edit2, History, BookOpenText } from 'lucide-react';
+import { Plus, History, BookOpenText, Image as ImageIcon } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
-import { matchService, mediaService, teamService, tournamentService } from '@/servicos/apiRoutes';
+import { teamService, tournamentService } from '@/servicos/apiRoutes';
 import { Player } from '@/tipos/league';
 
 
-type Tab = 'matches' | 'standings' | 'stats' | 'media' | 'history';
+type Tab = 'matches' | 'standings' | 'stats' | 'history';
 
 const TournamentDetail = () => {
   const { id } = useParams();
@@ -27,7 +27,6 @@ const TournamentDetail = () => {
   if (!tournament) return <div className="p-4 text-muted-foreground">Torneio não encontrado.</div>;
 
   const tournamentMatches = id ? tournamentService.getMatchesByTournament(id) : [];
-  const tournamentMedia = id ? mediaService.list().filter((item) => item.tournamentId === id).slice(0, 4) : [];
   const tournamentPodium = id ? tournamentService.getPodiumByTournament(id) : undefined;
   const standings = id ? tournamentService.getStandingsByTournament(id) : [];
   const allPlayers: Player[] = [];
@@ -37,7 +36,6 @@ const TournamentDetail = () => {
     { key: 'matches', label: 'Jogos' },
     { key: 'standings', label: 'Classificação' },
     { key: 'stats', label: 'Estatísticas' },
-    { key: 'media', label: 'Mídias' },
     { key: 'history', label: 'Histórico' },
   ];
 
@@ -54,6 +52,30 @@ const TournamentDetail = () => {
             <p className="font-semibold">Temporada: {tournament.season}</p>
             <p className="text-muted-foreground">Dados da competição carregados diretamente do fluxo JSON.</p>
           </div>
+          {(tournament.logoUrl || tournament.bannerUrl) && (
+            <div className="grid gap-3">
+              {tournament.bannerUrl && (
+                <div className="rounded-lg overflow-hidden border border-border/60">
+                  <img src={tournament.bannerUrl} alt={`Banner de ${tournament.name}`} className="h-36 w-full object-cover" />
+                </div>
+              )}
+              <div className="flex items-center gap-3">
+                {tournament.logoUrl ? (
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-border/60 bg-background/70 shrink-0">
+                    <img src={tournament.logoUrl} alt={`Escudo de ${tournament.name}`} className="h-full w-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center shrink-0">
+                    <ImageIcon className="w-5 h-5 text-muted-foreground" />
+                  </div>
+                )}
+                <div>
+                  <p className="text-sm font-semibold">Identidade visual</p>
+                  <p className="text-xs text-muted-foreground">Escudo e banner vinculados ao torneio.</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -153,26 +175,6 @@ const TournamentDetail = () => {
                 );
               })}
             </div>
-          </div>
-        )}
-
-        {activeTab === 'media' && (
-          <div className="space-y-3">
-            <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 text-sm text-muted-foreground">
-              A galeria desta competição é alimentada pelo fluxo JSON da liga.
-            </div>
-            {tournamentMedia.length > 0 ? (
-              <div className="grid gap-2">
-                {tournamentMedia.map((item) => (
-                  <div key={item.id} className="rounded-lg border border-border/60 bg-background/50 p-3 text-sm">
-                    <p className="font-semibold">{item.caption}</p>
-                    <p className="text-xs text-muted-foreground">{item.url}</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">Nenhuma mídia disponível para esta competição.</p>
-            )}
           </div>
         )}
 

@@ -4,7 +4,7 @@
  * PROPÓSITO: Dados mockados/simulados para desenvolvimento
  * - Fornece 25 times da liga com cores, logos e nomes
  * - Inclui usuário admin simulado
- * - Contém dados de jogadores, torneios, partidas e mídias
+ * - Contém dados de jogadores, torneios e partidas
  * - Facilita desenvolvimento sem dependência de backend
  * MOTIVO: Arquivo essencial para desenvolvimento local sem API,
  * permitindo testar UI e lógica com dados realistas
@@ -13,7 +13,6 @@ import {
   Team, 
   Tournament, 
   Match, 
-  MediaItem, 
   League, 
   Player, 
   User,
@@ -120,15 +119,6 @@ export const league: League = {
   name: 'Liga Antifascista de Futebol',
   season: '2026',
 };
-
-// ==========================================
-// 7. MÍDIA
-// ==========================================
-export const mediaItems: MediaItem[] = [
-  { id: 'md1', type: 'photo', url: '', caption: 'Final do Campeonato 2025', tournamentId: 't2', date: '2025-12-15' },
-  { id: 'md2', type: 'photo', url: '', caption: 'Gol de Carlos Silva', tournamentId: 't1', date: '2026-03-10' },
-  { id: 'md3', type: 'video', url: '', caption: 'Melhores momentos - Rodada 1', tournamentId: 't1', date: '2026-03-10' },
-];
 
 // ==========================================
 // FUNÇÕES UTILITÁRIAS PARA O FRONT-END

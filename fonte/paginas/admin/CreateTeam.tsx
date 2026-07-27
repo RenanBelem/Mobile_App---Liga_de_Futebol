@@ -17,6 +17,8 @@ const teamSchema = z.object({
   name: z.string().min(3, { message: "O nome do time precisa ter pelo menos 3 letras." }),
   shortName: z.string().max(3, { message: "A sigla deve ter no máximo 3 letras (ex: FLA)." }),
   logoUrl: z.string().url({ message: "Insira uma URL válida para o escudo." }).optional().or(z.literal('')),
+  coverImageUrl: z.string().url({ message: "Insira uma URL válida para a capa." }).optional().or(z.literal('')),
+  uniformUrl: z.string().url({ message: "Insira uma URL válida para o uniforme." }).optional().or(z.literal('')),
   foundationYear: z.string().regex(/^\d{4}$/, { message: "Ano inválido." }).optional(),
 });
 
@@ -31,6 +33,8 @@ export default function CreateTeamForm() {
       name: "",
       shortName: "",
       logoUrl: "",
+      coverImageUrl: "",
+      uniformUrl: "",
       foundationYear: "",
     },
   });
@@ -87,6 +91,30 @@ export default function CreateTeamForm() {
           />
           {form.formState.errors.logoUrl && (
             <span className="text-red-500 text-sm">{form.formState.errors.logoUrl.message}</span>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">URL da Capa</label>
+          <input
+            {...form.register("coverImageUrl")}
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            placeholder="https://..."
+          />
+          {form.formState.errors.coverImageUrl && (
+            <span className="text-red-500 text-sm">{form.formState.errors.coverImageUrl.message}</span>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">URL do Uniforme</label>
+          <input
+            {...form.register("uniformUrl")}
+            className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+            placeholder="https://..."
+          />
+          {form.formState.errors.uniformUrl && (
+            <span className="text-red-500 text-sm">{form.formState.errors.uniformUrl.message}</span>
           )}
         </div>
 

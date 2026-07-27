@@ -8,7 +8,7 @@
  * MOTIVO: Página útil para desenvolvimento e testes,
  * permitindo devs inspecionarem dados em tempo real
  */
-import { authService, matchService, mediaService, playerService, teamService, tournamentService } from '@/servicos/apiRoutes';
+import { authService, matchService, playerService, teamService, tournamentService } from '@/servicos/apiRoutes';
 import PageHeader from '@/componentes/PageHeader';
 
 const Debug = () => {
@@ -18,7 +18,6 @@ const Debug = () => {
     teams: teamService.list(),
     tournaments: tournamentService.list(),
     matches: matchService.list(),
-    media: mediaService.list(),
   };
 
   return (
