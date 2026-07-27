@@ -17,6 +17,43 @@ export interface HomeOverview {
   finishedTournaments: HomeTournamentSummary[];
 }
 
+export interface TournamentScorerRow {
+  playerId: string;
+  playerName: string;
+  teamName: string;
+  goals: number;
+}
+
+export interface TournamentBestPlayerRow {
+  playerId: string;
+  playerName: string;
+  teamName: string;
+  playerOfMatchCount: number;
+}
+
+export interface TournamentPenaltyRow {
+  playerId: string;
+  playerName: string;
+  teamName: string;
+  yellowCards: number;
+  redCards: number;
+}
+
+export interface TournamentSuspensionRow {
+  playerId: string;
+  playerName: string;
+  teamName: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface TournamentStatistics {
+  scorers: TournamentScorerRow[];
+  bestPlayers: TournamentBestPlayerRow[];
+  penalties: TournamentPenaltyRow[];
+  suspensions: TournamentSuspensionRow[];
+}
+
 const normalizeForMatch = (value: string) =>
   value
     .normalize('NFD')
@@ -185,6 +222,15 @@ const sourceMatches = (jsonLeagueData.matches ?? []).map((match) => ({
   criado_em: match.created_at,
   atualizado_em: match.updated_at,
 }));
+const sourceMatchEvents = (jsonLeagueData.matchEvents ?? []).map((event) => ({
+  id: event.id,
+  match_id: event.match_id,
+  player_id: event.player_id,
+  team_id: event.team_id,
+  type: event.type,
+  minute: event.minute,
+  created_at: event.created_at,
+}));
 const sourcePodiums = (jsonLeagueData.podiums ?? []).map((podium) => ({
   id: podium.id,
   tournament_id: podium.tournament_id,
@@ -333,13 +379,158 @@ const seasonSummaries = sourceSeasons.map((temporada) => ({
   description: temporada.descricao ?? 'Resumo da temporada',
   competitions: sourceCompetitions
     .filter((competicao) => competicao.temporada_id === temporada.id)
+    .sort((a, b) => a.ordem - b.ordem)
     .map((competicao) => ({
       id: competicao.id,
       name: competicao.nome,
       status: competicao.status,
+      type: competicao.tipo,
       description: competicao.descricao,
+      logoUrl: competicao.url_logo,
+      order: competicao.ordem,
     })),
 })) satisfies SeasonSummary[];
+
+const sourceMediaByTournament = (tournamentId: string) =>
+  sourceMedia
+    .filter((mediaItem) => mediaItem.tournament_id === tournamentId)
+    .map((mediaItem) => ({
+      id: mediaItem.id,
+      title: mediaItem.titulo,
+      description: mediaItem.legenda,
+      url: mediaItem.url,
+      thumbnailUrl: mediaItem.url_thumbnail,
+      type: mediaItem.tipo,
+      date: mediaItem.criado_em,
+    }));
+
+const addDaysToDate = (dateText: string, daysToAdd: number) => {
+  const date = new Date(`${dateText}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) {
+    return dateText;
+  }
+
+  date.setUTCDate(date.getUTCDate() + daysToAdd);
+  return date.toISOString().slice(0, 10);
+};
+
+const buildTournamentStatistics = (tournamentId: string): TournamentStatistics => {
+  const tournamentMatches = sourceMatches.filter((match) => match.competicao_id === tournamentId);
+  const matchIds = new Set(tournamentMatches.map((match) => match.id));
+  const matchDateById = new Map(tournamentMatches.map((match) => [match.id, match.data_hora]));
+  const tournamentEvents = sourceMatchEvents.filter((event) => matchIds.has(event.match_id));
+
+  const playerById = new Map(sourcePlayers.map((player) => [player.id, player]));
+  const teamNameById = new Map(sourceTeams.map((team) => [team.id, team.nome]));
+
+  const scorerMap = new Map<string, TournamentScorerRow>();
+  const penaltyMap = new Map<string, TournamentPenaltyRow>();
+  const bestPlayerMap = new Map<string, TournamentBestPlayerRow>();
+
+  const eventsByMatch = new Map<string, typeof tournamentEvents>();
+  for (const event of tournamentEvents) {
+    const bucket = eventsByMatch.get(event.match_id) ?? [];
+    bucket.push(event);
+    eventsByMatch.set(event.match_id, bucket);
+
+    const player = playerById.get(event.player_id);
+    if (!player) {
+      continue;
+    }
+
+    const teamName = teamNameById.get(event.team_id ?? player.team_id ?? '') ?? 'Equipe';
+
+    if (event.type === 'goal') {
+      const current = scorerMap.get(event.player_id) ?? {
+        playerId: event.player_id,
+        playerName: player.nome,
+        teamName,
+        goals: 0,
+      };
+      current.goals += 1;
+      scorerMap.set(event.player_id, current);
+    }
+
+    if (event.type === 'yellow_card' || event.type === 'red_card') {
+      const current = penaltyMap.get(event.player_id) ?? {
+        playerId: event.player_id,
+        playerName: player.nome,
+        teamName,
+        yellowCards: 0,
+        redCards: 0,
+      };
+      if (event.type === 'yellow_card') {
+        current.yellowCards += 1;
+      } else {
+        current.redCards += 1;
+      }
+      penaltyMap.set(event.player_id, current);
+    }
+  }
+
+  for (const [, events] of eventsByMatch) {
+    const perMatchScore = new Map<string, number>();
+    for (const event of events) {
+      if (!event.player_id) {
+        continue;
+      }
+      const points = event.type === 'goal' ? 2 : event.type === 'assist' ? 1 : 0;
+      if (points === 0) {
+        continue;
+      }
+      perMatchScore.set(event.player_id, (perMatchScore.get(event.player_id) ?? 0) + points);
+    }
+
+    const winner = [...perMatchScore.entries()].sort((a, b) => b[1] - a[1])[0];
+    if (!winner) {
+      continue;
+    }
+
+    const winnerPlayer = playerById.get(winner[0]);
+    if (!winnerPlayer) {
+      continue;
+    }
+
+    const winnerTeamName = teamNameById.get(winnerPlayer.team_id ?? '') ?? 'Equipe';
+    const current = bestPlayerMap.get(winner[0]) ?? {
+      playerId: winner[0],
+      playerName: winnerPlayer.nome,
+      teamName: winnerTeamName,
+      playerOfMatchCount: 0,
+    };
+    current.playerOfMatchCount += 1;
+    bestPlayerMap.set(winner[0], current);
+  }
+
+  const penalties = [...penaltyMap.values()].sort((a, b) => (b.redCards * 10 + b.yellowCards) - (a.redCards * 10 + a.yellowCards));
+
+  const suspensions: TournamentSuspensionRow[] = penalties
+    .filter((item) => item.redCards > 0 || item.yellowCards >= 3)
+    .map((item) => {
+      const playerEvents = tournamentEvents
+        .filter((event) => event.player_id === item.playerId && (event.type === 'yellow_card' || event.type === 'red_card'))
+        .sort((a, b) => (matchDateById.get(a.match_id) ?? '').localeCompare(matchDateById.get(b.match_id) ?? ''));
+      const latestEvent = playerEvents[playerEvents.length - 1];
+      const startDate = latestEvent ? (matchDateById.get(latestEvent.match_id) ?? 'N/A') : 'N/A';
+      const suspensionDays = item.redCards > 0 ? 14 : 7;
+      const endDate = startDate !== 'N/A' ? addDaysToDate(startDate, suspensionDays) : 'N/A';
+
+      return {
+        playerId: item.playerId,
+        playerName: item.playerName,
+        teamName: item.teamName,
+        startDate,
+        endDate,
+      };
+    });
+
+  return {
+    scorers: [...scorerMap.values()].sort((a, b) => b.goals - a.goals || a.playerName.localeCompare(b.playerName)),
+    bestPlayers: [...bestPlayerMap.values()].sort((a, b) => b.playerOfMatchCount - a.playerOfMatchCount || a.playerName.localeCompare(b.playerName)),
+    penalties,
+    suspensions,
+  };
+};
 const users = (jsonLeagueData.users ?? []).map((raw: any) => ({
   id: String(raw.id),
   email: String(raw.email),
@@ -384,6 +575,8 @@ export const tournamentService = {
   list: (): Tournament[] => tournaments,
   getById: (id: string): Tournament | undefined => tournaments.find((tournament) => tournament.id === id),
   getMatchesByTournament: (tournamentId: string): Match[] => matches.filter((match) => match.tournamentId === resolveTournamentSourceId(tournamentId)),
+  getMediaByTournament: (tournamentId: string) => sourceMediaByTournament(resolveTournamentSourceId(tournamentId)),
+  getStatisticsByTournament: (tournamentId: string): TournamentStatistics => buildTournamentStatistics(resolveTournamentSourceId(tournamentId)),
   getPodiumByTournament: (tournamentId: string): Podium | undefined => podiums.find((podium) => podium.tournamentId === resolveTournamentSourceId(tournamentId)),
   getStandingsByTournament: (tournamentId: string) => {
     const sourceTournamentId = resolveTournamentSourceId(tournamentId);

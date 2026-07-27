@@ -10,6 +10,7 @@
  * oferecendo entrada para detalhe de cada time e gestão
  */
 import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Users, Plus, Trophy } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
@@ -25,7 +26,10 @@ import {
 
 const Teams = () => {
   const navigate = useNavigate();
-  const teams = teamService.list();
+  const teams = useMemo(
+    () => [...teamService.list()].sort((left, right) => left.name.localeCompare(right.name, 'pt-BR', { sensitivity: 'base' })),
+    [],
+  );
 
   return (
     <div className="pb-20">

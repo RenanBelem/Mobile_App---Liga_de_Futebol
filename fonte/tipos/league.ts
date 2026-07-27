@@ -368,7 +368,10 @@ export interface SeasonCompetitionSummary {
   id: string;
   name: string;
   status: string;
+  type?: TipoCompeticao;
   description?: string;
+  logoUrl?: string;
+  order?: number;
 }
 
 export interface SeasonSummary {

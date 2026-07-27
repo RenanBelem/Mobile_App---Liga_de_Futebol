@@ -15,16 +15,17 @@ interface PageHeaderProps {
   title: string;
   subtitle?: string;
   showBack?: boolean;
+  onBack?: () => void;
 }
 
-const PageHeader = ({ title, subtitle, showBack }: PageHeaderProps) => {
+const PageHeader = ({ title, subtitle, showBack, onBack }: PageHeaderProps) => {
   const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-40 glass-card px-4 py-3">
       <div className="flex items-center gap-3">
         {showBack && (
-          <button onClick={() => navigate(-1)} className="p-1 -ml-1 text-muted-foreground hover:text-foreground transition-colors">
+          <button onClick={() => (onBack ? onBack() : navigate(-1))} className="p-1 -ml-1 text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </button>
         )}
