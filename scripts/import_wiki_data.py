@@ -10,7 +10,7 @@ def write_json(filename: str, payload: dict) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
-write_json('leagues.json', {
+write_json('ligas.json', {
     'leagues': [
         {
             'id': 'l1',
@@ -28,7 +28,7 @@ write_json('leagues.json', {
     ]
 })
 
-write_json('seasons.json', {
+write_json('temporadas.json', {
     'seasons': [
         {'id': 'season-2022-a', 'league_id': 'l1', 'name': 'Apertura 22', 'slug': 'apertura-22', 'year': 2022, 'semester': 'apertura', 'start_date': '2022-03-01', 'end_date': '2022-06-30', 'status': 'finalizada', 'description': 'Primeira temporada da LFA em 2022.', 'banner_url': '/banners/2022-apertura.jpg', 'created_at': '2022-03-01T00:00:00Z', 'updated_at': '2022-07-01T00:00:00Z'},
         {'id': 'season-2022-c', 'league_id': 'l1', 'name': 'Clausura 22', 'slug': 'clausura-22', 'year': 2022, 'semester': 'clausura', 'start_date': '2022-07-01', 'end_date': '2022-10-31', 'status': 'finalizada', 'description': 'Segunda temporada da LFA em 2022.', 'banner_url': '/banners/2022-clausura.jpg', 'created_at': '2022-07-01T00:00:00Z', 'updated_at': '2022-11-01T00:00:00Z'},
@@ -42,7 +42,7 @@ write_json('seasons.json', {
     ]
 })
 
-write_json('competitions.json', {
+write_json('competicoes.json', {
     'competitions': [
         {'id': 'comp-001', 'season_id': 'season-2025-a', 'name': 'Taça Cecília 2025 – Apertura', 'slug': 'taca-cecilia-2025-apertura', 'type': 'campeonato', 'format': 'turno_unico', 'start_date': '2025-03-01', 'end_date': '2025-06-30', 'status': 'finalizada', 'order': 1, 'description': 'Edição de 2025 da Taça Cecília, disputada em turno único com fase final mata-mata e campeão definido após pênaltis.', 'organizer': 'LFA', 'logo_url': '/logos/gerais/taca-cecilia.png', 'banner_url': '/banners/taca-cecilia.jpg', 'created_at': '2025-01-01T00:00:00Z', 'updated_at': '2025-07-01T00:00:00Z'},
         {'id': 'comp-002', 'season_id': 'season-2025-a', 'name': 'Copa Eric Cantona', 'slug': 'copa-eric-cantona', 'type': 'copa', 'format': 'eliminacao_direta', 'start_date': '2025-04-01', 'end_date': '2025-06-15', 'status': 'finalizada', 'order': 2, 'description': 'Copa dedicada à memória de Eric Cantona, disputada em formato eliminatório.', 'organizer': 'LFA', 'logo_url': '/logos/gerais/copa-cantona.png', 'banner_url': '/banners/copa-cantona.jpg', 'created_at': '2025-01-10T00:00:00Z', 'updated_at': '2025-06-16T00:00:00Z'},
@@ -57,7 +57,7 @@ write_json('competitions.json', {
     ]
 })
 
-write_json('teams.json', {
+write_json('times.json', {
     'teams': [
         {'id': '1', 'league_id': 'l1', 'name': 'CF Estrela Vermelha', 'slug': 'cf-estrela-vermelha', 'colors': '#dc2626', 'secondary_color': '#991b1b', 'abbreviation': 'CEV', 'founded_year': 2018, 'city': 'São Paulo', 'state': 'SP', 'logo_url': '/logos/teams/cf-estrela-vermelha.png', 'banner_url': '/banners/teams/cf-estrela-vermelha.png', 'description': 'Clube de futebol revolucionário com raízes comunitárias e histórico forte na LFA.', 'stadium_name': 'Campo da Revolução', 'president_name': 'Marcus Silva', 'coach_name': 'Diego Rojas', 'created_at': '2018-03-15T00:00:00Z', 'updated_at': '2026-05-21T00:00:00Z', 'is_active': True},
         {'id': '2', 'league_id': 'l1', 'name': 'Guairacá Futebol Ancestral', 'slug': 'guairaca-futebol-ancestral', 'colors': '#84cc16', 'secondary_color': '#65a30d', 'abbreviation': 'GFA', 'founded_year': 2020, 'city': 'Maringá', 'state': 'PR', 'logo_url': '/logos/teams/guairaca-futebol-ancestral.png', 'banner_url': '/banners/teams/guairaca-futebol-ancestral.png', 'description': 'Time ancestral que valoriza tradições, cultura popular e futebol comunitário.', 'stadium_name': 'Estádio Guairacá', 'president_name': 'Ana Tupi', 'coach_name': 'Carlos Tupinambá', 'created_at': '2020-01-10T00:00:00Z', 'updated_at': '2026-05-21T00:00:00Z', 'is_active': True},
@@ -96,7 +96,7 @@ write_json('teams.json', {
     ]
 })
 
-write_json('players.json', {
+write_json('jogadores.json', {
     'players': [
         {'id': 'p1', 'team_id': '1', 'name': 'Gui', 'number': 9, 'position': 'Atacante', 'birth_date': '1998-03-12', 'nationality': 'Brasileiro', 'height_cm': 180, 'weight_kg': 76, 'dominant_foot': 'direito', 'biography': 'Atacante técnico e decisivo nas grandes partidas.', 'avatar_url': '/avatares/players/gui.png', 'status': 'active', 'joined_date': '2020-03-15T00:00:00Z', 'created_at': '2020-03-15T00:00:00Z', 'updated_at': '2026-05-21T00:00:00Z'},
         {'id': 'p2', 'team_id': '1', 'name': 'Cauan', 'number': 7, 'position': 'Meia', 'birth_date': '1999-06-10', 'nationality': 'Brasileiro', 'height_cm': 176, 'weight_kg': 72, 'dominant_foot': 'esquerdo', 'biography': 'Meia criativo com visão de jogo.', 'avatar_url': '/avatares/players/cauan.png', 'status': 'active', 'joined_date': '2020-05-02T00:00:00Z', 'created_at': '2020-05-02T00:00:00Z', 'updated_at': '2026-05-21T00:00:00Z'},
@@ -112,7 +112,7 @@ write_json('players.json', {
     ]
 })
 
-write_json('matches.json', {
+write_json('partidas.json', {
     'matches': [
         {'id': 'match-001', 'tournament_id': 'comp-001', 'home_team_id': '2', 'away_team_id': '15', 'score_home': 1, 'score_away': 4, 'date': '2025-05-17', 'round': 'Semifinal', 'location': 'Estádio da Liga', 'status': 'finished', 'created_at': '2025-05-17T00:00:00Z', 'updated_at': '2025-05-17T00:00:00Z'},
         {'id': 'match-002', 'tournament_id': 'comp-001', 'home_team_id': '1', 'away_team_id': '7', 'score_home': 3, 'score_away': 3, 'date': '2025-05-10', 'round': 'Semifinal', 'location': 'Campo Cecília', 'status': 'finished', 'created_at': '2025-05-10T00:00:00Z', 'updated_at': '2025-05-10T00:00:00Z'},
@@ -121,7 +121,7 @@ write_json('matches.json', {
     ]
 })
 
-write_json('media.json', {
+write_json('midias.json', {
     'media': [
         {'id': 'md-001', 'tournament_id': 'comp-001', 'type': 'photo', 'title': 'Final da Taça Cecília 2025 – Apertura', 'description': 'Momento da decisão entre Pé-de-pano e 9-Dedos com resultado decidido nos pênaltis.', 'url': '/media/photos/taca-cecilia-2025-final.jpg', 'thumbnail_url': '/media/photos/thumbnails/taca-cecilia-2025-final.jpg', 'photographer': 'Equipe LFA', 'date': '2025-06-01', 'tags': ['taca-cecilia', 'final', '2025'], 'created_at': '2025-06-02T00:00:00Z', 'updated_at': '2025-06-02T00:00:00Z'},
         {'id': 'md-002', 'tournament_id': 'comp-001', 'type': 'photo', 'title': 'Celebrando o título do Pé-de-pano', 'description': 'Equipe campeã celebra a conquista após a decisão.', 'url': '/media/photos/pe-de-pano-campeao-2025.jpg', 'thumbnail_url': '/media/photos/thumbnails/pe-de-pano-campeao-2025.jpg', 'photographer': 'Equipe LFA', 'date': '2025-06-01', 'tags': ['campeao', 'pedepano', '2025'], 'created_at': '2025-06-02T00:00:00Z', 'updated_at': '2025-06-02T00:00:00Z'},
@@ -130,7 +130,7 @@ write_json('media.json', {
     ]
 })
 
-write_json('podiums.json', {
+write_json('podios.json', {
     'podiums': [
         {'id': 'podium-001', 'tournament_id': 'comp-001', 'first_place': {'team_id': '7', 'team_name': 'Pé de Pano'}, 'second_place': {'team_id': '15', 'team_name': '9-Dedos'}, 'third_place': {'team_id': '1', 'team_name': 'CF Estrela Vermelha'}},
         {'id': 'podium-002', 'tournament_id': 'comp-002', 'first_place': {'team_id': '1', 'team_name': 'CF Estrela Vermelha'}, 'second_place': {'team_id': '2', 'team_name': 'Guairacá Futebol Ancestral'}, 'third_place': {'team_id': '7', 'team_name': 'Pé de Pano'}},
@@ -155,7 +155,7 @@ write_json('standings.json', {
     ]
 })
 
-write_json('tournaments.json', {
+write_json('torneios.json', {
     'tournaments': [
         {'id': 't1', 'league_id': 'l1', 'name': 'Taça Cecília 2025 – Apertura', 'season': 'Apertura 25', 'status': 'finished', 'type': 'league', 'description': 'Edição de 2025 da Taça Cecília.', 'created_at': '2025-01-01T00:00:00Z', 'updated_at': '2025-07-01T00:00:00Z'},
         {'id': 't2', 'league_id': 'l1', 'name': 'Copa Eric Cantona', 'season': 'Apertura 25', 'status': 'finished', 'type': 'cup', 'description': 'Copa dedicada à memória de Eric Cantona.', 'created_at': '2025-01-10T00:00:00Z', 'updated_at': '2025-06-16T00:00:00Z'},

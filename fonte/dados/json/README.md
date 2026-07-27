@@ -6,7 +6,7 @@ Esta pasta contém a estrutura de dados completa da aplicação em formato JSON,
 
 ## 📁 Arquivos Disponíveis
 
-### 1. **leagues.json** - Ligas
+### 1. **ligas.json** - Ligas
 Contém as ligas principais onde os torneios e times são organizados.
 
 **Exemplo de campo:**
@@ -24,7 +24,7 @@ Contém as ligas principais onde os torneios e times são organizados.
 
 ---
 
-### 2. **tournaments.json** - Torneios & Competições
+### 2. **torneios.json** - Torneios & Competições
 Torneios, Copas e competições especiais dentro das ligas.
 
 **Tipos de competição:**
@@ -49,7 +49,7 @@ Torneios, Copas e competições especiais dentro das ligas.
 
 ---
 
-### 3. **teams.json** - Times
+### 3. **times.json** - Times
 Times participantes dos torneios.
 
 **Campos importantes:**
@@ -71,7 +71,7 @@ Times participantes dos torneios.
 
 ---
 
-### 4. **players.json** - Jogadores
+### 4. **jogadores.json** - Jogadores
 Elenco completo dos times.
 
 **Posições suportadas:** Goleiro, Zagueiro, Lateral, Volante, Meia, Atacante, Ponta
@@ -91,7 +91,7 @@ Elenco completo dos times.
 
 ---
 
-### 5. **phases.json** - Fases/Turnos
+### 5. **fases.json** - Fases/Turnos
 Organiza as rodadas e fases dos torneios.
 
 **Tipos de fase:**
@@ -114,7 +114,7 @@ Organiza as rodadas e fases dos torneios.
 
 ---
 
-### 6. **matches.json** - Partidas/Jogos
+### 6. **partidas.json** - Partidas/Jogos
 Todos os jogos com placar, data, local e status.
 
 **Status possíveis:** `scheduled`, `live`, `finished`, `postponed`, `cancelled`
@@ -138,7 +138,7 @@ Todos os jogos com placar, data, local e status.
 
 ---
 
-### 7. **match_events.json** - Eventos de Partida
+### 7. **eventos_partida.json** - Eventos de Partida
 Gols, assistências, cartões e eventos específicos de cada partida.
 
 **Tipos de evento:**
@@ -189,7 +189,7 @@ Tabela de classificação de cada torneio.
 
 ---
 
-### 9. **podiums.json** - Pódios/Campeões
+### 9. **podios.json** - Pódios/Campeões
 Campeões (ouro, prata, bronze) de cada torneio finalizado.
 
 **Exemplo:**
@@ -209,7 +209,7 @@ Campeões (ouro, prata, bronze) de cada torneio finalizado.
 
 ---
 
-### 10. **media.json** - Mídia (Fotos & Vídeos)
+### 10. **midias.json** - Mídia (Fotos & Vídeos)
 Galeria de fotos e vídeos de torneios e partidas.
 
 **Tipos:** `photo`, `video`
@@ -230,7 +230,7 @@ Galeria de fotos e vídeos de torneios e partidas.
 
 ---
 
-### 11. **users.json** - Usuários
+### 11. **usuarios.json** - Usuários
 Usuários do sistema com diferentes papéis.
 
 **Roles (papéis):**
@@ -319,9 +319,9 @@ Users
 
 **JavaScript/TypeScript:**
 ```javascript
-import leagues from './leagues.json';
-import tournaments from './tournaments.json';
-import teams from './teams.json';
+import leagues from './ligas.json';
+import tournaments from './torneios.json';
+import teams from './times.json';
 // ... importar outros arquivos
 ```
 
@@ -335,8 +335,8 @@ import teams from './teams.json';
 
 **MongoDB:**
 ```javascript
-db.leagues.insertMany(require('./leagues.json').leagues);
-db.tournaments.insertMany(require('./tournaments.json').tournaments);
+db.leagues.insertMany(require('./ligas.json').leagues);
+db.tournaments.insertMany(require('./torneios.json').tournaments);
 // ... etc
 ```
 

@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 
 const navItems = [
   { icon: Home, label: 'Início', path: '/' },
-  { icon: Trophy, label: 'Torneios', path: '/tournaments' },
+  { icon: Trophy, label: 'Temporadas', path: '/tournaments' },
   { icon: Users, label: 'Times', path: '/teams' },
   { icon: Image, label: 'Mídias', path: '/media' },
   { icon: Menu, label: 'Mais', path: '/more' },

@@ -7,14 +7,14 @@
     "total_files": 11,
     "files_overview": [
       {
-        "filename": "leagues.json",
+        "filename": "ligas.json",
         "records": 2,
         "description": "Ligas principais - Estruturas organizacionais de alto nível",
         "primary_key": "id",
         "relationships": ["has_many: tournaments", "has_many: teams"]
       },
       {
-        "filename": "tournaments.json",
+        "filename": "torneios.json",
         "records": 4,
         "description": "Torneios e competições dentro das ligas",
         "primary_key": "id",
@@ -22,7 +22,7 @@
         "relationships": ["belongs_to: leagues", "has_many: matches", "has_many: phases"]
       },
       {
-        "filename": "teams.json",
+        "filename": "times.json",
         "records": 6,
         "description": "Times participantes",
         "primary_key": "id",
@@ -30,7 +30,7 @@
         "relationships": ["belongs_to: leagues", "has_many: players", "has_many: matches"]
       },
       {
-        "filename": "players.json",
+        "filename": "jogadores.json",
         "records": 10,
         "description": "Jogadores / Elenco dos times",
         "primary_key": "id",
@@ -38,7 +38,7 @@
         "relationships": ["belongs_to: teams", "has_many: match_events"]
       },
       {
-        "filename": "phases.json",
+        "filename": "fases.json",
         "records": 10,
         "description": "Fases/Rodadas/Turnos dos torneios",
         "primary_key": "id",
@@ -46,7 +46,7 @@
         "relationships": ["belongs_to: tournaments", "has_many: matches"]
       },
       {
-        "filename": "matches.json",
+        "filename": "partidas.json",
         "records": 11,
         "description": "Partidas/Jogos com placar, data e status",
         "primary_key": "id",
@@ -54,7 +54,7 @@
         "relationships": ["belongs_to: tournaments", "belongs_to: phases", "has_many: match_events"]
       },
       {
-        "filename": "match_events.json",
+        "filename": "eventos_partida.json",
         "records": 18,
         "description": "Eventos dentro de partidas - gols, assistências, cartões",
         "primary_key": "id",
@@ -71,7 +71,7 @@
         "unique_constraints": ["(tournament_id, team_id)"]
       },
       {
-        "filename": "podiums.json",
+        "filename": "podios.json",
         "records": 2,
         "description": "Pódios/Campeões dos torneios finalizados",
         "primary_key": "id",
@@ -80,7 +80,7 @@
         "unique_constraints": ["tournament_id"]
       },
       {
-        "filename": "media.json",
+        "filename": "midias.json",
         "records": 8,
         "description": "Galeria de fotos e vídeos dos torneios",
         "primary_key": "id",
@@ -88,7 +88,7 @@
         "relationships": ["belongs_to: tournaments"]
       },
       {
-        "filename": "users.json",
+        "filename": "usuarios.json",
         "records": 8,
         "description": "Usuários do sistema com diferentes permissões",
         "primary_key": "id",

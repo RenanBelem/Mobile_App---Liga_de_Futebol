@@ -1,14 +1,14 @@
-import leaguesData from '@/dados/json/leagues.json';
-import teamsData from '@/dados/json/teams.json';
-import playersData from '@/dados/json/players.json';
-import tournamentsData from '@/dados/json/tournaments.json';
-import matchesData from '@/dados/json/matches.json';
-import mediaData from '@/dados/json/media.json';
-import usersData from '@/dados/json/users.json';
-import podiumsData from '@/dados/json/podiums.json';
+import leaguesData from '@/dados/json/ligas.json';
+import teamsData from '@/dados/json/times.json';
+import playersData from '@/dados/json/jogadores.json';
+import tournamentsData from '@/dados/json/torneios.json';
+import matchesData from '@/dados/json/partidas.json';
+import mediaData from '@/dados/json/midias.json';
+import usersData from '@/dados/json/usuarios.json';
+import podiumsData from '@/dados/json/podios.json';
 import standingsData from '@/dados/json/standings.json';
-import seasonsData from '@/dados/json/seasons.json';
-import competitionsData from '@/dados/json/competitions.json';
+import seasonsData from '@/dados/json/temporadas.json';
+import competitionsData from '@/dados/json/competicoes.json';
 
 export const jsonLeagueData = {
   leagues: leaguesData.leagues ?? [],
