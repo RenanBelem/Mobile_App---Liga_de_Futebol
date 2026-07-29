@@ -286,15 +286,36 @@ const resolveTournamentSourceId = (tournamentId: string) => {
 
   if (/^t\d+$/i.test(tournamentId)) {
     const numericId = Number(tournamentId.replace(/^t/i, ''));
+
+    // Primary mapping: legacy visual IDs (t1, t2, ...) map by index to the competitions list.
+    const indexedSourceId = sourceTournamentIds[numericId - 1];
+    const indexedHasData = indexedSourceId
+      ? sourceMatches.some((match) => match.competicao_id === indexedSourceId)
+        || (routeDb.standings ?? []).some((standing) => standing.tournament_id === indexedSourceId)
+        || (routeDb.media ?? []).some((mediaItem) => mediaItem.tournament_id === indexedSourceId)
+      : false;
+
+    if (indexedSourceId && indexedHasData) {
+      return indexedSourceId;
+    }
+
+    // Backward compatibility for older snapshots that used comp-001 style IDs.
     const paddedCandidate = `comp-${String(numericId).padStart(3, '0')}`;
-    const candidateExists = sourceMatches.some((match) => match.competicao_id === paddedCandidate);
+    const candidateExists =
+      sourceMatches.some((match) => match.competicao_id === paddedCandidate)
+      || (routeDb.standings ?? []).some((standing) => standing.tournament_id === paddedCandidate)
+      || (routeDb.media ?? []).some((mediaItem) => mediaItem.tournament_id === paddedCandidate);
 
     if (candidateExists) {
       return paddedCandidate;
     }
+
+    if (indexedSourceId) {
+      return indexedSourceId;
+    }
   }
 
-  return sourceTournamentIds[Number(tournamentId.replace('t', '')) - 1] ?? tournamentId;
+  return tournamentId;
 };
 
 const normalizeTeam = (team: (typeof sourceTeams)[number], index: number): Team => ({

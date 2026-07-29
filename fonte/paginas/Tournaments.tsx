@@ -186,10 +186,20 @@ const Tournaments = () => {
     return rows;
   }, [copas, tacas]);
 
-  const getTournamentByCompetition = (competitionName: string) => {
+  const getTournamentByCompetition = (competitionName: string, seasonName?: string) => {
     return tournaments.find((tournament) => {
       const normalizedTournamentName = tournament.name.replace(/^Campeonato\s+/i, '');
-      return normalizeText(normalizedTournamentName) === normalizeText(competitionName);
+
+      const sameCompetition = normalizeText(normalizedTournamentName) === normalizeText(competitionName);
+      if (!sameCompetition) {
+        return false;
+      }
+
+      if (!seasonName) {
+        return true;
+      }
+
+      return normalizeText(tournament.season) === normalizeText(seasonName);
     });
   };
 
@@ -228,7 +238,7 @@ const Tournaments = () => {
                     <div className="grid gap-3">
                       {competitionRows.map(([leftCompetition, rightCompetition]) => {
                         const renderCompetitionCard = (entry: (typeof tacas)[number] | (typeof copas)[number]) => {
-                          const matchingTournament = getTournamentByCompetition(entry.name);
+                          const matchingTournament = getTournamentByCompetition(entry.name, selectedSeason?.seasonName);
 
                           return (
                             <button

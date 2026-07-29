@@ -2,24 +2,20 @@
  * SRC/paginas/TOURNAMENTDETAIL.TSX
  * ===============================
  * PROPÓSITO: Página de detalhes de um torneio específico
- * - Exibe informações do torneio (nome, datas, status)
- * - Mostra abas para: Partidas, Classificação, Estatísticas e Histórico
- * - Exibe pódio se torneio está encerrado
- * MOTIVO: Página crucial para visualizar todos os dados de um torneio,
- * incluindo partidas, standings e resultados finais
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Image as ImageIcon } from 'lucide-react';
 import PageHeader from '@/componentes/PageHeader';
-import { teamService, tournamentService } from '@/servicos/apiRoutes';
+import { tournamentService } from '@/servicos/apiRoutes';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/componentes/ui/dialog';
 import { jsonRouteRepository } from '@/servicos/jsonRouteRepository';
 import { useToast } from '@/ganchos/use-toast';
 
-
 type Tab = 'standings' | 'matches' | 'stats' | 'media';
 type StatsTab = 'scorers' | 'bestPlayers' | 'penalties' | 'suspensions';
+type StandingsNature = 'league' | 'hybrid' | 'knockout';
+type StandingsPhase = 'phase1' | 'phase2';
 type MatchDialogAction = 'menu' | 'view' | 'teams' | 'result' | 'info';
 
 type EditableEvent = {
@@ -34,6 +30,146 @@ type TournamentDetailLocationState = {
   selectedSeasonId?: string;
 };
 
+const normalizeText = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const knockoutRoundKeywords = ['oitavas', 'quartas', 'semi', 'final', 'mata', 'eliminatoria'];
+
+const isKnockoutRound = (round: string) => {
+  const normalizedRound = normalizeText(round);
+  return knockoutRoundKeywords.some((keyword) => normalizedRound.includes(keyword));
+};
+
+const roundWeight = (round: string) => {
+  const normalized = normalizeText(round);
+
+  if (normalized.includes('oitavas')) return 1;
+  if (normalized.includes('quartas')) return 2;
+  if (normalized.includes('semi')) return 3;
+  if (normalized === 'final' || normalized.includes(' final')) return 4;
+  if (normalized.includes('3') || normalized.includes('terceiro')) return 5;
+  if (normalized.includes('rodada')) {
+    const match = normalized.match(/rodada\s*(\d+)/);
+    return 100 + Number(match?.[1] ?? 0);
+  }
+
+  return 500;
+};
+
+const groupMatchesByRound = <T extends { round?: string }>(matches: T[]) => {
+  const grouped = matches.reduce<Record<string, T[]>>((accumulator, match) => {
+    const key = match.round?.trim() || 'Sem rodada definida';
+    if (!accumulator[key]) {
+      accumulator[key] = [];
+    }
+    accumulator[key].push(match);
+    return accumulator;
+  }, {});
+
+  return Object.entries(grouped).sort((a, b) => {
+    const weightDifference = roundWeight(a[0]) - roundWeight(b[0]);
+    if (weightDifference !== 0) {
+      return weightDifference;
+    }
+    return a[0].localeCompare(b[0]);
+  });
+};
+
+const buildStandingsFromMatches = (
+  matches: Array<{ home_team_id: string; away_team_id: string; score_home?: number; score_away?: number }>,
+  getTeamNameById: (teamId: string) => string,
+) => {
+  const table = new Map<string, {
+    teamId: string;
+    teamName: string;
+    points: number;
+    wins: number;
+    draws: number;
+    losses: number;
+    goalsFor: number;
+    goalsAgainst: number;
+  }>();
+
+  const ensureRow = (teamId: string) => {
+    if (!table.has(teamId)) {
+      table.set(teamId, {
+        teamId,
+        teamName: getTeamNameById(teamId),
+        points: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+      });
+    }
+
+    return table.get(teamId)!;
+  };
+
+  matches.forEach((match) => {
+    if (match.score_home === undefined || match.score_away === undefined) {
+      return;
+    }
+
+    const home = ensureRow(match.home_team_id);
+    const away = ensureRow(match.away_team_id);
+
+    home.goalsFor += match.score_home;
+    home.goalsAgainst += match.score_away;
+    away.goalsFor += match.score_away;
+    away.goalsAgainst += match.score_home;
+
+    if (match.score_home > match.score_away) {
+      home.wins += 1;
+      home.points += 3;
+      away.losses += 1;
+      return;
+    }
+
+    if (match.score_home < match.score_away) {
+      away.wins += 1;
+      away.points += 3;
+      home.losses += 1;
+      return;
+    }
+
+    home.draws += 1;
+    away.draws += 1;
+    home.points += 1;
+    away.points += 1;
+  });
+
+  return [...table.values()]
+    .sort((a, b) => {
+      const pointsDifference = b.points - a.points;
+      if (pointsDifference !== 0) {
+        return pointsDifference;
+      }
+
+      const goalDifference = (b.goalsFor - b.goalsAgainst) - (a.goalsFor - a.goalsAgainst);
+      if (goalDifference !== 0) {
+        return goalDifference;
+      }
+
+      return b.goalsFor - a.goalsFor;
+    })
+    .map((row, index) => ({
+      id: row.teamId,
+      position: index + 1,
+      teamName: row.teamName,
+      points: row.points,
+      wins: row.wins,
+      draws: row.draws,
+      losses: row.losses,
+    }));
+};
+
 const TournamentDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -42,6 +178,8 @@ const TournamentDetail = () => {
   const tournament = tournamentService.getById(id ?? '');
   const [activeTab, setActiveTab] = useState<Tab>('standings');
   const [activeStatsTab, setActiveStatsTab] = useState<StatsTab>('scorers');
+  const [standingsPhase, setStandingsPhase] = useState<StandingsPhase>('phase1');
+
   const [matchDialogOpen, setMatchDialogOpen] = useState(false);
   const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null);
   const [selectedAction, setSelectedAction] = useState<MatchDialogAction>('menu');
@@ -64,6 +202,19 @@ const TournamentDetail = () => {
   const [matchWarningNotice, setMatchWarningNotice] = useState('');
   const [matchReferees, setMatchReferees] = useState('');
   const [matchAttachments, setMatchAttachments] = useState('');
+
+  const [selectedRoundFilter, setSelectedRoundFilter] = useState('');
+  const [showAddMatchForm, setShowAddMatchForm] = useState(false);
+  const [showAddRoundForm, setShowAddRoundForm] = useState(false);
+  const [newRoundName, setNewRoundName] = useState('');
+  const [customRounds, setCustomRounds] = useState<string[]>([]);
+  const [newMatchRound, setNewMatchRound] = useState('Rodada 1');
+  const [newMatchHomeTeamId, setNewMatchHomeTeamId] = useState('');
+  const [newMatchAwayTeamId, setNewMatchAwayTeamId] = useState('');
+  const [newMatchDate, setNewMatchDate] = useState('');
+  const [newMatchTime, setNewMatchTime] = useState('');
+  const [newMatchLocation, setNewMatchLocation] = useState('');
+
   const locationState = location.state as TournamentDetailLocationState | null;
 
   const rawMatches = useMemo(() => jsonRouteRepository.get('matches'), []);
@@ -71,24 +222,138 @@ const TournamentDetail = () => {
   const rawMedia = useMemo(() => jsonRouteRepository.get('media'), []);
   const rawTeams = useMemo(() => jsonRouteRepository.get('teams'), []);
   const rawPlayers = useMemo(() => jsonRouteRepository.get('players'), []);
+  const rawCompetitions = useMemo(() => jsonRouteRepository.get('competitions'), []);
 
   if (!tournament) return <div className="p-4 text-muted-foreground">Torneio não encontrado.</div>;
 
-  const tournamentMatches = id ? tournamentService.getMatchesByTournament(id) : [];
-  const tournamentPodium = id ? tournamentService.getPodiumByTournament(id) : undefined;
-  const standings = id ? tournamentService.getStandingsByTournament(id) : [];
-  const tournamentMedia = id ? tournamentService.getMediaByTournament(id) : [];
-  const tournamentStats = id
-    ? tournamentService.getStatisticsByTournament(id)
-    : { scorers: [], bestPlayers: [], penalties: [], suspensions: [] };
+  const tournamentMatches = useMemo(() => (id ? tournamentService.getMatchesByTournament(id) : []), [id]);
+  const standings = useMemo(() => (id ? tournamentService.getStandingsByTournament(id) : []), [id]);
+  const tournamentMedia = useMemo(() => (id ? tournamentService.getMediaByTournament(id) : []), [id]);
+  const tournamentStats = useMemo(
+    () => (id
+      ? tournamentService.getStatisticsByTournament(id)
+      : { scorers: [], bestPlayers: [], penalties: [], suspensions: [] }),
+    [id],
+  );
+
+  const tournamentMatchIds = useMemo(() => new Set(tournamentMatches.map((match) => match.id)), [tournamentMatches]);
+
+  const rawTournamentMatches = useMemo(() => {
+    return rawMatches
+      .filter((match) => tournamentMatchIds.has(match.id))
+      .sort((a, b) => (a.date ?? '').localeCompare(b.date ?? ''));
+  }, [rawMatches, tournamentMatchIds]);
+
+  const sourceTournamentId = useMemo(() => {
+    if (rawTournamentMatches[0]?.tournament_id) {
+      return rawTournamentMatches[0].tournament_id;
+    }
+
+    const normalizedTournamentName = normalizeText(tournament.name.replace(/^Campeonato\s+/i, ''));
+    const competition = rawCompetitions.find((item) => normalizeText(item.name) === normalizedTournamentName);
+
+    return competition?.id ?? '';
+  }, [rawCompetitions, rawTournamentMatches, tournament.name]);
+
+  const sourceCompetition = useMemo(() => {
+    if (!sourceTournamentId) {
+      return undefined;
+    }
+
+    return rawCompetitions.find((competition) => competition.id === sourceTournamentId);
+  }, [rawCompetitions, sourceTournamentId]);
+
+  const getTeamNameById = (teamId: string) => {
+    const team = rawTeams.find((item) => item.id === teamId);
+    return team?.name ?? teamId;
+  };
+
+  const getPlayerNameById = (playerId: string) => {
+    const player = rawPlayers.find((item) => item.id === playerId);
+    return player?.name ?? playerId;
+  };
+
+  const roundOptions = useMemo(() => {
+    return [...new Set([
+      ...rawTournamentMatches.map((match) => match.round?.trim() || 'Sem rodada definida'),
+      ...customRounds,
+    ])]
+      .sort((a, b) => {
+        const weightDifference = roundWeight(a) - roundWeight(b);
+        if (weightDifference !== 0) {
+          return weightDifference;
+        }
+
+        return a.localeCompare(b);
+      });
+  }, [customRounds, rawTournamentMatches]);
+
+  useEffect(() => {
+    if (!roundOptions.length) {
+      return;
+    }
+
+    const firstRound = roundOptions[0];
+
+    setSelectedRoundFilter((current) => (current && roundOptions.includes(current) ? current : firstRound));
+    setNewMatchRound((current) => (current && roundOptions.includes(current) ? current : firstRound));
+  }, [roundOptions]);
+
+  const filteredMatches = useMemo(() => {
+    if (!selectedRoundFilter) {
+      return rawTournamentMatches;
+    }
+
+    return rawTournamentMatches.filter((match) => (match.round?.trim() || 'Sem rodada definida') === selectedRoundFilter);
+  }, [rawTournamentMatches, selectedRoundFilter]);
+
+  const standingsNature = useMemo<StandingsNature>(() => {
+    const rawFormat = sourceCompetition?.format ?? tournament.format ?? '';
+    const normalizedFormat = normalizeText(rawFormat);
+
+    if (
+      normalizedFormat.includes('pontos corridos + eliminatorias') ||
+      normalizedFormat.includes('grupos playoff') ||
+      normalizedFormat.includes('grupos_playoff') ||
+      normalizedFormat.includes('pontos_corridos_eliminatorias')
+    ) {
+      return 'hybrid';
+    }
+
+    if (normalizedFormat.includes('eliminatorias')) {
+      return 'knockout';
+    }
+
+    return 'league';
+  }, [sourceCompetition?.format, tournament.format]);
+
+  const knockoutMatches = useMemo(() => {
+    return rawTournamentMatches.filter((match) => isKnockoutRound(match.round ?? ''));
+  }, [rawTournamentMatches]);
+
+  const leaguePhaseMatches = useMemo(() => {
+    return rawTournamentMatches.filter((match) => !isKnockoutRound(match.round ?? ''));
+  }, [rawTournamentMatches]);
+
+  const phaseOneStandings = useMemo(() => {
+    if (standings.length > 0) {
+      return standings;
+    }
+
+    return buildStandingsFromMatches(leaguePhaseMatches, getTeamNameById);
+  }, [leaguePhaseMatches, standings]);
+
+  const knockoutByRounds = useMemo(() => {
+    return groupMatchesByRound(knockoutMatches);
+  }, [knockoutMatches]);
 
   const selectedRawMatch = useMemo(() => {
     if (!selectedMatchId) {
       return undefined;
     }
 
-    return rawMatches.find((match) => match.id === selectedMatchId);
-  }, [rawMatches, selectedMatchId]);
+    return rawTournamentMatches.find((match) => match.id === selectedMatchId);
+  }, [rawTournamentMatches, selectedMatchId]);
 
   const selectedMatchMedia = useMemo(() => {
     if (!selectedRawMatch) {
@@ -139,18 +404,8 @@ const TournamentDetail = () => {
 
   const subtitle = `${tournament.season} · ${tournament.type === 'cup' ? 'Copa' : 'Liga'}${tournament.format ? ` · ${tournament.format}` : ''}`;
 
-  const getTeamNameById = (teamId: string) => {
-    const team = rawTeams.find((item) => item.id === teamId);
-    return team?.name ?? teamId;
-  };
-
-  const getPlayerNameById = (playerId: string) => {
-    const player = rawPlayers.find((item) => item.id === playerId);
-    return player?.name ?? playerId;
-  };
-
   const openMatchDialog = (matchId: string) => {
-    const match = rawMatches.find((item) => item.id === matchId);
+    const match = rawTournamentMatches.find((item) => item.id === matchId);
     if (!match) {
       return;
     }
@@ -364,6 +619,127 @@ const TournamentDetail = () => {
     window.location.reload();
   };
 
+  const addMatchToRound = () => {
+    if (!sourceTournamentId) {
+      toast({
+        title: 'Competição não localizada',
+        description: 'Não foi possível identificar a competição desta tela para criar a partida.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!newMatchHomeTeamId || !newMatchAwayTeamId || newMatchHomeTeamId === newMatchAwayTeamId) {
+      toast({
+        title: 'Equipes inválidas',
+        description: 'Selecione equipes diferentes para criar a partida.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const nowIso = new Date().toISOString();
+
+    jsonRouteRepository.post('matches', {
+      id: `match-${Date.now()}`,
+      tournament_id: sourceTournamentId,
+      home_team_id: newMatchHomeTeamId,
+      away_team_id: newMatchAwayTeamId,
+      score_home: null,
+      score_away: null,
+      date: newMatchDate || new Date().toISOString().slice(0, 10),
+      kickoff_time: newMatchTime,
+      round: newMatchRound,
+      location: newMatchLocation.trim(),
+      status: 'scheduled',
+      created_at: nowIso,
+      updated_at: nowIso,
+    });
+
+    toast({
+      title: 'Partida adicionada',
+      description: `Nova partida criada na ${newMatchRound}.`,
+    });
+
+    window.location.reload();
+  };
+
+  const addRound = () => {
+    const normalizedRoundName = newRoundName.trim();
+
+    if (!normalizedRoundName) {
+      toast({
+        title: 'Rodada inválida',
+        description: 'Informe o nome da rodada para adicionar.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (roundOptions.some((round) => normalizeText(round) === normalizeText(normalizedRoundName))) {
+      toast({
+        title: 'Rodada já existe',
+        description: 'Essa rodada já está disponível para seleção.',
+      });
+      return;
+    }
+
+    setCustomRounds((previous) => [...previous, normalizedRoundName]);
+    setSelectedRoundFilter(normalizedRoundName);
+    setNewMatchRound(normalizedRoundName);
+    setNewRoundName('');
+    setShowAddRoundForm(false);
+
+    toast({
+      title: 'Rodada adicionada',
+      description: `A rodada ${normalizedRoundName} foi adicionada.`,
+    });
+  };
+
+  const renderStandingsTable = (rows: Array<{ id: string; position: number; teamName: string; points: number; wins: number; draws: number; losses: number }>) => {
+    if (!rows.length) {
+      return emptyState;
+    }
+
+    return (
+      <div className="space-y-2">
+        {rows.map((item) => (
+          <div key={item.id} className="flex items-center justify-between rounded-lg bg-secondary/30 p-3 text-sm">
+            <div>
+              <p className="font-semibold">{item.position}. {item.teamName}</p>
+              <p className="text-muted-foreground">{item.wins}V · {item.draws}E · {item.losses}D</p>
+            </div>
+            <span className="font-bold text-primary">{item.points} pts</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderKnockoutBracket = () => {
+    if (!knockoutByRounds.length) {
+      return emptyState;
+    }
+
+    return (
+      <div className="grid gap-3">
+        {knockoutByRounds.map(([roundLabel, matches]) => (
+          <div key={roundLabel} className="rounded-xl border border-border/70 bg-background/60 p-3">
+            <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">{roundLabel}</p>
+            <div className="space-y-2">
+              {matches.map((match) => (
+                <div key={match.id} className="rounded-md border border-border/60 bg-secondary/20 p-2 text-sm">
+                  <p className="font-semibold">{getTeamNameById(match.home_team_id)} {match.score_home ?? '?'} x {match.score_away ?? '?'} {getTeamNameById(match.away_team_id)}</p>
+                  <p className="text-xs text-muted-foreground">{match.date} · {match.location || 'Local não informado'}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="pb-20">
       <div className="px-4 pt-2">
@@ -372,7 +748,7 @@ const TournamentDetail = () => {
 
       <div className="sticky top-[3.5rem] z-30 px-4 pt-3">
         <div className="flex gap-1 rounded-lg border border-border/60 bg-background/90 p-1 shadow-sm backdrop-blur">
-          {tabs.map(tab => (
+          {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
@@ -388,46 +764,163 @@ const TournamentDetail = () => {
         </div>
       </div>
 
-      <div className="px-4 pt-4">
-
+      <div className="space-y-4 px-4 pt-4">
         {activeTab === 'matches' && (
-          <div className="space-y-2">
-            {tournamentMatches.length > 0 ? (
-              <div className="space-y-2">
-                {tournamentMatches.map((match) => {
-                  const homeTeam = teamService.getById(match.homeTeamId);
-                  const awayTeam = teamService.getById(match.awayTeamId);
-                  return (
+          <div className="space-y-3">
+            <div className="rounded-xl border border-border/70 bg-background/60 p-3">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Selecione a rodada</p>
+              <select
+                value={selectedRoundFilter}
+                onChange={(event) => {
+                  setSelectedRoundFilter(event.target.value);
+                  setNewMatchRound(event.target.value);
+                }}
+                className="w-full rounded-md border border-border bg-background/50 p-2.5 text-sm"
+              >
+                {roundOptions.map((round) => (
+                  <option key={round} value={round}>{round}</option>
+                ))}
+              </select>
+
+              <div className="mt-2 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddRoundForm((current) => !current)}
+                  className="w-full rounded-md border border-border py-2 text-xs font-semibold"
+                >
+                  {showAddRoundForm ? 'Cancelar adição de rodada' : 'Adicionar rodada'}
+                </button>
+
+                {showAddRoundForm && (
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <input
+                      value={newRoundName}
+                      onChange={(event) => setNewRoundName(event.target.value)}
+                      className="w-full rounded-md border border-border bg-background/50 p-2.5 text-sm"
+                      placeholder="Ex: Rodada 8, Quartas, Final"
+                    />
+                    <button
+                      type="button"
+                      onClick={addRound}
+                      className="rounded-md bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground"
+                    >
+                      Salvar rodada
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {filteredMatches.length > 0 ? (
+              <div className="rounded-xl border border-border/70 bg-background/60 p-3">
+                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Jogos da rodada {selectedRoundFilter}</p>
+                <div className="space-y-2">
+                  {filteredMatches.map((match) => (
                     <button
                       key={match.id}
                       type="button"
                       onClick={() => openMatchDialog(match.id)}
-                      className="w-full rounded-lg bg-secondary/30 p-3 text-left text-sm transition-colors hover:bg-secondary/50"
+                      className="w-full rounded-lg border border-border/60 bg-secondary/20 p-3 text-left text-sm"
                     >
-                      <p className="font-semibold">{homeTeam?.name ?? match.homeTeamId} {match.homeScore ?? '?'} x {match.awayScore ?? '?'} {awayTeam?.name ?? match.awayTeamId}</p>
-                      <p className="text-muted-foreground">{match.date} · {match.round || 'Partida'}</p>
+                      <p className="font-semibold">{getTeamNameById(match.home_team_id)} {match.score_home ?? '?'} x {match.score_away ?? '?'} {getTeamNameById(match.away_team_id)}</p>
+                      <p className="text-muted-foreground">{match.date} · {match.location || 'Local não informado'}</p>
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
             ) : emptyState}
+
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setShowAddMatchForm((current) => !current)}
+                className="w-full rounded-md bg-primary py-2.5 text-sm font-semibold text-primary-foreground"
+              >
+                {showAddMatchForm ? 'Fechar formulário de partida' : 'Adicionar partida'}
+              </button>
+
+              {showAddMatchForm && (
+                <div className="rounded-xl border border-border/70 bg-background/60 p-3">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Nova partida na rodada selecionada</p>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <select
+                      value={newMatchHomeTeamId}
+                      onChange={(event) => setNewMatchHomeTeamId(event.target.value)}
+                      className="rounded-md border border-border bg-background/50 p-2.5 text-sm"
+                    >
+                      <option value="">Equipe mandante</option>
+                      {rawTeams.map((team) => (
+                        <option key={team.id} value={team.id}>{team.name}</option>
+                      ))}
+                    </select>
+
+                    <select
+                      value={newMatchAwayTeamId}
+                      onChange={(event) => setNewMatchAwayTeamId(event.target.value)}
+                      className="rounded-md border border-border bg-background/50 p-2.5 text-sm"
+                    >
+                      <option value="">Equipe visitante</option>
+                      {rawTeams.map((team) => (
+                        <option key={team.id} value={team.id}>{team.name}</option>
+                      ))}
+                    </select>
+
+                    <input
+                      type="date"
+                      value={newMatchDate}
+                      onChange={(event) => setNewMatchDate(event.target.value)}
+                      className="rounded-md border border-border bg-background/50 p-2.5 text-sm"
+                    />
+
+                    <input
+                      type="time"
+                      value={newMatchTime}
+                      onChange={(event) => setNewMatchTime(event.target.value)}
+                      className="rounded-md border border-border bg-background/50 p-2.5 text-sm"
+                    />
+
+                    <input
+                      value={newMatchLocation}
+                      onChange={(event) => setNewMatchLocation(event.target.value)}
+                      className="rounded-md border border-border bg-background/50 p-2.5 text-sm sm:col-span-2"
+                      placeholder="Local da partida"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={addMatchToRound}
+                    className="mt-2 w-full rounded-md bg-primary py-2.5 text-sm font-semibold text-primary-foreground"
+                  >
+                    Salvar nova partida
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
         {activeTab === 'standings' && (
-          standings.length > 0 ? (
-            <div className="space-y-2">
-              {standings.map((item) => (
-                <div key={item.id} className="flex items-center justify-between rounded-lg bg-secondary/30 p-3 text-sm">
-                  <div>
-                    <p className="font-semibold">{item.position}. {item.teamName}</p>
-                    <p className="text-muted-foreground">{item.wins}V · {item.draws}E · {item.losses}D</p>
-                  </div>
-                  <span className="font-bold text-primary">{item.points} pts</span>
-                </div>
-              ))}
-            </div>
-          ) : emptyState
+          <div className="space-y-3">
+            {standingsNature === 'league' && renderStandingsTable(phaseOneStandings)}
+
+            {standingsNature === 'knockout' && renderKnockoutBracket()}
+
+            {standingsNature === 'hybrid' && (
+              <div className="space-y-3">
+                <select
+                  value={standingsPhase}
+                  onChange={(event) => setStandingsPhase(event.target.value as StandingsPhase)}
+                  className="w-full rounded-md border border-border bg-background/50 p-2.5 text-sm"
+                >
+                  <option value="phase1">1ª fase (Pontos corridos)</option>
+                  <option value="phase2">2ª fase (Eliminatórias)</option>
+                </select>
+
+                {standingsPhase === 'phase1' ? renderStandingsTable(phaseOneStandings) : renderKnockoutBracket()}
+              </div>
+            )}
+          </div>
         )}
 
         {activeTab === 'stats' && (
