@@ -369,6 +369,7 @@ export interface SeasonCompetitionSummary {
   name: string;
   status: string;
   type?: TipoCompeticao;
+  format?: FormatoCompeticao;
   description?: string;
   logoUrl?: string;
   order?: number;

@@ -179,13 +179,20 @@ const sourceTeams = routeDb.teams.map((team) => ({
   atualizado_em: team.updated_at,
 }));
 const sourceCompetitions = routeDb.competitions.map((patchedCompetition) => {
+  const normalizedFormat =
+    patchedCompetition.format === 'eliminacao_direta'
+      ? 'eliminacao_direta'
+      : patchedCompetition.format === 'grupos_playoff' || patchedCompetition.format === 'pontos_corridos_eliminatorias'
+        ? 'grupos_playoff'
+        : 'turno_unico';
+
   return {
     id: patchedCompetition.id,
     temporada_id: patchedCompetition.season_id,
     nome: patchedCompetition.name,
     slug: patchedCompetition.slug,
     tipo: patchedCompetition.type === 'copa' ? 'copa' : 'campeonato',
-    formato: patchedCompetition.format === 'eliminacao_direta' ? 'eliminacao_direta' : 'turno_unico',
+    formato: normalizedFormat,
     data_inicio: patchedCompetition.start_date,
     data_fim: patchedCompetition.end_date,
     status: patchedCompetition.status === 'finalizada' ? 'finalizada' : patchedCompetition.status === 'em_andamento' ? 'em_andamento' : 'rascunho',
@@ -328,6 +335,13 @@ const normalizePlayer = (jogador: (typeof sourcePlayers)[number]): Player => {
 
 const normalizeTournament = (competicao: (typeof sourceCompetitions)[number], index: number): Tournament => {
   const temporada = sourceSeasons.find((item) => item.id === competicao.temporada_id);
+  const tournamentFormatLabel =
+    competicao.formato === 'turno_unico'
+      ? 'Pontos Corridos'
+      : competicao.formato === 'grupos_playoff'
+        ? 'Pontos corridos + Eliminatórias'
+        : 'Eliminatórias';
+
   return {
     id: mapTournamentIdToLegacy(competicao.id, index),
     leagueId: 'liga-001',
@@ -336,7 +350,7 @@ const normalizeTournament = (competicao: (typeof sourceCompetitions)[number], in
     season: temporada?.nome ?? 'Temporada',
     status: competicao.status === 'finalizada' ? 'finished' : competicao.status === 'em_andamento' ? 'ongoing' : 'draft',
     description: competicao.descricao,
-    format: competicao.formato === 'turno_unico' ? 'Pontos corridos' : competicao.formato === 'eliminacao_direta' ? 'Mata-mata' : 'Grupos + playoff',
+    format: tournamentFormatLabel,
     history: competicao.descricao,
     logoUrl: competicao.url_logo,
     bannerUrl: competicao.url_banner,
@@ -477,6 +491,7 @@ const seasonSummaries = sourceSeasons.map((temporada) => ({
       name: competicao.nome,
       status: competicao.status,
       type: competicao.tipo,
+      format: competicao.formato,
       description: competicao.descricao,
       logoUrl: competicao.url_logo,
       order: competicao.ordem,

@@ -47,6 +47,18 @@ const isCupCompetition = (competition: { name: string }) => {
   return !isLeagueCompetition(competition);
 };
 
+const resolveCompetitionFormatLabel = (format?: string) => {
+  if (format === 'grupos_playoff') {
+    return 'Pontos corridos + Eliminatórias';
+  }
+
+  if (format === 'eliminacao_direta') {
+    return 'Eliminatórias';
+  }
+
+  return 'Pontos Corridos';
+};
+
 const resolveCompetitionLogo = (name: string, fallback?: string) => {
   const normalizedName = name.toLowerCase();
 
@@ -240,6 +252,7 @@ const Tournaments = () => {
                               <div className="min-w-0 flex-1">
                                 <p className="truncate text-sm font-semibold">{entry.name}</p>
                                 <p className="mt-0.5 text-[11px] text-muted-foreground">{entry.description || 'Competição da liga'}</p>
+                                <p className="mt-0.5 text-[11px] text-muted-foreground">Formato: {resolveCompetitionFormatLabel(entry.format)}</p>
                               </div>
                             </button>
                           );
