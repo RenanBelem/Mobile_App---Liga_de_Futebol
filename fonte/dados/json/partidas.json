@@ -9,7 +9,7 @@
       "score_away": 4,
       "date": "2025-05-17",
       "round": "Semifinal",
-      "location": "Estádio da Liga",
+      "location": "Canil - Ecosoccer",
       "status": "finished",
       "created_at": "2025-05-17T00:00:00Z",
       "updated_at": "2025-05-17T00:00:00Z"
@@ -23,7 +23,7 @@
       "score_away": 3,
       "date": "2025-05-10",
       "round": "Semifinal",
-      "location": "Campo Cecília",
+      "location": "Canil - Ecosoccer",
       "status": "finished",
       "created_at": "2025-05-10T00:00:00Z",
       "updated_at": "2025-05-10T00:00:00Z"
@@ -37,7 +37,7 @@
       "score_away": 2,
       "date": "2025-06-01",
       "round": "Final",
-      "location": "Estádio da Liga",
+      "location": "Canil - Ecosoccer",
       "status": "finished",
       "created_at": "2025-06-01T00:00:00Z",
       "updated_at": "2025-06-01T00:00:00Z"
@@ -65,7 +65,7 @@
       "score_away": 1,
       "date": "2022-05-21",
       "round": "Final",
-      "location": "Campo da LFA",
+      "location": "Canil - Ecosoccer",
       "status": "finished",
       "created_at": "2022-05-21T00:00:00Z",
       "updated_at": "2022-05-21T00:00:00Z"
@@ -79,7 +79,7 @@
       "score_away": 2,
       "date": "2023-05-28",
       "round": "Final",
-      "location": "Campo da LFA",
+      "location": "Canil - Ecosoccer",
       "status": "finished",
       "created_at": "2023-05-28T00:00:00Z",
       "updated_at": "2023-05-28T00:00:00Z"
@@ -93,7 +93,7 @@
       "score_away": 1,
       "date": "2024-06-09",
       "round": "Final",
-      "location": "Campo da LFA",
+      "location": "Canil - Ecosoccer",
       "status": "finished",
       "created_at": "2024-06-09T00:00:00Z",
       "updated_at": "2024-06-09T00:00:00Z"
@@ -107,7 +107,7 @@
       "score_away": 2,
       "date": "2025-10-19",
       "round": "Final",
-      "location": "Campo da LFA",
+      "location": "Cruzeta",
       "status": "finished",
       "created_at": "2025-10-19T00:00:00Z",
       "updated_at": "2025-10-19T00:00:00Z"

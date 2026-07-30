@@ -1,0 +1,614 @@
+{
+  "generated_at": "2026-07-30T19:19:25Z",
+  "source_root": "wiki-lfa/wiki-lfa-main/docs",
+  "competitions": [
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/copa-carlos-caszely.md",
+      "name": "Copa Carlos Caszely",
+      "slug": "copa-carlos-caszely",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 9
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/copa-eric-cantona.md",
+      "name": "Copa Eric Cantona",
+      "slug": "copa-eric-cantona",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 9
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/copa-foice.md",
+      "name": "Copa Foice",
+      "slug": "copa-foice",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 1
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/recopa.md",
+      "name": "Recopa",
+      "slug": "recopa",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 2
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/supertaca.md",
+      "name": "Supertaça",
+      "slug": "supertaca",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 2
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/taca-cecilia.md",
+      "name": "Taça Cecília",
+      "slug": "taca-cecilia",
+      "organizer": "LFA",
+      "competition_type": "campeonato",
+      "editions": 9
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/taca-sissi.md",
+      "name": "Taça Sissi",
+      "slug": "taca-sissi",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 1
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/campeonatos/taca-wladimir-rodrigues.md",
+      "name": "Taça Wladimir Rodrigues",
+      "slug": "taca-wladimir-rodrigues",
+      "organizer": "LFA",
+      "competition_type": "copa",
+      "editions": 3
+    }
+  ],
+  "seasons": [
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2022/apertura.md",
+      "season_slug": "apertura-22",
+      "season_name": "Apertura 22",
+      "competition_name": "Taça Cecília",
+      "champion": "**Pé-de-pano**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2022/apertura.md",
+      "season_slug": "apertura-22",
+      "season_name": "Apertura 22",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Resistência**",
+      "vice": "Primavera"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2022/apertura.md",
+      "season_slug": "apertura-22",
+      "season_name": "Apertura 22",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Resistência**",
+      "vice": "Pé-de-pano"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2022/clausura.md",
+      "season_slug": "clausura-22",
+      "season_name": "Clausura 22",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Teto Preto**",
+      "vice": "Sankara"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2022/clausura.md",
+      "season_slug": "clausura-22",
+      "season_name": "Clausura 22",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Resistência**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2022/clausura.md",
+      "season_slug": "clausura-22",
+      "season_name": "Clausura 22",
+      "competition_name": "Taça Cecília",
+      "champion": "**Pé-de-pano**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2023/apertura.md",
+      "season_slug": "apertura-23",
+      "season_name": "Apertura 23",
+      "competition_name": "Taça Cecília",
+      "champion": "**Guairacá**",
+      "vice": "Primavera"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2023/apertura.md",
+      "season_slug": "apertura-23",
+      "season_name": "Apertura 23",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Locomotiva**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2023/apertura.md",
+      "season_slug": "apertura-23",
+      "season_name": "Apertura 23",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Sankara**",
+      "vice": "Primavera"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2023/clausura.md",
+      "season_slug": "clausura-23",
+      "season_name": "Clausura 23",
+      "competition_name": "Taça Cecília",
+      "champion": "**Guairacá**",
+      "vice": "Pé-de-pano"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2023/clausura.md",
+      "season_slug": "clausura-23",
+      "season_name": "Clausura 23",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Pé-de-pano**",
+      "vice": "9Dedos"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2023/clausura.md",
+      "season_slug": "clausura-23",
+      "season_name": "Clausura 23",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Guairacá**",
+      "vice": "Primavera"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2024/apertura.md",
+      "season_slug": "apertura-24",
+      "season_name": "Apertura 24",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Estrela Vermelha**",
+      "vice": "Guairacá"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2024/apertura.md",
+      "season_slug": "apertura-24",
+      "season_name": "Apertura 24",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Teto Preto**",
+      "vice": "Locomotiva"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2024/apertura.md",
+      "season_slug": "apertura-24",
+      "season_name": "Apertura 24",
+      "competition_name": "Taça Cecília",
+      "champion": "**Guairacá**",
+      "vice": "9Dedos"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2024/clausura.md",
+      "season_slug": "clausura-24",
+      "season_name": "Clausura 24",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Deportivo Oriental**",
+      "vice": "Primavera"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2024/clausura.md",
+      "season_slug": "clausura-24",
+      "season_name": "Clausura 24",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Estrela Vermelha**",
+      "vice": "Teto Preto"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2024/clausura.md",
+      "season_slug": "clausura-24",
+      "season_name": "Clausura 24",
+      "competition_name": "Taça Cecília",
+      "champion": "**Guairacá**",
+      "vice": "Teto Preto"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/apertura.md",
+      "season_slug": "apertura-25",
+      "season_name": "Apertura 25",
+      "competition_name": "Taça Wladimir Rodrigues",
+      "champion": "**Azulão**",
+      "vice": "Toque de Classe"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/apertura.md",
+      "season_slug": "apertura-25",
+      "season_name": "Apertura 25",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Aqui Estamos**",
+      "vice": "Azulão"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/apertura.md",
+      "season_slug": "apertura-25",
+      "season_name": "Apertura 25",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Estrela Vermelha**",
+      "vice": "9Dedos"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/apertura.md",
+      "season_slug": "apertura-25",
+      "season_name": "Apertura 25",
+      "competition_name": "Taça Cecília",
+      "champion": "**Pé-de-pano**",
+      "vice": "9Dedos"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/apertura.md",
+      "season_slug": "apertura-25",
+      "season_name": "Apertura 25",
+      "competition_name": "Taça Sissi",
+      "champion": "**São Bento**",
+      "vice": "Delas"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/clausura.md",
+      "season_slug": "clausura-25",
+      "season_name": "Clausura 25",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Linha Esquerda**",
+      "vice": "Azulão"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/clausura.md",
+      "season_slug": "clausura-25",
+      "season_name": "Clausura 25",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Imperial**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/clausura.md",
+      "season_slug": "clausura-25",
+      "season_name": "Clausura 25",
+      "competition_name": "Taça Wladimir Rodrigues",
+      "champion": "**Linha Esquerda**",
+      "vice": "América de Calo"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/clausura.md",
+      "season_slug": "clausura-25",
+      "season_name": "Clausura 25",
+      "competition_name": "Taça Cecília",
+      "champion": "**Imperial**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/clausura.md",
+      "season_slug": "clausura-25",
+      "season_name": "Clausura 25",
+      "competition_name": "Supertaça",
+      "champion": "**Azulão**",
+      "vice": "9Dedos"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2025/clausura.md",
+      "season_slug": "clausura-25",
+      "season_name": "Clausura 25",
+      "competition_name": "Recopa",
+      "champion": "**Estrela Vermelha**",
+      "vice": "Aqui Estamos"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Copa Foice",
+      "champion": "**Paulo Freire**",
+      "vice": "Zapatista"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Copa Carlos Caszely",
+      "champion": "**Deportivo Oriental**",
+      "vice": "Umbabarauma"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Copa Eric Cantona",
+      "champion": "**Estrela Vermelha**",
+      "vice": "Azulão"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Taça Wladimir Rodrigues",
+      "champion": "**Umbabarauma**",
+      "vice": "Liverpanças"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Taça Cecília",
+      "champion": "**Sankara**",
+      "vice": "Estrela Vermelha"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Supertaça",
+      "champion": "**Imperial**",
+      "vice": "Linha Esquerda"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/temporadas/2026/apertura.md",
+      "season_slug": "apertura-26",
+      "season_name": "Apertura 26",
+      "competition_name": "Recopa",
+      "champion": "**Imperial**",
+      "vice": "Linha Esquerda"
+    }
+  ],
+  "teams": [
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/9-dedos.md",
+      "name": "9DEDOS",
+      "slug": "9-dedos",
+      "founded_year": null,
+      "description": "O 9DEDOS é formado pelo ema e seus amigos,"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/america-de-calo.md",
+      "name": "América de Calo",
+      "slug": "america-de-calo",
+      "founded_year": null,
+      "description": "O América de Calo é uma equipe participante da Liga de Futebol Antifascista (LFA)."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/aqui-estamos.md",
+      "name": "Aqui Estamos Futebol, Amizade e Pixação",
+      "slug": "aqui-estamos",
+      "founded_year": null,
+      "description": "Time de futebol foi fundado no dia 20 de julho de 2023 por Rodrigo Santos vulgo Kavê e Carlos Rodrigues vulgo Vestígio, a origem do nome vem da grife de pixadores da Zona Norte de Curitiba, fundada no ano de 1999. Com o intuito de fomentar a demanda do esporte e do lazer na região periférica da Zona Norte, os pixadores sentiram a necessidade de organizar um time de futebol, juntando praticantes do movimento da pixação, moradores da região e simpatizantes, visando além de suprir a questão da prática esportiva, debater questões relacionadas ao dia a dia e cotidiano dos sujeitos. O time tem como bases, além da prática esportiva como instrumental emancipador e crítico do status quo, os questionamentos realizados pelo próprio movimento da pixação, que tece crítica à ordem vigente, amplia o debate público, problematiza a ocupação dos espaços da cidade, evidenciando a crítica à propriedade privada. Futebol, Amizade e Pixação são o que nos unem."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/atleticomuna.md",
+      "name": "Atleticomuna",
+      "slug": "atleticomuna",
+      "founded_year": 2025,
+      "description": "Existir não é viver, agonizar não é estar morto."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/azulão.md",
+      "name": "Azulão Esporte Clube",
+      "slug": "azulao",
+      "founded_year": null,
+      "description": "O Azulão Esporte Clube é um sonho antigo de um grupo de amigos mais antigo ainda. Depois de nos tornarmos campeões na quadra em que nascemos, em abril de 2024, o sonho virou realidade. Como equipe, acreditamos no jogo limpo e no futebol arte, assim como na camaradagem dentro e fora de campo, nos ideais progressistas e socialistas, e no esporte como lugar de discussão política para além de uma ferramenta de amizade, lazer, orgulho e pertencimento. Com apoio de familiares e torcedores, temos a honra e a alegria de compor a Liga de Futebol Antifascista em 2025. Um viva à Nação Celeste, à Águia Anil, ao Manto Índigo e às nossas guerreiras e guerreiros Azulinos, lado a lado com muita astúcia, pouca sorte e unidos SEMPRE!"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/baianos-de-maua.md",
+      "name": "Baianos de Mauá",
+      "slug": "baianos-de-maua",
+      "founded_year": 2024,
+      "description": "Baianos De Mauá é mais que um time - é uma união de histórias, sotaques e paixões pelo esporte bretão. Fundado no Rebouças em 2024, superando as piores friacas curitibanas possíveis no Portal da Bola do lendário Heliomar, o \"Baiano\", o clube nasceu com espírito leve e consciência de classe, mas carrega em seu nome também uma outra homenagem de peso: o lendário Baianinho de Mauá, ícone brasileiro da sinuca."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/bolchesitio.md",
+      "name": "Bolchesítio Futebol Clube",
+      "slug": "bolchesitio",
+      "founded_year": null,
+      "description": "nois é ruim e mora longe."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/brigada-lupicinia.md",
+      "name": "Brigada Lupicínia F.C.",
+      "slug": "brigada-lupicinia",
+      "founded_year": null,
+      "description": "Inspirados por música, somos levados pela melancolia e cantos do cotidiano do samba-canção de Lupicínio Rodrigues, somados ao fervor do punk rock, misturamos com a intensidade do amor pelo futebol."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/caos-da-villa.md",
+      "name": "Caos da Villa",
+      "slug": "caos-da-villa",
+      "founded_year": null,
+      "description": "O campeonato está batendo à porta e o coração do Caos da Villa já bate no ritmo do apito inicial. Mais do que um time, somos uma família que carrega no peito o orgulho da nossa origem."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/delas.md",
+      "name": "Delas Futebol Clube",
+      "slug": "delas",
+      "founded_year": 2015,
+      "description": "O Delas Futebol Clube nasceu em 2015 com a missão de promover o futebol para todas! 💜⚽ Ao longo dos anos, conquistamos respeito e credibilidade no cenário esportivo de Curitiba, tornando-nos referência na promoção de eventos e na formação de equipes femininas."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/deportivo-oriental.md",
+      "name": "Deportivo Oriental",
+      "slug": "deportivo-oriental",
+      "founded_year": 2023,
+      "description": "Inspirados na República Popular Socialista da Albânia com sua história de resistência e autossuficiência que são exemplos para nossos tempos, nós somos o Deportivo Oriental. O time foi fundado em 2023 por alunos e ex-alunos de Ciências Sociais e História da UFPR com a participação de alguns agregados, tendo como colunas centrais em sua estrutura a democracia, a amizade, a cerveja e a resenha."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/diamante.md",
+      "name": "DIAMANTE FUTEBOL CLUBE",
+      "slug": "diamante",
+      "founded_year": 2026,
+      "description": "Fundado em 2026, o Diamante Futebol Clube carrega em seu nome uma homenagem a Leônidas da Silva, o eterno Diamante Negro, um dos maiores ídolos da história do futebol brasileiro. Sua trajetória de talento, criatividade e superação inspira a identidade do nosso clube."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/discaida.md",
+      "name": "Discaída",
+      "slug": "discaida",
+      "founded_year": null,
+      "description": "Oficialmente fundado em janeiro de 2024, na Vila Xapinhal, no bairro Sítio Cercado, zona sul de Curitiba, o Discaida surgiu dentro da quebrada, onde muitas histórias começam, mas nem sempre recebem a visibilidade que merecem."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/Estrela-Vermelha.md",
+      "name": "Clube de Futebol Estrela Vermelha",
+      "slug": "estrela-vermelha",
+      "founded_year": null,
+      "description": "Clube de Futebol Estrela Vermelha, alinhado politicamente à esquerda e situado na Curitiba Oriental."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/faixa-preta.md",
+      "name": "Faixa Preta",
+      "slug": "faixa-preta",
+      "founded_year": 2019,
+      "description": "Com influências vascaínas tanto no uniforme, quanto nos ideais, o Faixa Preta nasceu em 2019 como um time de futsal para jornalistas que, com o tempo, começou a contar com agregados e amigos que gostam do riscado, da bebida e da fumaça."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/ginga.md",
+      "name": "Ginga",
+      "slug": "ginga",
+      "founded_year": 2022,
+      "description": "O Ginga é um grupo diverso de mulheres em sua maioria lésbicas e bissexuais, que se juntou em 2022, com o propósito de mais do que formar um time, mas conectar através do esporte cada vez mais mulheres e, principalmente, usar o esporte como instrumento de transformação social."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/guairaca.md",
+      "name": "Guairacá Futebol Ancestral",
+      "slug": "guairaca",
+      "founded_year": null,
+      "description": "O Guairacá Futebol Ancestral surgiu da pura e simples vontade de reunir os amigos para jogar futebol. Tendo em comum o gosto pelo hardcore e pelo nobre esporte bretão, partimos dos bate cabeça nas rodas de pogo, ao quebra canela nas quatro linhas."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/imperial.md",
+      "name": "Imperial Futebol Clube",
+      "slug": "imperial",
+      "founded_year": 2023,
+      "description": "O Imperial Futebol Clube, é um clube formado no ano de 2023, por antigos estudantes do Colégio Estadual do Paraná, sendo esses, Vitor Tibucheski, Vinicius Rodrigues e Vinicius Ceislak."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/IV_XX-de-Novembro.md",
+      "name": "IV:XX de Novembro",
+      "slug": "iv-xx-de-novembro",
+      "founded_year": 2016,
+      "description": "Também conhecido como Leões de Jah, nasce em 2016 para a disputa da gloriosa Copa Danone, mas com o tempo o que era apenas trivial tornou-se a amalgama que une no laço da amizade, futebol e a defesa da erva sagrada."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/latinofuturista.md",
+      "name": "Resistência Latinofuturista",
+      "slug": "latinofuturista",
+      "founded_year": null,
+      "description": "Quem compõe o time do Resistência Latinofuturista?"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/linha-esquerda.md",
+      "name": "Linha Esquerda Futebol Clube",
+      "slug": "linha-esquerda",
+      "founded_year": 2018,
+      "description": "O Linha Esquerda Futebol Clube foi fundado em 2018, quando, empolgados para disputar a Geocopa (competição do curso de Geografia da UFPR) e indignados com a conjuntura política brasileira da época, fomos em busca de um nome que representasse de maneira crítica a nossa visão de mundo."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/liverpancas.md",
+      "name": "Liverpanças",
+      "slug": "liverpancas",
+      "founded_year": null,
+      "description": "O Liverpanças nasceu daquilo que sustenta qualquer grande time: amizade, resenha e uma boa mesa cheia. Inspirados pelo Liverpool — um clube marcado pela força da comunidade e pelo espírito coletivo — um grupo de amigos da balbúrdia decidiu transformar encontros, risadas e refeições em algo ainda maior."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/locomotiva-makhnovista.md",
+      "name": "Locomotiva Makhnovista Futebol Socialismo e Camaradagem",
+      "slug": "locomotiva-makhnovista",
+      "founded_year": 2016,
+      "description": "A Locomotiva Makhnovista Futebol Socialismo e Camaradagem é um partido fundado em 2016, em Curitiba Oriental, como consolidação de laços de fraternidade cultivados ao longo do tempo nas ruas, nas manifestações políticas de trabalhadores, nos corredores do SCHLA da UFPR e nos shows de punk rock da cidade. Desde então já se passaram mais de 10 anos sem nenhuma baixa no elenco."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/matriarcado.md",
+      "name": "Matriarcado",
+      "slug": "matriarcado",
+      "founded_year": null,
+      "description": "O Matriarcado é um time de futebol feminino que carrega a essência da força coletiva e da transformação social. Mais do que um time, o Matriarcado é um movimento que representa união, resistência e a luta por um mundo mais igualitário. Integrante da Liga Antifascista, o time utiliza o esporte como ferramenta de ação e mudança, promovendo valores de liberdade, solidariedade e justiça social."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/matsubara.md",
+      "name": "Matsubara",
+      "slug": "matsubara",
+      "founded_year": null,
+      "description": "気になるよね！？笑"
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/paulo-freire.md",
+      "name": "FC ST. Paulo Freire",
+      "slug": "paulo-freire",
+      "founded_year": null,
+      "description": "Fundado em 03/05/2024 o “FC ST. Paulo Freire” é fruto de longas amizades entre professores que sempre lutaram pela educação no estado do Paraná, colegas de escolas que enfrentam o dia a dia docente com bom humor, mas também estando presentes em greves e paralisações. Em 2023 parte desse grupo participou do campeonato dos servidores de Fazenda Rio Grande e após essa participação houve o interesse de continuar com o time. Porém, após um certo tempo o grupo partiu para uma composição baseada na ideologia e com o objetivo principal de um dia participar da Liga de Futebol Antifascista. Quando o grupo ainda estava se formando, o time foi chamado momentaneamente de “Ambicanhoto”, porém um dos integrantes que não é educador levantou a possibilidade de homenagear o FC ST. Pauli, um clube super engajado socialmente e de luta por direitos iguais, desta forma, como também havia muitos professores, resolveram homenagear o nosso patrono fazendo um jogo de palavras com “Pauli e Paulo Freire”. Na sequência, mais professores e pessoas de fora da educação foram adentrando ao time e fortalecendo o grupo."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/pe-de-pano.md",
+      "name": "Pé de Pano",
+      "slug": "pe-de-pano",
+      "founded_year": 2001,
+      "description": "Clube de futebol formado em meados de 2001 por 4 amigos (Sobrinho Léo “Battaglia” Zonato, Tio Rodrigo “Mudo” Zonato, Amigo Felipe “Salvatore” Fugmann, Primo Felipe “Nariz” Alessi) que sempre jogavam futsal - depois passamos a jogar no sintético e gramado. Não teve região da cidade de Curitiba que não jogamos. Norte, Sul, Leste e Oeste, levando o nome Pé de Pano por todos os cantos. A formação do time foi inspirada no patriarca da Família Zonato, que sempre foi apaixonado por futebol, cujo time se chamava Museu."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/Primavera.md",
+      "name": "Primavera F.C.",
+      "slug": "primavera",
+      "founded_year": null,
+      "description": "Nasce uma flor. Um novo time de futebol surge no coração curitibano."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/resistencia-alviverde.md",
+      "name": "Resistência Alviverde",
+      "slug": "resistencia-alviverde",
+      "founded_year": 2021,
+      "description": "Resistência Alviverde, presente. Somos o escrete do movimento de mesmo nome, fundado em 2021 reunindo torcedores do Coritiba politicamente situados à esquerda."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/sankara.md",
+      "name": "Sankara",
+      "slug": "sankara",
+      "founded_year": 2022,
+      "description": "Unidos pela boleiragem e pelo ideário socialista, o Sankara é uma das novidades da Liga Antifascista 2022. Fundado há menos de um mês, o time é formado por uma galera politizada, “terrabolista” e boa de resenha."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/sao-bento.md",
+      "name": "São Bento",
+      "slug": "sao-bento",
+      "founded_year": null,
+      "description": "O São Bento foi fundado em 31/01/2025 com o lema “Compromisso e lealdade com a vitória e a amizade”."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/sem-fronteiras.md",
+      "name": "Coletivo Sem Fronteiras",
+      "slug": "sem-fronteiras",
+      "founded_year": 2026,
+      "description": "Dizem os donos do mundo que a terra deve ser cercada. Erguem muros, criam bolhas, transformando a riqueza da nossa diversidade em abismos de distância. Mas a nossa história se constrói com o suor da ação coletiva."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/teto-preto.md",
+      "name": "Teto Preto FC",
+      "slug": "teto-preto",
+      "founded_year": null,
+      "description": "Nomeado em 2014 como Teto Preto FC, o coletivo começou em 2005 com alguns integrantes do time atual e se chamava \"confraria do futebol\", com o passar do tempo e com novos integrantes o perfil do grupo mudou, assim como seus ideais e hoje temos como lema o futebol e a camaradagem. Somos antifas e progressistas por natureza e prezamos pelos conceitos socialistas. Assim como no futebol, esporte coletivo, em que só se chega à vitória juntos, prezamos e pregamos isto na vida, com solidariedade e empatia trabalhamos para tornar o mundo melhor, com mais igualdade e respeito."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/toque-de-classe.md",
+      "name": "Toque de Classe - Associação Desportiva",
+      "slug": "toque-de-classe",
+      "founded_year": null,
+      "description": "No chão da fábrica, nas linhas de produção, nos escritórios e nas ruas, o trabalho não é apenas um meio de sobrevivência, mas um reflexo das possibilidades que nos são dadas e da luta por aquilo que ainda podemos conquistar."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/umbabarauma.md",
+      "name": "Umbabarauma Fut & Arte",
+      "slug": "umbabarauma",
+      "founded_year": 2022,
+      "description": "Nascido em 2022 de forma despretensiosa pela iniciativa de Luam Clarindo ao convocar amigos para a pelada. Sem alcunha definida até então o time foi se desenvolvendo e passando por várias fases. Atualmente o \"Umbabarauma\" une duas fortes características tupiniquins: a fome de bola e o talento musical."
+    },
+    {
+      "source_file": "wiki-lfa/wiki-lfa-main/docs/times/zapatista.md",
+      "name": "Clube Atlético Zapatista",
+      "slug": "zapatista",
+      "founded_year": 2024,
+      "description": "Fundado em 2024 por dois amigos unidos por ideais de justiça, igualdade e resistência, o Clube Atlético Zapatista nasceu como mais do que um time de futebol: é um símbolo de luta e amor ao esporte. Inspirado na coragem e na determinação de Emiliano Zapata, líder da Revolução Mexicana que dedicou sua vida à luta contra a opressão ao povo indigena e aos camponeses, o Zapatista carrega em seu nome a missão de honrar a resistência ao facismo e ao neo-colonialismo na busca por um mundo mais justo e igualitário."
+    }
+  ]
+}

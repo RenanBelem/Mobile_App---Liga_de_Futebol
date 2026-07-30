@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-07-30T19:19:25Z",
+  "coverage": {
+    "competitions": {
+      "wiki_total": 8,
+      "json_total": 8,
+      "matched": 8,
+      "only_in_wiki": [],
+      "only_in_json": []
+    },
+    "seasons": {
+      "wiki_total": 9,
+      "json_total": 9,
+      "matched": 9,
+      "only_in_wiki": [],
+      "only_in_json": []
+    },
+    "teams": {
+      "wiki_total": 36,
+      "json_total": 34,
+      "matched": 28,
+      "only_in_wiki": [
+        "estrela-vermelha",
+        "guairaca",
+        "imperial",
+        "iv-xx-de-novembro",
+        "linha-esquerda",
+        "locomotiva-makhnovista",
+        "matriarcado",
+        "umbabarauma"
+      ],
+      "only_in_json": [
+        "cf-estrela-vermelha",
+        "guairaca-futebol-ancestral",
+        "imperial-rsports",
+        "ivxx-de-novembro",
+        "linha-esquerda-fr",
+        "locomotiva-makhnovista-fsc"
+      ]
+    }
+  }
+}
