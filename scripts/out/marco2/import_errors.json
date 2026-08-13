@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-07-30T19:52:20Z",
+  "errors": [
+    {
+      "entity": "usuarios",
+      "line": 1,
+      "source_id": "u1",
+      "message": "id nao e UUID valido para auth.users"
+    },
+    {
+      "entity": "usuarios",
+      "line": 2,
+      "source_id": "u2",
+      "message": "id nao e UUID valido para auth.users"
+    },
+    {
+      "entity": "usuarios",
+      "line": 3,
+      "source_id": "u3",
+      "message": "id nao e UUID valido para auth.users"
+    },
+    {
+      "entity": "usuarios",
+      "line": 4,
+      "source_id": "u4",
+      "message": "id nao e UUID valido para auth.users"
+    }
+  ]
+}

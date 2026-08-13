@@ -1,0 +1,30 @@
+{
+  "dry_run": true,
+  "rules_file": "scripts/wiki_sync_rules.json",
+  "allowlist": {
+    "competitions": [
+      "name",
+      "organizer",
+      "type"
+    ],
+    "seasons": [],
+    "teams": [
+      "description"
+    ]
+  },
+  "aliases_used": {
+    "competitions": 0,
+    "teams": 6
+  },
+  "competitions_updated": 0,
+  "seasons_touched": 0,
+  "teams_updated": 0,
+  "unresolved_wiki_slugs": {
+    "competitions": [],
+    "teams": [
+      "matriarcado",
+      "umbabarauma"
+    ]
+  },
+  "changes": []
+}

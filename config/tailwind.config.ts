@@ -9,11 +9,13 @@
  * MOTIVO: Tailwind é o framework CSS utilizado para estilização eficiente,
  * mantendo consistência visual e facilitando responsividade
  */
+import path from "path";
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
-  content: ["./paginas/**/*.{ts,tsx}", "./componentes/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./fonte/**/*.{ts,tsx}"],
+  content: [path.resolve(__dirname, "../fonte/**/*.{ts,tsx}")],
   prefix: "",
   theme: {
     container: {
@@ -107,5 +109,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

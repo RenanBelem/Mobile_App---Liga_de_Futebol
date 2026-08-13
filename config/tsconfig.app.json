@@ -29,7 +29,7 @@
     "noUnusedParameters": false,
     "paths": {
       "@/*": [
-        "./fonte/*"
+        "../fonte/*"
       ]
     },
     "skipLibCheck": true,
@@ -41,6 +41,6 @@
     "useDefineForClassFields": true
   },
   "include": [
-    "fonte"
+    "../fonte"
   ]
 }

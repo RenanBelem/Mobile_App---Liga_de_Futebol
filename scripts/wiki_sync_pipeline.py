@@ -13,6 +13,20 @@ ROOT = Path(__file__).resolve().parents[1]
 WIKI_DOCS = ROOT / 'wiki-lfa' / 'wiki-lfa-main' / 'docs'
 JSON_DIR = ROOT / 'fonte' / 'dados' / 'json'
 OUT_DIR = ROOT / 'scripts' / 'out'
+RULES_PATH = ROOT / 'scripts' / 'wiki_sync_rules.json'
+
+DEFAULT_RULES: dict[str, Any] = {
+    'aliases': {
+        'competitions': {},
+        'seasons': {},
+        'teams': {},
+    },
+    'allowlist': {
+        'competitions': ['name', 'organizer', 'type'],
+        'seasons': [],
+        'teams': ['description'],
+    },
+}
 
 
 def ensure_dir(path: Path) -> None:
@@ -30,6 +44,10 @@ def read_json(path: Path) -> dict[str, Any]:
 def write_json(path: Path, payload: Any) -> None:
     ensure_dir(path.parent)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+
+def deep_copy_json(payload: Any) -> Any:
+    return json.loads(json.dumps(payload, ensure_ascii=False))
 
 
 def now_iso() -> str:
@@ -74,6 +92,91 @@ def extract_markdown_table_rows(text: str) -> list[list[str]]:
 def clean_markdown_links(value: str) -> str:
     # [Texto](link) -> Texto
     return re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', value)
+
+
+def normalize_alias_mapping(raw_aliases: dict[str, Any]) -> dict[str, dict[str, str]]:
+    normalized: dict[str, dict[str, str]] = {
+        'competitions': {},
+        'seasons': {},
+        'teams': {},
+    }
+    for entity in normalized:
+        entity_map = raw_aliases.get(entity, {})
+        if not isinstance(entity_map, dict):
+            continue
+        normalized[entity] = {
+            slugify(str(wiki_slug)): slugify(str(json_slug))
+            for wiki_slug, json_slug in entity_map.items()
+            if str(wiki_slug).strip() and str(json_slug).strip()
+        }
+    return normalized
+
+
+def normalize_allowlist(raw_allowlist: dict[str, Any]) -> dict[str, set[str]]:
+    normalized: dict[str, set[str]] = {
+        'competitions': set(),
+        'seasons': set(),
+        'teams': set(),
+    }
+    for entity in normalized:
+        values = raw_allowlist.get(entity, [])
+        if isinstance(values, list):
+            normalized[entity] = {str(field).strip() for field in values if str(field).strip()}
+    return normalized
+
+
+def load_rules() -> tuple[dict[str, dict[str, str]], dict[str, set[str]], bool]:
+    rules = deep_copy_json(DEFAULT_RULES)
+    loaded_from_file = False
+
+    if RULES_PATH.exists():
+        file_rules = read_json(RULES_PATH)
+        if isinstance(file_rules, dict):
+            rules['aliases'].update(file_rules.get('aliases', {}))
+            rules['allowlist'].update(file_rules.get('allowlist', {}))
+            loaded_from_file = True
+
+    aliases = normalize_alias_mapping(rules.get('aliases', {}))
+    allowlist = normalize_allowlist(rules.get('allowlist', {}))
+    return aliases, allowlist, loaded_from_file
+
+
+def resolve_target_slug(entity: str, wiki_slug: str, aliases: dict[str, dict[str, str]]) -> tuple[str, bool]:
+    normalized = slugify(wiki_slug)
+    alias_map = aliases.get(entity, {})
+    if normalized in alias_map:
+        return alias_map[normalized], True
+    return normalized, False
+
+
+def apply_allowed_changes(
+    row: dict[str, Any],
+    candidate: dict[str, Any],
+    *,
+    allowed_fields: set[str],
+    entity: str,
+) -> dict[str, dict[str, Any]]:
+    changes: dict[str, dict[str, Any]] = {}
+
+    for field, new_value in candidate.items():
+        if field not in allowed_fields:
+            continue
+        if new_value is None:
+            continue
+
+        old_value = row.get(field)
+
+        # For description, preserve local richer content and fill only empty slots.
+        if entity == 'teams' and field == 'description' and old_value not in (None, ''):
+            continue
+
+        if old_value != new_value:
+            changes[field] = {
+                'from': old_value,
+                'to': new_value,
+            }
+
+    return changes
 
 
 def normalize_competition_type(raw_type: str) -> str:
@@ -250,7 +353,7 @@ def build_wiki_enrichment() -> dict[str, Any]:
     }
 
 
-def build_validation_report(enrichment: dict[str, Any]) -> dict[str, Any]:
+def build_validation_report(enrichment: dict[str, Any], aliases: dict[str, dict[str, str]]) -> dict[str, Any]:
     competitions_json = read_json(JSON_DIR / 'competicoes.json').get('competitions', [])
     seasons_json = read_json(JSON_DIR / 'temporadas.json').get('seasons', [])
     teams_json = read_json(JSON_DIR / 'times.json').get('teams', [])
@@ -263,6 +366,19 @@ def build_validation_report(enrichment: dict[str, Any]) -> dict[str, Any]:
     wiki_season_slugs = {slugify(item['season_slug']) for item in enrichment['seasons']}
     wiki_team_slugs = {slugify(item['slug']) for item in enrichment['teams']}
 
+    wiki_comp_slugs_with_alias = {
+        resolve_target_slug('competitions', item['slug'], aliases)[0]
+        for item in enrichment['competitions']
+    }
+    wiki_season_slugs_with_alias = {
+        resolve_target_slug('seasons', item['season_slug'], aliases)[0]
+        for item in enrichment['seasons']
+    }
+    wiki_team_slugs_with_alias = {
+        resolve_target_slug('teams', item['slug'], aliases)[0]
+        for item in enrichment['teams']
+    }
+
     report = {
         'generated_at': now_iso(),
         'coverage': {
@@ -270,29 +386,48 @@ def build_validation_report(enrichment: dict[str, Any]) -> dict[str, Any]:
                 'wiki_total': len(wiki_comp_slugs),
                 'json_total': len(json_comp_slugs),
                 'matched': len(wiki_comp_slugs & json_comp_slugs),
+                'matched_with_aliases': len(wiki_comp_slugs_with_alias & json_comp_slugs),
                 'only_in_wiki': sorted(wiki_comp_slugs - json_comp_slugs),
                 'only_in_json': sorted(json_comp_slugs - wiki_comp_slugs),
+                'only_in_wiki_after_aliases': sorted(wiki_comp_slugs_with_alias - json_comp_slugs),
             },
             'seasons': {
                 'wiki_total': len(wiki_season_slugs),
                 'json_total': len(json_season_slugs),
                 'matched': len(wiki_season_slugs & json_season_slugs),
+                'matched_with_aliases': len(wiki_season_slugs_with_alias & json_season_slugs),
                 'only_in_wiki': sorted(wiki_season_slugs - json_season_slugs),
                 'only_in_json': sorted(json_season_slugs - wiki_season_slugs),
+                'only_in_wiki_after_aliases': sorted(wiki_season_slugs_with_alias - json_season_slugs),
             },
             'teams': {
                 'wiki_total': len(wiki_team_slugs),
                 'json_total': len(json_team_slugs),
                 'matched': len(wiki_team_slugs & json_team_slugs),
+                'matched_with_aliases': len(wiki_team_slugs_with_alias & json_team_slugs),
                 'only_in_wiki': sorted(wiki_team_slugs - json_team_slugs),
                 'only_in_json': sorted(json_team_slugs - wiki_team_slugs),
+                'only_in_wiki_after_aliases': sorted(wiki_team_slugs_with_alias - json_team_slugs),
+            },
+        },
+        'rules': {
+            'rules_file': str(RULES_PATH.relative_to(ROOT)).replace('\\', '/'),
+            'aliases_loaded': {
+                entity: len(values)
+                for entity, values in aliases.items()
             },
         },
     }
     return report
 
 
-def apply_merge_from_enrichment(enrichment: dict[str, Any]) -> dict[str, int]:
+def apply_merge_from_enrichment(
+    enrichment: dict[str, Any],
+    aliases: dict[str, dict[str, str]],
+    allowlist: dict[str, set[str]],
+    *,
+    dry_run: bool,
+) -> dict[str, Any]:
     competitions_path = JSON_DIR / 'competicoes.json'
     seasons_path = JSON_DIR / 'temporadas.json'
     teams_path = JSON_DIR / 'times.json'
@@ -301,81 +436,136 @@ def apply_merge_from_enrichment(enrichment: dict[str, Any]) -> dict[str, int]:
     seasons_data = read_json(seasons_path)
     teams_data = read_json(teams_path)
 
-    competition_patch_by_slug = {
-        slugify(item['slug']): item
-        for item in enrichment['competitions']
-    }
-    team_patch_by_slug = {
-        slugify(item['slug']): item
-        for item in enrichment['teams']
-    }
+    competition_patch_by_slug: dict[str, dict[str, Any]] = {}
+    competition_alias_hits = 0
+    for item in enrichment['competitions']:
+        resolved_slug, used_alias = resolve_target_slug('competitions', item['slug'], aliases)
+        competition_patch_by_slug[resolved_slug] = item
+        if used_alias:
+            competition_alias_hits += 1
 
+    team_patch_by_slug: dict[str, dict[str, Any]] = {}
+    team_alias_hits = 0
+    for item in enrichment['teams']:
+        resolved_slug, used_alias = resolve_target_slug('teams', item['slug'], aliases)
+        team_patch_by_slug[resolved_slug] = item
+        if used_alias:
+            team_alias_hits += 1
+
+    all_changes: list[dict[str, Any]] = []
     competition_updates = 0
+    matched_comp_slugs: set[str] = set()
     for row in competitions_data.get('competitions', []):
         slug = slugify(str(row.get('slug', '')))
         patch = competition_patch_by_slug.get(slug)
         if not patch:
             continue
+        matched_comp_slugs.add(slug)
 
-        shared_type = patch.get('competition_type')
-        shared_organizer = patch.get('organizer')
-        shared_name = patch.get('name')
+        candidate = {
+            'name': patch.get('name'),
+            'organizer': patch.get('organizer'),
+            'type': patch.get('competition_type'),
+        }
+        changes = apply_allowed_changes(
+            row,
+            candidate,
+            allowed_fields=allowlist.get('competitions', set()),
+            entity='competitions',
+        )
+        if not changes:
+            continue
 
-        changed = False
-        if shared_name and row.get('name') != shared_name:
-            row['name'] = shared_name
-            changed = True
-        if shared_organizer and row.get('organizer') != shared_organizer:
-            row['organizer'] = shared_organizer
-            changed = True
-        if shared_type and row.get('type') != shared_type:
-            row['type'] = shared_type
-            changed = True
-        if changed:
+        if not dry_run:
+            for field, payload in changes.items():
+                row[field] = payload['to']
             row['updated_at'] = now_iso()
-            competition_updates += 1
+        competition_updates += 1
+        all_changes.append(
+            {
+                'entity': 'competitions',
+                'id': row.get('id'),
+                'slug': row.get('slug'),
+                'wiki_slug': patch.get('slug'),
+                'fields': changes,
+            }
+        )
 
     season_updates = 0
-    season_seen = set()
-    for entry in enrichment['seasons']:
-        season_seen.add(entry['season_slug'])
-
-    for row in seasons_data.get('seasons', []):
-        slug = slugify(str(row.get('slug', '')))
-        if slug in season_seen and row.get('updated_at'):
-            # Keep JSON authority for dates/status; mark reconciled timestamp only.
-            season_updates += 1
 
     team_updates = 0
+    matched_team_slugs: set[str] = set()
     for row in teams_data.get('teams', []):
         slug = slugify(str(row.get('slug', '')))
         patch = team_patch_by_slug.get(slug)
         if not patch:
             continue
+        matched_team_slugs.add(slug)
 
-        changed = False
-        if patch.get('name') and row.get('name') != patch['name']:
-            row['name'] = patch['name']
-            changed = True
-        if patch.get('founded_year') and row.get('founded_year') != patch['founded_year']:
-            row['founded_year'] = patch['founded_year']
-            changed = True
-        if patch.get('description') and (not row.get('description') or row.get('description') == ''):
-            row['description'] = patch['description']
-            changed = True
+        candidate = {
+            'name': patch.get('name'),
+            'founded_year': patch.get('founded_year'),
+            'description': patch.get('description'),
+        }
+        changes = apply_allowed_changes(
+            row,
+            candidate,
+            allowed_fields=allowlist.get('teams', set()),
+            entity='teams',
+        )
+        if not changes:
+            continue
 
-        if changed:
+        if not dry_run:
+            for field, payload in changes.items():
+                row[field] = payload['to']
             row['updated_at'] = now_iso()
-            team_updates += 1
+        team_updates += 1
+        all_changes.append(
+            {
+                'entity': 'teams',
+                'id': row.get('id'),
+                'slug': row.get('slug'),
+                'wiki_slug': patch.get('slug'),
+                'fields': changes,
+            }
+        )
 
-    write_json(competitions_path, competitions_data)
-    write_json(seasons_path, seasons_data)
-    write_json(teams_path, teams_data)
+    if not dry_run:
+        write_json(competitions_path, competitions_data)
+        write_json(seasons_path, seasons_data)
+        write_json(teams_path, teams_data)
+
+    unresolved_competitions = sorted(
+        slug
+        for slug in competition_patch_by_slug
+        if slug not in matched_comp_slugs
+    )
+    unresolved_teams = sorted(
+        slug
+        for slug in team_patch_by_slug
+        if slug not in matched_team_slugs
+    )
 
     return {
+        'dry_run': dry_run,
+        'rules_file': str(RULES_PATH.relative_to(ROOT)).replace('\\', '/'),
+        'allowlist': {
+            entity: sorted(list(fields))
+            for entity, fields in allowlist.items()
+        },
+        'aliases_used': {
+            'competitions': competition_alias_hits,
+            'teams': team_alias_hits,
+        },
         'competitions_updated': competition_updates,
         'seasons_touched': season_updates,
         'teams_updated': team_updates,
+        'unresolved_wiki_slugs': {
+            'competitions': unresolved_competitions,
+            'teams': unresolved_teams,
+        },
+        'changes': all_changes,
     }
 
 
@@ -430,7 +620,8 @@ def export_upsert_sql() -> Path:
 def command_snapshot() -> None:
     ensure_dir(OUT_DIR)
     enrichment = build_wiki_enrichment()
-    report = build_validation_report(enrichment)
+    aliases, _, _ = load_rules()
+    report = build_validation_report(enrichment, aliases)
 
     write_json(JSON_DIR / 'wiki_enrichment.json', enrichment)
     write_json(OUT_DIR / 'wiki_sync_report.json', report)
@@ -440,17 +631,24 @@ def command_snapshot() -> None:
     print(f' - {OUT_DIR / "wiki_sync_report.json"}')
 
 
-def command_merge() -> None:
+def command_merge(*, dry_run: bool) -> None:
     enrichment_path = JSON_DIR / 'wiki_enrichment.json'
     if not enrichment_path.exists():
         print('wiki_enrichment.json not found. Run snapshot first.')
         raise SystemExit(1)
 
+    aliases, allowlist, loaded_from_file = load_rules()
     enrichment = read_json(enrichment_path)
-    result = apply_merge_from_enrichment(enrichment)
-    write_json(OUT_DIR / 'wiki_merge_result.json', result)
+    result = apply_merge_from_enrichment(enrichment, aliases, allowlist, dry_run=dry_run)
+    result_path = OUT_DIR / ('wiki_merge_preview.json' if dry_run else 'wiki_merge_result.json')
+    write_json(result_path, result)
 
-    print('Merge complete:')
+    print('Merge preview complete:' if dry_run else 'Merge complete:')
+    if not loaded_from_file:
+        print(f'Rules file not found. Using defaults: {RULES_PATH}')
+    else:
+        print(f'Rules loaded from: {RULES_PATH}')
+    print(f'Result file: {result_path}')
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
@@ -461,15 +659,17 @@ def command_export_upserts() -> None:
 
 def main(argv: list[str]) -> int:
     if len(argv) < 2:
-        print('Usage: python scripts/wiki_sync_pipeline.py [snapshot|merge|export-upserts]')
+        print('Usage: python scripts/wiki_sync_pipeline.py [snapshot|merge|export-upserts] [--dry-run]')
         return 1
 
     command = argv[1]
+    dry_run = '--dry-run' in argv[2:]
+
     if command == 'snapshot':
         command_snapshot()
         return 0
     if command == 'merge':
-        command_merge()
+        command_merge(dry_run=dry_run)
         return 0
     if command == 'export-upserts':
         command_export_upserts()

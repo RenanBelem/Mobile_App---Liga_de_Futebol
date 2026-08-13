@@ -17,6 +17,9 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   publicDir: "publico",
+  css: {
+    postcss: "./config/postcss.config.js",
+  },
   server: {
     host: "::",
     port: 8080,
@@ -27,7 +30,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./fonte"),
+      "@": path.resolve(__dirname, "../fonte"),
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },

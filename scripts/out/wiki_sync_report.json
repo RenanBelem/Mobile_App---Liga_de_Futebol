@@ -1,24 +1,29 @@
 {
-  "generated_at": "2026-07-30T19:19:25Z",
+  "generated_at": "2026-07-30T19:27:56Z",
   "coverage": {
     "competitions": {
       "wiki_total": 8,
       "json_total": 8,
       "matched": 8,
+      "matched_with_aliases": 8,
       "only_in_wiki": [],
-      "only_in_json": []
+      "only_in_json": [],
+      "only_in_wiki_after_aliases": []
     },
     "seasons": {
       "wiki_total": 9,
       "json_total": 9,
       "matched": 9,
+      "matched_with_aliases": 9,
       "only_in_wiki": [],
-      "only_in_json": []
+      "only_in_json": [],
+      "only_in_wiki_after_aliases": []
     },
     "teams": {
       "wiki_total": 36,
       "json_total": 34,
       "matched": 28,
+      "matched_with_aliases": 34,
       "only_in_wiki": [
         "estrela-vermelha",
         "guairaca",
@@ -36,7 +41,19 @@
         "ivxx-de-novembro",
         "linha-esquerda-fr",
         "locomotiva-makhnovista-fsc"
+      ],
+      "only_in_wiki_after_aliases": [
+        "matriarcado",
+        "umbabarauma"
       ]
+    }
+  },
+  "rules": {
+    "rules_file": "scripts/wiki_sync_rules.json",
+    "aliases_loaded": {
+      "competitions": 0,
+      "seasons": 0,
+      "teams": 6
     }
   }
 }

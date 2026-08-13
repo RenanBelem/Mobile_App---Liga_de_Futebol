@@ -251,7 +251,7 @@ npm run build
 
 2. **Entender a documentação:**
    - Leia [docs/README.md](../README.md)
-   - Consulte [docs/PLANO_DE_PROJETO.md](../projeto/PLANO_DE_PROJETO.md)
+   - Consulte [docs/README.md](../README.md)
 
 3. **Testar um cadastro:**
    - Vá para `/more` (Mais)

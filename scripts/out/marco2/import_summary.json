@@ -1,0 +1,107 @@
+{
+  "generated_at": "2026-07-30T19:52:20Z",
+  "global": {
+    "total_source_records": 163,
+    "total_valid_records": 159,
+    "total_invalid_records": 4,
+    "all_entities_balanced": true
+  },
+  "by_entity": {
+    "classificacao": {
+      "source_count": 15,
+      "valid_count": 15,
+      "invalid_count": 0,
+      "planned_destination_count": 15,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "competicoes": {
+      "source_count": 36,
+      "valid_count": 36,
+      "invalid_count": 0,
+      "planned_destination_count": 36,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "jogadores": {
+      "source_count": 11,
+      "valid_count": 11,
+      "invalid_count": 0,
+      "planned_destination_count": 11,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "ligas": {
+      "source_count": 1,
+      "valid_count": 1,
+      "invalid_count": 0,
+      "planned_destination_count": 1,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "midia": {
+      "source_count": 5,
+      "valid_count": 5,
+      "invalid_count": 0,
+      "planned_destination_count": 5,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "partidas": {
+      "source_count": 8,
+      "valid_count": 8,
+      "invalid_count": 0,
+      "planned_destination_count": 8,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "podios": {
+      "source_count": 9,
+      "valid_count": 9,
+      "invalid_count": 0,
+      "planned_destination_count": 9,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "registros_jogador": {
+      "source_count": 11,
+      "valid_count": 11,
+      "invalid_count": 0,
+      "planned_destination_count": 11,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "temporadas": {
+      "source_count": 9,
+      "valid_count": 9,
+      "invalid_count": 0,
+      "planned_destination_count": 9,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "times": {
+      "source_count": 34,
+      "valid_count": 34,
+      "invalid_count": 0,
+      "planned_destination_count": 34,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "times_temporada": {
+      "source_count": 20,
+      "valid_count": 20,
+      "invalid_count": 0,
+      "planned_destination_count": 20,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    },
+    "usuarios": {
+      "source_count": 4,
+      "valid_count": 0,
+      "invalid_count": 4,
+      "planned_destination_count": 0,
+      "source_vs_valid_plus_invalid_ok": true,
+      "valid_vs_destination_ok": true
+    }
+  }
+}

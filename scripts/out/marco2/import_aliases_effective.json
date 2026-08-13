@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-07-30T19:52:20Z",
+  "competition_ids": {
+    "comp-001": "comp-2025-a-04",
+    "comp-002": "comp-2025-a-03",
+    "comp-003": "comp-2025-c-04",
+    "comp-011": "comp-2022-a-01",
+    "comp-012": "comp-2022-c-03",
+    "comp-013": "comp-2023-a-01",
+    "comp-014": "comp-2023-c-01",
+    "comp-015": "comp-2024-a-03",
+    "comp-016": "comp-2024-c-03"
+  },
+  "source": "scripts/marco2_id_aliases.json"
+}

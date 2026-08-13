@@ -22,6 +22,6 @@ export default defineConfig({
     include: ["fonte/**/*.{test,spec}.{ts,tsx}"],
   },
   resolve: {
-    alias: { "@": path.resolve(__dirname, "./fonte") },
+    alias: { "@": path.resolve(__dirname, "../fonte") },
   },
 });

@@ -321,7 +321,7 @@ npm run dev
 **R:** Siga esta ordem:
 
 1. **[docs/README.md](../README.md)** - Índice geral
-2. **[docs/PLANO_DE_PROJETO.md](../projeto/PLANO_DE_PROJETO.md)** - Visão completa
+2. **[README operacional](../README.md)** - Índice da documentação vigente
 3. **[src/App.tsx](../../fonte/App.tsx)** - Rotas da aplicação
 4. **[src/paginas/](../../fonte/paginas/)** - Explore uma página
 5. **[src/componentes/](../../fonte/componentes/)** - Explore um componente
@@ -342,8 +342,8 @@ npm run dev
 ### P: Qual foi a intenção por trás de cada design?
 
 **R:** Leia:
-- [docs/PLANO_DE_PROJETO.md](../projeto/PLANO_DE_PROJETO.md) - Decisões de arquitetura
-- [docs/COMPARACAO_TECNICA.md](../decisoes/COMPARACAO_TECNICA.md) - Tech stack
+- [docs/SCHEMA_DATABASE_PTBR.md](../SCHEMA_DATABASE_PTBR.md) - Modelo de dados
+- [docs/arquitetura/MARCO_ZERO_WIKI_JSON_PIPELINE.md](../arquitetura/MARCO_ZERO_WIKI_JSON_PIPELINE.md) - Fluxo de dados
 
 ---
 

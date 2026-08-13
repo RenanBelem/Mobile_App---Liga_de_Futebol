@@ -1,0 +1,25 @@
+{
+  "aliases": {
+    "competitions": {},
+    "seasons": {},
+    "teams": {
+      "estrela-vermelha": "cf-estrela-vermelha",
+      "guairaca": "guairaca-futebol-ancestral",
+      "imperial": "imperial-rsports",
+      "iv-xx-de-novembro": "ivxx-de-novembro",
+      "linha-esquerda": "linha-esquerda-fr",
+      "locomotiva-makhnovista": "locomotiva-makhnovista-fsc"
+    }
+  },
+  "allowlist": {
+    "competitions": [
+      "name",
+      "organizer",
+      "type"
+    ],
+    "seasons": [],
+    "teams": [
+      "description"
+    ]
+  }
+}

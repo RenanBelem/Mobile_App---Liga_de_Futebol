@@ -1,0 +1,1142 @@
+{
+  "generated_at": "2026-07-30T19:52:20Z",
+  "entities": {
+    "ligas": [
+      {
+        "line": 1,
+        "source_id": "l1",
+        "target_id": "l1",
+        "source_slug": "liga-de-futebol-antifascista",
+        "target_slug": "liga-de-futebol-antifascista"
+      }
+    ],
+    "temporadas": [
+      {
+        "line": 1,
+        "source_id": "season-2022-a",
+        "target_id": "season-2022-a",
+        "source_slug": "apertura-22",
+        "target_slug": "apertura-22"
+      },
+      {
+        "line": 2,
+        "source_id": "season-2022-c",
+        "target_id": "season-2022-c",
+        "source_slug": "clausura-22",
+        "target_slug": "clausura-22"
+      },
+      {
+        "line": 3,
+        "source_id": "season-2023-a",
+        "target_id": "season-2023-a",
+        "source_slug": "apertura-23",
+        "target_slug": "apertura-23"
+      },
+      {
+        "line": 4,
+        "source_id": "season-2023-c",
+        "target_id": "season-2023-c",
+        "source_slug": "clausura-23",
+        "target_slug": "clausura-23"
+      },
+      {
+        "line": 5,
+        "source_id": "season-2024-a",
+        "target_id": "season-2024-a",
+        "source_slug": "apertura-24",
+        "target_slug": "apertura-24"
+      },
+      {
+        "line": 6,
+        "source_id": "season-2024-c",
+        "target_id": "season-2024-c",
+        "source_slug": "clausura-24",
+        "target_slug": "clausura-24"
+      },
+      {
+        "line": 7,
+        "source_id": "season-2025-a",
+        "target_id": "season-2025-a",
+        "source_slug": "apertura-25",
+        "target_slug": "apertura-25"
+      },
+      {
+        "line": 8,
+        "source_id": "season-2025-c",
+        "target_id": "season-2025-c",
+        "source_slug": "clausura-25",
+        "target_slug": "clausura-25"
+      },
+      {
+        "line": 9,
+        "source_id": "season-2026-a",
+        "target_id": "season-2026-a",
+        "source_slug": "apertura-26",
+        "target_slug": "apertura-26"
+      }
+    ],
+    "competicoes": [
+      {
+        "line": 1,
+        "source_id": "comp-2022-a-01",
+        "target_id": "comp-2022-a-01",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 2,
+        "source_id": "comp-2022-a-02",
+        "target_id": "comp-2022-a-02",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 3,
+        "source_id": "comp-2022-a-03",
+        "target_id": "comp-2022-a-03",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 4,
+        "source_id": "comp-2022-c-01",
+        "target_id": "comp-2022-c-01",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 5,
+        "source_id": "comp-2022-c-02",
+        "target_id": "comp-2022-c-02",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 6,
+        "source_id": "comp-2022-c-03",
+        "target_id": "comp-2022-c-03",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 7,
+        "source_id": "comp-2023-a-01",
+        "target_id": "comp-2023-a-01",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 8,
+        "source_id": "comp-2023-a-02",
+        "target_id": "comp-2023-a-02",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 9,
+        "source_id": "comp-2023-a-03",
+        "target_id": "comp-2023-a-03",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 10,
+        "source_id": "comp-2023-c-01",
+        "target_id": "comp-2023-c-01",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 11,
+        "source_id": "comp-2023-c-02",
+        "target_id": "comp-2023-c-02",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 12,
+        "source_id": "comp-2023-c-03",
+        "target_id": "comp-2023-c-03",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 13,
+        "source_id": "comp-2024-a-01",
+        "target_id": "comp-2024-a-01",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 14,
+        "source_id": "comp-2024-a-02",
+        "target_id": "comp-2024-a-02",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 15,
+        "source_id": "comp-2024-a-03",
+        "target_id": "comp-2024-a-03",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 16,
+        "source_id": "comp-2024-c-01",
+        "target_id": "comp-2024-c-01",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 17,
+        "source_id": "comp-2024-c-02",
+        "target_id": "comp-2024-c-02",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 18,
+        "source_id": "comp-2024-c-03",
+        "target_id": "comp-2024-c-03",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 19,
+        "source_id": "comp-2025-a-01",
+        "target_id": "comp-2025-a-01",
+        "source_slug": "taca-wladimir-rodrigues",
+        "target_slug": "taca-wladimir-rodrigues"
+      },
+      {
+        "line": 20,
+        "source_id": "comp-2025-a-02",
+        "target_id": "comp-2025-a-02",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 21,
+        "source_id": "comp-2025-a-03",
+        "target_id": "comp-2025-a-03",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 22,
+        "source_id": "comp-2025-a-04",
+        "target_id": "comp-2025-a-04",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 23,
+        "source_id": "comp-2025-a-05",
+        "target_id": "comp-2025-a-05",
+        "source_slug": "taca-sissi",
+        "target_slug": "taca-sissi"
+      },
+      {
+        "line": 24,
+        "source_id": "comp-2025-c-01",
+        "target_id": "comp-2025-c-01",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 25,
+        "source_id": "comp-2025-c-02",
+        "target_id": "comp-2025-c-02",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 26,
+        "source_id": "comp-2025-c-03",
+        "target_id": "comp-2025-c-03",
+        "source_slug": "taca-wladimir-rodrigues",
+        "target_slug": "taca-wladimir-rodrigues"
+      },
+      {
+        "line": 27,
+        "source_id": "comp-2025-c-04",
+        "target_id": "comp-2025-c-04",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 28,
+        "source_id": "comp-2025-c-05",
+        "target_id": "comp-2025-c-05",
+        "source_slug": "supertaca",
+        "target_slug": "supertaca"
+      },
+      {
+        "line": 29,
+        "source_id": "comp-2025-c-06",
+        "target_id": "comp-2025-c-06",
+        "source_slug": "recopa",
+        "target_slug": "recopa"
+      },
+      {
+        "line": 30,
+        "source_id": "comp-2026-a-01",
+        "target_id": "comp-2026-a-01",
+        "source_slug": "copa-foice",
+        "target_slug": "copa-foice"
+      },
+      {
+        "line": 31,
+        "source_id": "comp-2026-a-02",
+        "target_id": "comp-2026-a-02",
+        "source_slug": "copa-carlos-caszely",
+        "target_slug": "copa-carlos-caszely"
+      },
+      {
+        "line": 32,
+        "source_id": "comp-2026-a-03",
+        "target_id": "comp-2026-a-03",
+        "source_slug": "copa-eric-cantona",
+        "target_slug": "copa-eric-cantona"
+      },
+      {
+        "line": 33,
+        "source_id": "comp-2026-a-04",
+        "target_id": "comp-2026-a-04",
+        "source_slug": "taca-wladimir-rodrigues",
+        "target_slug": "taca-wladimir-rodrigues"
+      },
+      {
+        "line": 34,
+        "source_id": "comp-2026-a-05",
+        "target_id": "comp-2026-a-05",
+        "source_slug": "taca-cecilia",
+        "target_slug": "taca-cecilia"
+      },
+      {
+        "line": 35,
+        "source_id": "comp-2026-a-06",
+        "target_id": "comp-2026-a-06",
+        "source_slug": "supertaca",
+        "target_slug": "supertaca"
+      },
+      {
+        "line": 36,
+        "source_id": "comp-2026-a-07",
+        "target_id": "comp-2026-a-07",
+        "source_slug": "recopa",
+        "target_slug": "recopa"
+      }
+    ],
+    "times": [
+      {
+        "line": 1,
+        "source_id": "1",
+        "target_id": "1",
+        "source_slug": "cf-estrela-vermelha",
+        "target_slug": "cf-estrela-vermelha"
+      },
+      {
+        "line": 2,
+        "source_id": "2",
+        "target_id": "2",
+        "source_slug": "guairaca-futebol-ancestral",
+        "target_slug": "guairaca-futebol-ancestral"
+      },
+      {
+        "line": 3,
+        "source_id": "3",
+        "target_id": "3",
+        "source_slug": "deportivo-oriental",
+        "target_slug": "deportivo-oriental"
+      },
+      {
+        "line": 4,
+        "source_id": "4",
+        "target_id": "4",
+        "source_slug": "sankara",
+        "target_slug": "sankara"
+      },
+      {
+        "line": 5,
+        "source_id": "5",
+        "target_id": "5",
+        "source_slug": "primavera",
+        "target_slug": "primavera"
+      },
+      {
+        "line": 6,
+        "source_id": "6",
+        "target_id": "6",
+        "source_slug": "teto-preto",
+        "target_slug": "teto-preto"
+      },
+      {
+        "line": 7,
+        "source_id": "7",
+        "target_id": "7",
+        "source_slug": "pe-de-pano",
+        "target_slug": "pe-de-pano"
+      },
+      {
+        "line": 8,
+        "source_id": "8",
+        "target_id": "8",
+        "source_slug": "locomotiva-makhnovista-fsc",
+        "target_slug": "locomotiva-makhnovista-fsc"
+      },
+      {
+        "line": 9,
+        "source_id": "9",
+        "target_id": "9",
+        "source_slug": "resistencia-alviverde",
+        "target_slug": "resistencia-alviverde"
+      },
+      {
+        "line": 10,
+        "source_id": "10",
+        "target_id": "10",
+        "source_slug": "azulao",
+        "target_slug": "azulao"
+      },
+      {
+        "line": 11,
+        "source_id": "11",
+        "target_id": "11",
+        "source_slug": "bolchesitio",
+        "target_slug": "bolchesitio"
+      },
+      {
+        "line": 12,
+        "source_id": "12",
+        "target_id": "12",
+        "source_slug": "linha-esquerda-fr",
+        "target_slug": "linha-esquerda-fr"
+      },
+      {
+        "line": 13,
+        "source_id": "13",
+        "target_id": "13",
+        "source_slug": "america-de-calo",
+        "target_slug": "america-de-calo"
+      },
+      {
+        "line": 14,
+        "source_id": "14",
+        "target_id": "14",
+        "source_slug": "atleticomuna",
+        "target_slug": "atleticomuna"
+      },
+      {
+        "line": 15,
+        "source_id": "15",
+        "target_id": "15",
+        "source_slug": "9-dedos",
+        "target_slug": "9-dedos"
+      },
+      {
+        "line": 16,
+        "source_id": "16",
+        "target_id": "16",
+        "source_slug": "latinofuturista",
+        "target_slug": "latinofuturista"
+      },
+      {
+        "line": 17,
+        "source_id": "17",
+        "target_id": "17",
+        "source_slug": "liverpancas",
+        "target_slug": "liverpancas"
+      },
+      {
+        "line": 18,
+        "source_id": "18",
+        "target_id": "18",
+        "source_slug": "paulo-freire",
+        "target_slug": "paulo-freire"
+      },
+      {
+        "line": 19,
+        "source_id": "19",
+        "target_id": "19",
+        "source_slug": "sem-fronteiras",
+        "target_slug": "sem-fronteiras"
+      },
+      {
+        "line": 20,
+        "source_id": "20",
+        "target_id": "20",
+        "source_slug": "toque-de-classe",
+        "target_slug": "toque-de-classe"
+      },
+      {
+        "line": 21,
+        "source_id": "21",
+        "target_id": "21",
+        "source_slug": "diamante",
+        "target_slug": "diamante"
+      },
+      {
+        "line": 22,
+        "source_id": "22",
+        "target_id": "22",
+        "source_slug": "discaida",
+        "target_slug": "discaida"
+      },
+      {
+        "line": 23,
+        "source_id": "23",
+        "target_id": "23",
+        "source_slug": "brigada-lupicinia",
+        "target_slug": "brigada-lupicinia"
+      },
+      {
+        "line": 24,
+        "source_id": "24",
+        "target_id": "24",
+        "source_slug": "baianos-de-maua",
+        "target_slug": "baianos-de-maua"
+      },
+      {
+        "line": 25,
+        "source_id": "25",
+        "target_id": "25",
+        "source_slug": "caos-da-villa",
+        "target_slug": "caos-da-villa"
+      },
+      {
+        "line": 26,
+        "source_id": "26",
+        "target_id": "26",
+        "source_slug": "delas",
+        "target_slug": "delas"
+      },
+      {
+        "line": 27,
+        "source_id": "27",
+        "target_id": "27",
+        "source_slug": "faixa-preta",
+        "target_slug": "faixa-preta"
+      },
+      {
+        "line": 28,
+        "source_id": "28",
+        "target_id": "28",
+        "source_slug": "ginga",
+        "target_slug": "ginga"
+      },
+      {
+        "line": 29,
+        "source_id": "29",
+        "target_id": "29",
+        "source_slug": "matsubara",
+        "target_slug": "matsubara"
+      },
+      {
+        "line": 30,
+        "source_id": "30",
+        "target_id": "30",
+        "source_slug": "sao-bento",
+        "target_slug": "sao-bento"
+      },
+      {
+        "line": 31,
+        "source_id": "31",
+        "target_id": "31",
+        "source_slug": "zapatista",
+        "target_slug": "zapatista"
+      },
+      {
+        "line": 32,
+        "source_id": "32",
+        "target_id": "32",
+        "source_slug": "ivxx-de-novembro",
+        "target_slug": "ivxx-de-novembro"
+      },
+      {
+        "line": 33,
+        "source_id": "33",
+        "target_id": "33",
+        "source_slug": "aqui-estamos",
+        "target_slug": "aqui-estamos"
+      },
+      {
+        "line": 34,
+        "source_id": "34",
+        "target_id": "34",
+        "source_slug": "imperial-rsports",
+        "target_slug": "imperial-rsports"
+      }
+    ],
+    "jogadores": [
+      {
+        "line": 1,
+        "source_id": "p1",
+        "target_id": "p1",
+        "source_team_id": "1",
+        "target_team_id": "1"
+      },
+      {
+        "line": 2,
+        "source_id": "p2",
+        "target_id": "p2",
+        "source_team_id": "1",
+        "target_team_id": "1"
+      },
+      {
+        "line": 3,
+        "source_id": "p3",
+        "target_id": "p3",
+        "source_team_id": "2",
+        "target_team_id": "2"
+      },
+      {
+        "line": 4,
+        "source_id": "p4",
+        "target_id": "p4",
+        "source_team_id": "6",
+        "target_team_id": "6"
+      },
+      {
+        "line": 5,
+        "source_id": "p5",
+        "target_id": "p5",
+        "source_team_id": "7",
+        "target_team_id": "7"
+      },
+      {
+        "line": 6,
+        "source_id": "p6",
+        "target_id": "p6",
+        "source_team_id": "7",
+        "target_team_id": "7"
+      },
+      {
+        "line": 7,
+        "source_id": "p7",
+        "target_id": "p7",
+        "source_team_id": "7",
+        "target_team_id": "7"
+      },
+      {
+        "line": 8,
+        "source_id": "p8",
+        "target_id": "p8",
+        "source_team_id": "7",
+        "target_team_id": "7"
+      },
+      {
+        "line": 9,
+        "source_id": "p9",
+        "target_id": "p9",
+        "source_team_id": "15",
+        "target_team_id": "15"
+      },
+      {
+        "line": 10,
+        "source_id": "p10",
+        "target_id": "p10",
+        "source_team_id": "15",
+        "target_team_id": "15"
+      },
+      {
+        "line": 11,
+        "source_id": "p11",
+        "target_id": "p11",
+        "source_team_id": "34",
+        "target_team_id": "34"
+      }
+    ],
+    "registros_jogador": [
+      {
+        "line": 1,
+        "source_id": "p1",
+        "target_id": "reg-p1-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 2,
+        "source_id": "p2",
+        "target_id": "reg-p2-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 3,
+        "source_id": "p3",
+        "target_id": "reg-p3-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 4,
+        "source_id": "p4",
+        "target_id": "reg-p4-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 5,
+        "source_id": "p5",
+        "target_id": "reg-p5-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 6,
+        "source_id": "p6",
+        "target_id": "reg-p6-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 7,
+        "source_id": "p7",
+        "target_id": "reg-p7-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 8,
+        "source_id": "p8",
+        "target_id": "reg-p8-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 9,
+        "source_id": "p9",
+        "target_id": "reg-p9-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 10,
+        "source_id": "p10",
+        "target_id": "reg-p10-season-2026-a",
+        "rule": "fallback_fora_intervalo",
+        "target_temporada_id": "season-2026-a"
+      },
+      {
+        "line": 11,
+        "source_id": "p11",
+        "target_id": "reg-p11-season-2023-a",
+        "rule": "match_por_intervalo",
+        "target_temporada_id": "season-2023-a"
+      }
+    ],
+    "partidas": [
+      {
+        "line": 1,
+        "source_id": "match-001",
+        "target_id": "match-001",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 2,
+        "source_id": "match-002",
+        "target_id": "match-002",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 3,
+        "source_id": "match-003",
+        "target_id": "match-003",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 4,
+        "source_id": "match-004",
+        "target_id": "match-004",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 5,
+        "source_id": "match-011",
+        "target_id": "match-011",
+        "source_tournament_id": "comp-011",
+        "target_competicao_id": "comp-2022-a-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 6,
+        "source_id": "match-013",
+        "target_id": "match-013",
+        "source_tournament_id": "comp-013",
+        "target_competicao_id": "comp-2023-a-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 7,
+        "source_id": "match-015",
+        "target_id": "match-015",
+        "source_tournament_id": "comp-015",
+        "target_competicao_id": "comp-2024-a-03",
+        "alias_aplicado": true
+      },
+      {
+        "line": 8,
+        "source_id": "match-003b",
+        "target_id": "match-003b",
+        "source_tournament_id": "comp-003",
+        "target_competicao_id": "comp-2025-c-04",
+        "alias_aplicado": true
+      }
+    ],
+    "classificacao": [
+      {
+        "line": 1,
+        "source_id": "standing-001",
+        "target_id": "standing-001",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 2,
+        "source_id": "standing-002",
+        "target_id": "standing-002",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 3,
+        "source_id": "standing-003",
+        "target_id": "standing-003",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 4,
+        "source_id": "standing-004",
+        "target_id": "standing-004",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 5,
+        "source_id": "standing-005",
+        "target_id": "standing-005",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 6,
+        "source_id": "standing-006",
+        "target_id": "standing-006",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 7,
+        "source_id": "standing-007",
+        "target_id": "standing-007",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 8,
+        "source_id": "standing-008",
+        "target_id": "standing-008",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 9,
+        "source_id": "standing-009",
+        "target_id": "standing-009",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 10,
+        "source_id": "standing-010",
+        "target_id": "standing-010",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 11,
+        "source_id": "standing-011",
+        "target_id": "standing-011",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 12,
+        "source_id": "standing-012",
+        "target_id": "standing-012",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 13,
+        "source_id": "standing-013",
+        "target_id": "standing-013",
+        "source_tournament_id": "comp-011",
+        "target_competicao_id": "comp-2022-a-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 14,
+        "source_id": "standing-014",
+        "target_id": "standing-014",
+        "source_tournament_id": "comp-013",
+        "target_competicao_id": "comp-2023-a-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 15,
+        "source_id": "standing-015",
+        "target_id": "standing-015",
+        "source_tournament_id": "comp-015",
+        "target_competicao_id": "comp-2024-a-03",
+        "alias_aplicado": true
+      }
+    ],
+    "podios": [
+      {
+        "line": 1,
+        "source_id": "podium-001",
+        "target_id": "podium-001",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 2,
+        "source_id": "podium-002",
+        "target_id": "podium-002",
+        "source_tournament_id": "comp-002",
+        "target_competicao_id": "comp-2025-a-03",
+        "alias_aplicado": true
+      },
+      {
+        "line": 3,
+        "source_id": "podium-003",
+        "target_id": "podium-003",
+        "source_tournament_id": "comp-003",
+        "target_competicao_id": "comp-2025-c-04",
+        "alias_aplicado": true
+      },
+      {
+        "line": 4,
+        "source_id": "podium-011",
+        "target_id": "podium-011",
+        "source_tournament_id": "comp-011",
+        "target_competicao_id": "comp-2022-a-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 5,
+        "source_id": "podium-012",
+        "target_id": "podium-012",
+        "source_tournament_id": "comp-012",
+        "target_competicao_id": "comp-2022-c-03",
+        "alias_aplicado": true
+      },
+      {
+        "line": 6,
+        "source_id": "podium-013",
+        "target_id": "podium-013",
+        "source_tournament_id": "comp-013",
+        "target_competicao_id": "comp-2023-a-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 7,
+        "source_id": "podium-014",
+        "target_id": "podium-014",
+        "source_tournament_id": "comp-014",
+        "target_competicao_id": "comp-2023-c-01",
+        "alias_aplicado": true
+      },
+      {
+        "line": 8,
+        "source_id": "podium-015",
+        "target_id": "podium-015",
+        "source_tournament_id": "comp-015",
+        "target_competicao_id": "comp-2024-a-03",
+        "alias_aplicado": true
+      },
+      {
+        "line": 9,
+        "source_id": "podium-016",
+        "target_id": "podium-016",
+        "source_tournament_id": "comp-016",
+        "target_competicao_id": "comp-2024-c-03",
+        "alias_aplicado": true
+      }
+    ],
+    "times_temporada": [
+      {
+        "line": 1,
+        "source_id": "season-2022-a:1",
+        "target_id": "tt-season-2022-a-1"
+      },
+      {
+        "line": 2,
+        "source_id": "season-2022-a:7",
+        "target_id": "tt-season-2022-a-7"
+      },
+      {
+        "line": 3,
+        "source_id": "season-2023-a:2",
+        "target_id": "tt-season-2023-a-2"
+      },
+      {
+        "line": 4,
+        "source_id": "season-2023-a:5",
+        "target_id": "tt-season-2023-a-5"
+      },
+      {
+        "line": 5,
+        "source_id": "season-2024-a:15",
+        "target_id": "tt-season-2024-a-15"
+      },
+      {
+        "line": 6,
+        "source_id": "season-2024-a:2",
+        "target_id": "tt-season-2024-a-2"
+      },
+      {
+        "line": 7,
+        "source_id": "season-2025-a:1",
+        "target_id": "tt-season-2025-a-1"
+      },
+      {
+        "line": 8,
+        "source_id": "season-2025-a:15",
+        "target_id": "tt-season-2025-a-15"
+      },
+      {
+        "line": 9,
+        "source_id": "season-2025-a:2",
+        "target_id": "tt-season-2025-a-2"
+      },
+      {
+        "line": 10,
+        "source_id": "season-2025-a:20",
+        "target_id": "tt-season-2025-a-20"
+      },
+      {
+        "line": 11,
+        "source_id": "season-2025-a:3",
+        "target_id": "tt-season-2025-a-3"
+      },
+      {
+        "line": 12,
+        "source_id": "season-2025-a:33",
+        "target_id": "tt-season-2025-a-33"
+      },
+      {
+        "line": 13,
+        "source_id": "season-2025-a:34",
+        "target_id": "tt-season-2025-a-34"
+      },
+      {
+        "line": 14,
+        "source_id": "season-2025-a:4",
+        "target_id": "tt-season-2025-a-4"
+      },
+      {
+        "line": 15,
+        "source_id": "season-2025-a:5",
+        "target_id": "tt-season-2025-a-5"
+      },
+      {
+        "line": 16,
+        "source_id": "season-2025-a:6",
+        "target_id": "tt-season-2025-a-6"
+      },
+      {
+        "line": 17,
+        "source_id": "season-2025-a:7",
+        "target_id": "tt-season-2025-a-7"
+      },
+      {
+        "line": 18,
+        "source_id": "season-2025-a:8",
+        "target_id": "tt-season-2025-a-8"
+      },
+      {
+        "line": 19,
+        "source_id": "season-2025-c:1",
+        "target_id": "tt-season-2025-c-1"
+      },
+      {
+        "line": 20,
+        "source_id": "season-2025-c:34",
+        "target_id": "tt-season-2025-c-34"
+      }
+    ],
+    "midia": [
+      {
+        "line": 1,
+        "source_id": "md-001",
+        "target_id": "md-001",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "target_temporada_id": "season-2025-a",
+        "alias_aplicado": true
+      },
+      {
+        "line": 2,
+        "source_id": "md-002",
+        "target_id": "md-002",
+        "source_tournament_id": "comp-001",
+        "target_competicao_id": "comp-2025-a-04",
+        "target_temporada_id": "season-2025-a",
+        "alias_aplicado": true
+      },
+      {
+        "line": 3,
+        "source_id": "md-003",
+        "target_id": "md-003",
+        "source_tournament_id": "comp-002",
+        "target_competicao_id": "comp-2025-a-03",
+        "target_temporada_id": "season-2025-a",
+        "alias_aplicado": true
+      },
+      {
+        "line": 4,
+        "source_id": "md-004",
+        "target_id": "md-004",
+        "source_tournament_id": "comp-003",
+        "target_competicao_id": "comp-2025-c-04",
+        "target_temporada_id": "season-2025-c",
+        "alias_aplicado": true
+      },
+      {
+        "line": 5,
+        "source_id": "md-005",
+        "target_id": "md-005",
+        "source_tournament_id": "comp-015",
+        "target_competicao_id": "comp-2024-a-03",
+        "target_temporada_id": "season-2024-a",
+        "alias_aplicado": true
+      }
+    ]
+  }
+}

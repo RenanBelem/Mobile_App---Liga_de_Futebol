@@ -29,30 +29,12 @@ Se respondeu **SIM** a todos, continue! ✅
 
 ```
 docs/
-├── README.md                     # Índice geral (comece aqui)
-├── TEMPLATE.md                   # Template para novos documentos
+├── README.md                     # Índice da documentação vigente
+├── TEMPLATE.md                   # Modelo para novos documentos
 ├── GUIA_CONTRIBUICAO.md          # Este arquivo
-│
-├── projeto/                      # Planejamento geral
-│   ├── PLANO_DE_PROJETO.md
-│   ├── EVOLUCAO_RECOMENDADA.md
-│   └── ROADMAP.md (futuro)
-│
-├── decisoes/                     # Decisões técnicas
-│   ├── MATRIZ_DE_DECISAO.md
-│   ├── COMPARACAO_TECNICA.md
-│   └── ADR_001.md (Architecture Decision Record - futuro)
-│
-├── arquitetura/                  # Diagramas e especificações
-│   ├── ARQUITETURA_SISTEMA.md (futuro)
-│   ├── BANCO_DE_DADOS.md (futuro)
-│   └── DIAGRAMAS/ (futuro)
-│
-├── guias/                        # Tutoriais passo-a-passo
-│   ├── SETUP_SUPABASE.md (futuro)
-│   ├── SETUP_POCKETBASE.md (futuro)
-│   ├── GUIA_PWA.md (futuro)
-│   └── GUIA_REACT_NATIVE.md (futuro)
+├── SCHEMA_DATABASE_PTBR.md       # Modelo de dados
+├── arquitetura/                  # Pipeline de sincronização de dados
+└── guias/                        # Instalação e perguntas frequentes
 │
 ├── api/                          # Documentação de APIs
 │   ├── SUPABASE_API.md (futuro)
@@ -381,7 +363,7 @@ Antes de commitar seu documento:
 Se tiver dúvidas sobre como documentar:
 
 1. Consulte [TEMPLATE.md](./TEMPLATE.md)
-2. Olhe exemplos em [PLANO_DE_PROJETO.md](../PLANO_DE_PROJETO.md)
+2. Olhe exemplos em [SCHEMA_DATABASE_PTBR.md](./SCHEMA_DATABASE_PTBR.md)
 3. Pergunte no README principal
 
 ---
