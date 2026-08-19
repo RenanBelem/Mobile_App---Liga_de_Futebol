@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Building2, CalendarDays, Save, Trophy } from 'lucide-react';
 import { jsonRouteRepository } from '@/servicos/jsonRouteRepository';
 import { useToast } from '@/ganchos/use-toast';
+import { dataGateway } from '@/servicos/dataGateway';
 
 type SeasonStatus = 'rascunho' | 'em_andamento' | 'finalizada';
 type CompetitionStatus = 'rascunho' | 'em_andamento' | 'finalizada' | 'cancelada';
@@ -145,7 +146,7 @@ const EditCompetitionDataForm = () => {
     setCompetitionBannerUrl(competition?.banner_url ?? '');
   };
 
-  const addCompetitionToSeason = () => {
+  const addCompetitionToSeason = async () => {
     if (!selectedSeasonId || !selectedSeason) {
       return;
     }
@@ -164,7 +165,7 @@ const EditCompetitionDataForm = () => {
     const yearToken = String(selectedSeason.year ?? new Date().getFullYear());
     const newId = `comp-${yearToken}-${Date.now()}`;
 
-    const createdCompetition = jsonRouteRepository.post('competitions', {
+    const createdCompetition = await dataGateway.insert('competitions', {
       id: newId,
       season_id: selectedSeasonId,
       name: newCompetitionName.trim(),
@@ -191,7 +192,7 @@ const EditCompetitionDataForm = () => {
     window.location.reload();
   };
 
-  const removeCompetitionFromSeason = () => {
+  const removeCompetitionFromSeason = async () => {
     if (!seasonCompetitionToDeleteId) {
       return;
     }
@@ -203,7 +204,7 @@ const EditCompetitionDataForm = () => {
       return;
     }
 
-    const removed = jsonRouteRepository.delete('competitions', seasonCompetitionToDeleteId);
+    const removed = await dataGateway.remove('competitions', seasonCompetitionToDeleteId);
 
     if (!removed) {
       toast({
@@ -222,10 +223,10 @@ const EditCompetitionDataForm = () => {
     window.location.reload();
   };
 
-  const saveLeague = () => {
+  const saveLeague = async () => {
     if (!selectedLeagueId) return;
 
-    jsonRouteRepository.patch('leagues', selectedLeagueId, {
+    await dataGateway.patch('leagues', selectedLeagueId, {
       name: leagueName.trim(),
       description: leagueDescription.trim(),
       logo_url: leagueLogoUrl.trim(),
@@ -239,10 +240,10 @@ const EditCompetitionDataForm = () => {
     window.location.reload();
   };
 
-  const saveSeason = () => {
+  const saveSeason = async () => {
     if (!selectedSeasonId) return;
 
-    jsonRouteRepository.patch('seasons', selectedSeasonId, {
+    await dataGateway.patch('seasons', selectedSeasonId, {
       name: seasonName.trim(),
       description: seasonDescription.trim(),
       status: seasonStatus,
@@ -257,10 +258,10 @@ const EditCompetitionDataForm = () => {
     window.location.reload();
   };
 
-  const saveCompetition = () => {
+  const saveCompetition = async () => {
     if (!selectedCompetitionId) return;
 
-    jsonRouteRepository.patch('competitions', selectedCompetitionId, {
+    await dataGateway.patch('competitions', selectedCompetitionId, {
       name: competitionName.trim(),
       description: competitionDescription.trim(),
       status: competitionStatus,

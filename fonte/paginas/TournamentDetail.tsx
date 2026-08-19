@@ -11,6 +11,7 @@ import { tournamentService } from '@/servicos/apiRoutes';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/componentes/ui/dialog';
 import { jsonRouteRepository } from '@/servicos/jsonRouteRepository';
 import { useToast } from '@/ganchos/use-toast';
+import { dataGateway } from '@/servicos/dataGateway';
 
 type Tab = 'standings' | 'matches' | 'stats' | 'media';
 type StatsTab = 'scorers' | 'bestPlayers' | 'penalties' | 'suspensions';
@@ -449,7 +450,7 @@ const TournamentDetail = () => {
     setResultEvents(editable);
   }, [selectedRawMatch, selectedMatchEvents]);
 
-  const saveTeamsSelection = () => {
+  const saveTeamsSelection = async () => {
     if (!selectedRawMatch) {
       return;
     }
@@ -463,7 +464,7 @@ const TournamentDetail = () => {
       return;
     }
 
-    jsonRouteRepository.patch('matches', selectedRawMatch.id, {
+    await dataGateway.patch('matches', selectedRawMatch.id, {
       home_team_id: selectedHomeTeamId,
       away_team_id: selectedAwayTeamId,
       updated_at: new Date().toISOString(),
@@ -507,14 +508,14 @@ const TournamentDetail = () => {
     setResultEvents((previous) => previous.filter((event) => event.id !== eventId));
   };
 
-  const saveMatchResult = () => {
+  const saveMatchResult = async () => {
     if (!selectedRawMatch) {
       return;
     }
 
     const nowIso = new Date().toISOString();
 
-    jsonRouteRepository.patch('matches', selectedRawMatch.id, {
+    await dataGateway.patch('matches', selectedRawMatch.id, {
       score_home: Number(resultHomeScore) || 0,
       score_away: Number(resultAwayScore) || 0,
       duration_minutes: Number(matchDuration) || 90,
@@ -532,14 +533,12 @@ const TournamentDetail = () => {
     });
 
     const currentEvents = rawEvents.filter((event) => event.match_id === selectedRawMatch.id);
-    currentEvents.forEach((event) => {
-      jsonRouteRepository.delete('matchEvents', event.id);
-    });
+    for (const event of currentEvents) {
+      await dataGateway.remove('matchEvents', event.id);
+    }
 
-    resultEvents
-      .filter((event) => event.playerId && event.teamId)
-      .forEach((event) => {
-        jsonRouteRepository.post('matchEvents', {
+    for (const event of resultEvents.filter((entry) => entry.playerId && entry.teamId)) {
+      await dataGateway.insert('matchEvents', {
           id: event.id,
           match_id: selectedRawMatch.id,
           player_id: event.playerId,
@@ -548,8 +547,8 @@ const TournamentDetail = () => {
           minute: Number(event.minute) || 0,
           created_at: nowIso,
           updated_at: nowIso,
-        });
       });
+    }
 
     toast({
       title: 'Resultado atualizado',
@@ -559,12 +558,12 @@ const TournamentDetail = () => {
     window.location.reload();
   };
 
-  const saveMatchInfo = () => {
+  const saveMatchInfo = async () => {
     if (!selectedRawMatch) {
       return;
     }
 
-    jsonRouteRepository.patch('matches', selectedRawMatch.id, {
+    await dataGateway.patch('matches', selectedRawMatch.id, {
       round: matchTitle.trim() || 'Partida',
       date: matchDate,
       kickoff_time: matchKickoffTime,
@@ -589,7 +588,7 @@ const TournamentDetail = () => {
     window.location.reload();
   };
 
-  const removeMatch = () => {
+  const removeMatch = async () => {
     if (!selectedRawMatch) {
       return;
     }
@@ -600,16 +599,16 @@ const TournamentDetail = () => {
     }
 
     const linkedEvents = rawEvents.filter((event) => event.match_id === selectedRawMatch.id);
-    linkedEvents.forEach((event) => {
-      jsonRouteRepository.delete('matchEvents', event.id);
-    });
+    for (const event of linkedEvents) {
+      await dataGateway.remove('matchEvents', event.id);
+    }
 
     const linkedMedia = rawMedia.filter((mediaItem) => mediaItem.match_id === selectedRawMatch.id);
-    linkedMedia.forEach((mediaItem) => {
-      jsonRouteRepository.delete('media', mediaItem.id);
-    });
+    for (const mediaItem of linkedMedia) {
+      await dataGateway.remove('media', mediaItem.id);
+    }
 
-    jsonRouteRepository.delete('matches', selectedRawMatch.id);
+    await dataGateway.remove('matches', selectedRawMatch.id);
 
     toast({
       title: 'Partida removida',
@@ -619,7 +618,7 @@ const TournamentDetail = () => {
     window.location.reload();
   };
 
-  const addMatchToRound = () => {
+  const addMatchToRound = async () => {
     if (!sourceTournamentId) {
       toast({
         title: 'Competição não localizada',
@@ -640,7 +639,7 @@ const TournamentDetail = () => {
 
     const nowIso = new Date().toISOString();
 
-    jsonRouteRepository.post('matches', {
+    await dataGateway.insert('matches', {
       id: `match-${Date.now()}`,
       tournament_id: sourceTournamentId,
       home_team_id: newMatchHomeTeamId,

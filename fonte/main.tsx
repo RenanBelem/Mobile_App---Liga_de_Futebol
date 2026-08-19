@@ -11,5 +11,16 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { syncJsonDbFromPythonApi } from "@/servicos/pythonApiSync";
 
-createRoot(document.getElementById("root")!).render(<App />);
+const startApp = async () => {
+	try {
+		await syncJsonDbFromPythonApi();
+	} catch (error) {
+		console.warn("Falha ao sincronizar dados iniciais da API Python. Seguindo com dados locais.", error);
+	}
+
+	createRoot(document.getElementById("root")!).render(<App />);
+};
+
+void startApp();

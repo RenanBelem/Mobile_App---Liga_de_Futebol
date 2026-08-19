@@ -10,12 +10,13 @@
  * e estrutura da aplicação, conectando providers e rotas
  */
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/componentes/ui/sonner";
 import { Toaster } from "@/componentes/ui/toaster";
 import { TooltipProvider } from "@/componentes/ui/tooltip";
 import BottomNav from "@/componentes/BottomNav";
+import { jsonRouteRepository } from "@/servicos/jsonRouteRepository";
 import Login from "./paginas/Login";
 import Index from "./paginas/Index";
 import Teams from "./paginas/Teams";
@@ -33,6 +34,24 @@ const App = () => {
   const [authenticatedUser, setAuthenticatedUser] = useState<string | null>(() =>
     localStorage.getItem(AUTH_STORAGE_KEY),
   );
+  const lastDbVersionRef = useRef(jsonRouteRepository.getVersion());
+
+  useEffect(() => {
+    const unsubscribe = jsonRouteRepository.subscribe(() => {
+      const nextVersion = jsonRouteRepository.getVersion();
+      if (nextVersion === lastDbVersionRef.current) {
+        return;
+      }
+
+      lastDbVersionRef.current = nextVersion;
+
+      // Transitional refresh: keeps route caches aligned with JSON updates
+      // while the data layer is migrated to a Supabase-style client.
+      window.location.reload();
+    });
+
+    return unsubscribe;
+  }, []);
 
   const handleLoginSuccess = (login: string) => {
     localStorage.setItem(AUTH_STORAGE_KEY, login);

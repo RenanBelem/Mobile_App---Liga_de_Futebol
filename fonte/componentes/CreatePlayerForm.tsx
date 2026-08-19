@@ -17,8 +17,8 @@ import { Input } from "@/componentes/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/componentes/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/componentes/ui/form";
 import { useToast } from "@/ganchos/use-toast";
-import { addPlayer } from "@/dados/state";
 import { teamService } from "@/servicos/apiRoutes";
+import { dataGateway } from "@/servicos/dataGateway";
 import { Users } from "lucide-react";
 
 const positions = [
@@ -61,13 +61,24 @@ export function CreatePlayerForm() {
   async function onSubmit(data: PlayerFormValues) {
     try {
       setIsLoading(true);
-      
-      // Salva o jogador em localStorage
-      const newPlayer = addPlayer({
+      const nowIso = new Date().toISOString();
+
+      await dataGateway.insert('players', {
+        team_id: data.teamId,
         name: data.name,
         number: data.shirtNumber,
         position: data.position || undefined,
-        teamId: data.teamId,
+        birth_date: undefined,
+        nationality: undefined,
+        height_cm: undefined,
+        weight_kg: undefined,
+        dominant_foot: undefined,
+        biography: undefined,
+        avatar_url: undefined,
+        status: 'active',
+        joined_date: nowIso,
+        created_at: nowIso,
+        updated_at: nowIso,
       });
 
       toast({

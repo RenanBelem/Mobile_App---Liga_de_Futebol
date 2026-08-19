@@ -12,9 +12,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Shield, Type, Image as ImageIcon, Calendar, Palette } from "lucide-react";
-import { addTeam } from "@/dados/state";
 import { useToast } from "@/ganchos/use-toast";
 import { useState } from "react";
+import { dataGateway } from "@/servicos/dataGateway";
 
 const teamSchema = z.object({
   name: z.string().min(3, { message: "O nome do time precisa ter pelo menos 3 letras." }),
@@ -27,6 +27,16 @@ const teamSchema = z.object({
 });
 
 type TeamFormValues = z.infer<typeof teamSchema>;
+
+const toSlug = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
 
 export default function CreateTeamForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -44,19 +54,30 @@ export default function CreateTeamForm() {
     },
   });
 
-  function onSubmit(data: TeamFormValues) {
+  async function onSubmit(data: TeamFormValues) {
     try {
       setIsLoading(true);
-      
-      // Salva o time em localStorage
-      const newTeam = addTeam({
+      const nowIso = new Date().toISOString();
+
+      await dataGateway.insert('teams', {
+        league_id: 'l1',
         name: data.name,
-        shortName: data.shortName?.toUpperCase() || undefined,
-        logoUrl: data.logoUrl || undefined,
-        coverImageUrl: data.coverImageUrl || undefined,
-        uniformUrl: data.uniformUrl || undefined,
-        colors: data.primaryColor || undefined,
-        foundationYear: data.foundationYear || undefined,
+        slug: toSlug(data.name),
+        colors: data.primaryColor || '#dc2626',
+        secondary_color: undefined,
+        abbreviation: data.shortName?.toUpperCase() || undefined,
+        founded_year: data.foundationYear ? Number(data.foundationYear) : undefined,
+        city: undefined,
+        state: undefined,
+        logo_url: data.logoUrl || data.uniformUrl || undefined,
+        banner_url: data.coverImageUrl || undefined,
+        description: undefined,
+        stadium_name: undefined,
+        president_name: undefined,
+        coach_name: undefined,
+        created_at: nowIso,
+        updated_at: nowIso,
+        is_active: true,
       });
 
       toast({

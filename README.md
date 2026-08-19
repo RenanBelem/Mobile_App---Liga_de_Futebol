@@ -53,6 +53,22 @@ python scripts/wiki_sync_pipeline.py export-upserts
 
 Revise os relatorios em `scripts/out/` antes de aplicar qualquer SQL. O fluxo completo esta documentado em [`docs/arquitetura/MARCO_ZERO_WIKI_JSON_PIPELINE.md`](docs/arquitetura/MARCO_ZERO_WIKI_JSON_PIPELINE.md).
 
+## Camada Python para leitura/escrita
+
+Foi adicionada uma camada de API em Python para facilitar a migracao futura para backend/Supabase:
+
+- Codigo da API: `backend/python_api/`
+- Script para subir a API: `npm run dev:py-api`
+
+Para o frontend usar leitura/escrita via Python API, configure:
+
+```bash
+VITE_USE_PYTHON_API=true
+VITE_PYTHON_API_URL=http://localhost:8000/api
+```
+
+Quando desativado, o app segue no fallback local com JSON + localStorage.
+
 ## Documentacao
 
 - [`docs/README.md`](docs/README.md): indice curto e ordem de leitura

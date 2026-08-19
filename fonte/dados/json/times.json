@@ -713,6 +713,48 @@
       "created_at": "2023-06-02T00:00:00Z",
       "updated_at": "2026-05-21T00:00:00Z",
       "is_active": true
+    },
+    {
+      "id": "35",
+      "league_id": "l1",
+      "name": "Matriarcado",
+      "slug": "matriarcado",
+      "colors": "#a21caf",
+      "secondary_color": "#701a75",
+      "abbreviation": "MTR",
+      "founded_year": null,
+      "city": null,
+      "state": null,
+      "logo_url": "/logos/gerais/escudo_LFA.jpg",
+      "banner_url": "/banners/gerais/escudo_LFA.jpg",
+      "description": "O Matriarcado é um time de futebol feminino que carrega a essência da força coletiva e da transformação social, integrante da Liga Antifascista.",
+      "stadium_name": null,
+      "president_name": null,
+      "coach_name": null,
+      "created_at": "2025-03-01T00:00:00Z",
+      "updated_at": "2025-03-01T00:00:00Z",
+      "is_active": true
+    },
+    {
+      "id": "36",
+      "league_id": "l1",
+      "name": "Umbabarauma Fut & Arte",
+      "slug": "umbabarauma",
+      "colors": "#b45309",
+      "secondary_color": "#78350f",
+      "abbreviation": "UMB",
+      "founded_year": 2022,
+      "city": null,
+      "state": null,
+      "logo_url": "/logos/gerais/escudo_LFA.jpg",
+      "banner_url": "/banners/gerais/escudo_LFA.jpg",
+      "description": "Nascido em 2022, o Umbabarauma une a fome de bola e o talento musical em suas partidas.",
+      "stadium_name": null,
+      "president_name": null,
+      "coach_name": null,
+      "created_at": "2022-01-01T00:00:00Z",
+      "updated_at": "2022-01-01T00:00:00Z",
+      "is_active": true
     }
   ]
 }

@@ -1,6 +1,8 @@
 import { jsonLeagueData } from '@/dados/jsonData';
 
 const STORAGE_JSON_DB = 'lfa_json_route_db_v1';
+const STORAGE_JSON_DB_VERSION = 'lfa_json_route_db_version';
+const JSON_DB_UPDATED_EVENT = 'lfa:json-db-updated';
 
 type JsonDb = typeof jsonLeagueData;
 
@@ -12,8 +14,21 @@ const deepClone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
 const createBaseDb = (): JsonDb => deepClone(jsonLeagueData);
 
+const nowVersion = () => String(Date.now());
+
+const notifyDbUpdated = (version: string) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.dispatchEvent(new CustomEvent(JSON_DB_UPDATED_EVENT, { detail: { version } }));
+};
+
 const saveDb = (db: JsonDb) => {
   localStorage.setItem(STORAGE_JSON_DB, JSON.stringify(db));
+  const version = nowVersion();
+  localStorage.setItem(STORAGE_JSON_DB_VERSION, version);
+  notifyDbUpdated(version);
 };
 
 const readDb = (): JsonDb => {
@@ -43,7 +58,38 @@ const ensureId = (item: Record<string, unknown>) => {
 };
 
 export const jsonRouteRepository = {
+  getVersion: (): string => localStorage.getItem(STORAGE_JSON_DB_VERSION) ?? '0',
+
+  subscribe: (listener: () => void) => {
+    if (typeof window === 'undefined') {
+      return () => undefined;
+    }
+
+    const handleCustomEvent = () => {
+      listener();
+    };
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === STORAGE_JSON_DB || event.key === STORAGE_JSON_DB_VERSION) {
+        listener();
+      }
+    };
+
+    window.addEventListener(JSON_DB_UPDATED_EVENT, handleCustomEvent as EventListener);
+    window.addEventListener('storage', handleStorage);
+
+    return () => {
+      window.removeEventListener(JSON_DB_UPDATED_EVENT, handleCustomEvent as EventListener);
+      window.removeEventListener('storage', handleStorage);
+    };
+  },
+
   getDb: (): JsonDb => readDb(),
+
+  setDb: (db: JsonDb) => {
+    saveDb(db);
+    return deepClone(db);
+  },
 
   resetDb: () => {
     const base = createBaseDb();

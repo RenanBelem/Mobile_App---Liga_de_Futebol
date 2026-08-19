@@ -40,7 +40,7 @@
       "start_date": "2023-03-01",
       "end_date": "2023-06-30",
       "status": "finalizada",
-      "description": "Temporada de 2023 com forte presença da Taça Cecília.",
+      "description": "Primeira temporada da LFA em 2023.",
       "banner_url": "/banners/2023-apertura.jpg",
       "created_at": "2023-03-01T00:00:00Z",
       "updated_at": "2023-07-01T00:00:00Z"
@@ -55,7 +55,7 @@
       "start_date": "2023-07-01",
       "end_date": "2023-10-31",
       "status": "finalizada",
-      "description": "Clausura de 2023.",
+      "description": "Segunda temporada da LFA em 2023.",
       "banner_url": "/banners/2023-clausura.jpg",
       "created_at": "2023-07-01T00:00:00Z",
       "updated_at": "2023-11-01T00:00:00Z"
@@ -70,7 +70,7 @@
       "start_date": "2024-03-01",
       "end_date": "2024-06-30",
       "status": "finalizada",
-      "description": "Temporada de 2024 com edição da Taça Cecília.",
+      "description": "Primeira temporada da LFA em 2024.",
       "banner_url": "/banners/2024-apertura.jpg",
       "created_at": "2024-03-01T00:00:00Z",
       "updated_at": "2024-07-01T00:00:00Z"
@@ -85,7 +85,7 @@
       "start_date": "2024-07-01",
       "end_date": "2024-10-31",
       "status": "finalizada",
-      "description": "Clausura de 2024.",
+      "description": "Segunda temporada da LFA em 2024.",
       "banner_url": "/banners/2024-clausura.jpg",
       "created_at": "2024-07-01T00:00:00Z",
       "updated_at": "2024-11-01T00:00:00Z"
@@ -100,7 +100,7 @@
       "start_date": "2025-03-01",
       "end_date": "2025-06-30",
       "status": "finalizada",
-      "description": "Taça Cecília 2025 Apertura e Copa Eric Cantona.",
+      "description": "Primeira temporada da LFA em 2025.",
       "banner_url": "/banners/2025-apertura.jpg",
       "created_at": "2025-03-01T00:00:00Z",
       "updated_at": "2025-07-01T00:00:00Z"
@@ -115,7 +115,7 @@
       "start_date": "2025-07-01",
       "end_date": "2025-10-31",
       "status": "finalizada",
-      "description": "Taça Cecília 2025 Clausura.",
+      "description": "Segunda temporada da LFA em 2025.",
       "banner_url": "/banners/2025-clausura.jpg",
       "created_at": "2025-07-01T00:00:00Z",
       "updated_at": "2025-11-01T00:00:00Z"
@@ -130,7 +130,7 @@
       "start_date": "2026-03-01",
       "end_date": "2026-06-30",
       "status": "em_andamento",
-      "description": "Temporada atual da LFA em 2026.",
+      "description": "Primeira temporada da LFA em 2026.",
       "banner_url": "/banners/2026-apertura.jpg",
       "created_at": "2026-02-01T00:00:00Z",
       "updated_at": "2026-05-28T00:00:00Z"
