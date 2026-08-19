@@ -13,6 +13,7 @@ type CollectionItem<K extends JsonCollection> = JsonDb[K] extends Array<infer T>
 const deepClone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 
 const createBaseDb = (): JsonDb => deepClone(jsonLeagueData);
+let currentDb = createBaseDb();
 
 const nowVersion = () => String(Date.now());
 
@@ -24,29 +25,27 @@ const notifyDbUpdated = (version: string) => {
   window.dispatchEvent(new CustomEvent(JSON_DB_UPDATED_EVENT, { detail: { version } }));
 };
 
-const saveDb = (db: JsonDb) => {
-  localStorage.setItem(STORAGE_JSON_DB, JSON.stringify(db));
+const saveDb = (db: JsonDb): boolean => {
+  const serialized = JSON.stringify(db);
+  const current = JSON.stringify(currentDb);
+
+  if (current === serialized) {
+    return false;
+  }
+
+  currentDb = deepClone(db);
+
+  // localStorage is only a browser mirror. The authoritative source is the
+  // imported JSON or, when enabled, the Python API backed by those JSON files.
+  localStorage.setItem(STORAGE_JSON_DB, serialized);
   const version = nowVersion();
   localStorage.setItem(STORAGE_JSON_DB_VERSION, version);
   notifyDbUpdated(version);
+  return true;
 };
 
 const readDb = (): JsonDb => {
-  const raw = localStorage.getItem(STORAGE_JSON_DB);
-  if (!raw) {
-    const base = createBaseDb();
-    saveDb(base);
-    return base;
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as JsonDb;
-    return parsed;
-  } catch {
-    const base = createBaseDb();
-    saveDb(base);
-    return base;
-  }
+  return deepClone(currentDb);
 };
 
 const ensureId = (item: Record<string, unknown>) => {

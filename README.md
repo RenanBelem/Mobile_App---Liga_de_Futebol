@@ -69,6 +69,8 @@ VITE_PYTHON_API_URL=http://localhost:8000/api
 
 Quando desativado, o app segue no fallback local com JSON + localStorage.
 
+Com `VITE_USE_PYTHON_API=true`, a fonte oficial de runtime passa a ser `fonte/dados/json/*.json`, lida e escrita pelo backend Python. O `localStorage` funciona somente como espelho local do último estado sincronizado.
+
 ## Documentacao
 
 - [`docs/README.md`](docs/README.md): indice curto e ordem de leitura

@@ -20,3 +20,46 @@ export const syncJsonDbFromPythonApi = async (): Promise<JsonDb | null> => {
   jsonRouteRepository.setDb(db);
   return db;
 };
+
+export const startPythonApiSyncPolling = (intervalMs = 3000) => {
+  if (!isPythonApiEnabled()) {
+    return () => undefined;
+  }
+
+  let cancelled = false;
+  let inFlight = false;
+
+  const tick = async () => {
+    if (cancelled || inFlight) {
+      return;
+    }
+
+    inFlight = true;
+    try {
+      await syncJsonDbFromPythonApi();
+    } catch {
+      // Best-effort polling: keep app running with local cache if API is unavailable.
+    } finally {
+      inFlight = false;
+    }
+  };
+
+  const timerId = window.setInterval(() => {
+    void tick();
+  }, intervalMs);
+
+  const onVisibilityChange = () => {
+    if (document.visibilityState === 'visible') {
+      void tick();
+    }
+  };
+
+  document.addEventListener('visibilitychange', onVisibilityChange);
+  void tick();
+
+  return () => {
+    cancelled = true;
+    window.clearInterval(timerId);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+  };
+};

@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { addTournament } from "@/dados/state";
 import { useToast } from "@/ganchos/use-toast";
 import { useState } from "react";
 import { Trophy, CalendarDays, Flag, Layers, CircleDot, Image as ImageIcon } from "lucide-react";
+import { dataGateway } from "@/servicos/dataGateway";
 
 const tournamentSchema = z.object({
   name: z.string().min(3, { message: "Nome precisa ter pelo menos 3 letras." }),
@@ -21,6 +21,16 @@ const tournamentSchema = z.object({
 });
 
 type TournamentFormValues = z.infer<typeof tournamentSchema>;
+
+const slugify = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
 
 export default function CreateTournamentForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,18 +49,39 @@ export default function CreateTournamentForm() {
     },
   });
 
-  function onSubmit(data: TournamentFormValues) {
+  async function onSubmit(data: TournamentFormValues) {
     try {
       setIsLoading(true);
+      const seasons = await dataGateway.list('seasons');
+      const selectedSeason = seasons.find((season) =>
+        season.name.toLowerCase() === data.season.trim().toLowerCase()
+        || String(season.year) === data.season.trim()
+      ) ?? seasons[0];
 
-      addTournament({
+      if (!selectedSeason) {
+        throw new Error('Nenhuma temporada disponível para associar o torneio.');
+      }
+
+      const nowIso = new Date().toISOString();
+      const normalizedType = data.type === 'cup' ? 'copa' : 'campeonato';
+      const normalizedStatus = data.status === 'ongoing' ? 'em_andamento' : data.status === 'finished' ? 'finalizada' : 'rascunho';
+
+      await dataGateway.insert('competitions', {
+        season_id: selectedSeason.id,
         name: data.name,
-        leagueId: data.leagueId,
-        type: data.type,
-        season: data.season,
-        status: data.status,
-        logoUrl: data.logoUrl || undefined,
-        bannerUrl: data.bannerUrl || undefined,
+        slug: slugify(data.name),
+        type: normalizedType,
+        format: data.type === 'cup' ? 'eliminacao_direta' : 'turno_unico',
+        start_date: selectedSeason.start_date,
+        end_date: selectedSeason.end_date,
+        status: normalizedStatus,
+        order: Date.now(),
+        description: `Competição criada via painel administrativo (${data.season}).`,
+        organizer: 'LFA',
+        logo_url: data.logoUrl || undefined,
+        banner_url: data.bannerUrl || undefined,
+        created_at: nowIso,
+        updated_at: nowIso,
       });
 
       toast({

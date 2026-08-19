@@ -12,9 +12,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { UserPlus, Mail, User, Shield, Image as ImageIcon } from "lucide-react";
-import { addUser } from "@/dados/state";
 import { useToast } from "@/ganchos/use-toast";
 import { useState } from "react";
+import { dataGateway } from "@/servicos/dataGateway";
 
 const userSchema = z.object({
   name: z.string().min(3, { message: "Nome precisa ter pelo menos 3 letras." }),
@@ -40,16 +40,23 @@ export default function CreateUserForm() {
     },
   });
 
-  function onSubmit(data: UserFormValues) {
+  async function onSubmit(data: UserFormValues) {
     try {
       setIsLoading(true);
-      
-      // Salva o usuário em localStorage
-      const newUser = addUser({
+
+      const roleMap: Record<UserFormValues['role'], 'admin' | 'moderador' | 'jogador' | 'torcedor'> = {
+        admin: 'admin',
+        moderator: 'moderador',
+        player: 'jogador',
+        fan: 'torcedor',
+      };
+
+      await dataGateway.insert('users', {
         name: data.name,
         email: data.email,
-        role: data.role as 'admin' | 'moderator' | 'player' | 'fan',
-        avatarUrl: data.avatarUrl || undefined,
+        senha: 'senha',
+        role: roleMap[data.role],
+        avatar_url: data.avatarUrl || undefined,
       });
 
       toast({

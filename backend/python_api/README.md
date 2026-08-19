@@ -40,7 +40,8 @@ npm run dev:py-api
 
 ## Persistência
 
-- Base inicial: fonte/dados/json/*.json
-- Runtime mutável: scripts/out/runtime/json_route_db.json
+- Fonte única de leitura e escrita: `fonte/dados/json/*.json`
+- Cada coleção da API corresponde a um arquivo JSON específico.
+- As escritas da API alteram diretamente esses arquivos, com substituição atômica.
 
-A API nunca sobrescreve os JSONs estáticos de origem durante o runtime.
+O navegador mantém apenas um espelho local para renderização e sincronização; ele não é a fonte oficial quando a API Python está habilitada.

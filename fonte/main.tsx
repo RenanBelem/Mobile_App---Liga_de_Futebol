@@ -9,7 +9,6 @@
  * criando a interface do usuário no DOM
  */
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import "./index.css";
 import { syncJsonDbFromPythonApi } from "@/servicos/pythonApiSync";
 
@@ -20,6 +19,7 @@ const startApp = async () => {
 		console.warn("Falha ao sincronizar dados iniciais da API Python. Seguindo com dados locais.", error);
 	}
 
+	const { default: App } = await import("./App.tsx");
 	createRoot(document.getElementById("root")!).render(<App />);
 };
 

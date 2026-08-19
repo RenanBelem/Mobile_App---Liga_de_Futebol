@@ -8,7 +8,6 @@ import time
 
 ROOT = Path(__file__).resolve().parents[2]
 JSON_DIR = ROOT / 'fonte' / 'dados' / 'json'
-RUNTIME_DB_PATH = ROOT / 'scripts' / 'out' / 'runtime' / 'json_route_db.json'
 
 COLLECTION_MAP: dict[str, tuple[str, str]] = {
     'leagues': ('ligas.json', 'leagues'),
@@ -35,7 +34,9 @@ class JsonRouteStore:
 
     def _write_json_file(self, path: Path, payload: Any) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        temporary_path = path.with_suffix(f'{path.suffix}.tmp')
+        temporary_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        temporary_path.replace(path)
 
     def _create_base_db(self) -> dict[str, list[dict[str, Any]]]:
         db: dict[str, list[dict[str, Any]]] = {}
@@ -47,24 +48,18 @@ class JsonRouteStore:
 
     def read_db(self) -> dict[str, list[dict[str, Any]]]:
         with self._lock:
-            if not RUNTIME_DB_PATH.exists():
-                base = self._create_base_db()
-                self._write_json_file(RUNTIME_DB_PATH, base)
-                return base
-
-            try:
-                payload = self._read_json_file(RUNTIME_DB_PATH)
-                if not isinstance(payload, dict):
-                    raise ValueError('Invalid runtime database')
-                return payload
-            except Exception:
-                base = self._create_base_db()
-                self._write_json_file(RUNTIME_DB_PATH, base)
-                return base
+            return self._create_base_db()
 
     def write_db(self, db: dict[str, list[dict[str, Any]]]) -> None:
         with self._lock:
-            self._write_json_file(RUNTIME_DB_PATH, db)
+            for collection, (filename, root_key) in COLLECTION_MAP.items():
+                if collection not in db:
+                    continue
+
+                path = JSON_DIR / filename
+                payload = self._read_json_file(path) if path.exists() else {}
+                payload[root_key] = db[collection]
+                self._write_json_file(path, payload)
 
     def replace_db(self, db: dict[str, list[dict[str, Any]]]) -> dict[str, list[dict[str, Any]]]:
         with self._lock:

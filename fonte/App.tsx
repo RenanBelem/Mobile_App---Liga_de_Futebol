@@ -17,6 +17,7 @@ import { Toaster } from "@/componentes/ui/toaster";
 import { TooltipProvider } from "@/componentes/ui/tooltip";
 import BottomNav from "@/componentes/BottomNav";
 import { jsonRouteRepository } from "@/servicos/jsonRouteRepository";
+import { startPythonApiSyncPolling } from "@/servicos/pythonApiSync";
 import Login from "./paginas/Login";
 import Index from "./paginas/Index";
 import Teams from "./paginas/Teams";
@@ -51,6 +52,11 @@ const App = () => {
     });
 
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const stopPolling = startPythonApiSyncPolling(3000);
+    return stopPolling;
   }, []);
 
   const handleLoginSuccess = (login: string) => {

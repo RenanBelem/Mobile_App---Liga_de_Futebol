@@ -1,5 +1,4 @@
 import { Team, Player, Tournament, Match, DocumentationItem, SeasonSummary, Podium } from '@/tipos/league';
-import { getPlayers, getTeams, getTournaments } from '@/dados/state';
 import { jsonRouteRepository } from '@/servicos/jsonRouteRepository';
 
 export type RouteEntity = 'teams' | 'players' | 'tournaments' | 'matches' | 'auth';
@@ -268,8 +267,8 @@ const sourcePlayers = (routeDb.players ?? []).map((player) => ({
 const sourceTeamIds = sourceTeams.map((team) => team.id);
 const sourceTournamentIds = sourceCompetitions.map((competicao) => competicao.id);
 
-const mapTeamIdToLegacy = (sourceId: string, index: number) => String(index + 1);
-const mapTournamentIdToLegacy = (sourceId: string, index: number) => `t${index + 1}`;
+const mapTeamIdToLegacy = (sourceId: string, index: number) => sourceId;
+const mapTournamentIdToLegacy = (sourceId: string, index: number) => sourceId;
 const resolveTeamSourceId = (teamId: string) => {
   const index = sourceTeamIds.findIndex((sourceId) => sourceId === teamId);
   return index >= 0 ? teamId : sourceTeamIds[Number(teamId) - 1] ?? teamId;
@@ -366,7 +365,7 @@ const normalizeTournament = (competicao: (typeof sourceCompetitions)[number], in
   return {
     id: mapTournamentIdToLegacy(competicao.id, index),
     leagueId: 'liga-001',
-    name: competicao.tipo === 'copa' ? competicao.nome : `Campeonato ${competicao.nome}`,
+    name: competicao.nome,
     type: competicao.tipo === 'copa' ? 'cup' : 'league',
     season: temporada?.nome ?? 'Temporada',
     status: competicao.status === 'finalizada' ? 'finished' : competicao.status === 'em_andamento' ? 'ongoing' : 'draft',
@@ -393,29 +392,12 @@ const normalizeMatch = (partida: (typeof sourceMatches)[number]): Match => ({
 });
 
 const baseTeams = sourceTeams.map((team, index) => normalizeTeam(team, index));
-const localTeams = getTeams();
-const teams = [...baseTeams, ...localTeams];
+const teams = baseTeams;
 const podiums = sourcePodiums.map((podium, index) => normalizePodium(podium, index));
 const basePlayers = sourcePlayers.map(normalizePlayer);
-const localPlayers = getPlayers().map((player) => ({
-  id: player.id,
-  teamId: player.teamId ?? '',
-  name: player.name,
-  number: player.number,
-  position: player.position,
-  photoUrl: undefined,
-}));
-const players = [...basePlayers, ...localPlayers];
+const players = basePlayers;
 const baseTournaments = sourceCompetitions.map((competicao, index) => normalizeTournament(competicao, index));
-const localTournaments = getTournaments().map((tournament) => ({
-  ...tournament,
-  id: tournament.id,
-  leagueId: tournament.leagueId || 'liga-001',
-  type: tournament.type || 'league',
-  season: tournament.season || 'Temporada',
-  status: tournament.status || 'draft',
-}));
-const tournaments = [...new Map([...baseTournaments, ...localTournaments].map((tournament) => [tournament.id, tournament])).values()];
+const tournaments = baseTournaments;
 const matches = sourceMatches.map(normalizeMatch);
 const documentation = [
   {
