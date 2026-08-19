@@ -57,7 +57,7 @@ Revise os relatorios em `scripts/out/` antes de aplicar qualquer SQL. O fluxo co
 
 Foi adicionada uma camada de API em Python para facilitar a migracao futura para backend/Supabase:
 
-- Codigo da API: `backend/python_api/`
+- Codigo da API: `api/`
 - Script para subir a API: `npm run dev:py-api`
 
 Para o frontend usar leitura/escrita via Python API, configure:

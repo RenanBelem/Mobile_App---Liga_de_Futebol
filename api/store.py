@@ -6,7 +6,7 @@ from typing import Any
 import json
 import time
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 JSON_DIR = ROOT / 'fonte' / 'dados' / 'json'
 
 COLLECTION_MAP: dict[str, tuple[str, str]] = {

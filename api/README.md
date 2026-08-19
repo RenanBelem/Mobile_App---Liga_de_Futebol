@@ -10,13 +10,13 @@ Esta API expõe leitura e escrita dos dados da liga via HTTP usando os mesmos JS
 ## Instalação
 
 ```bash
-python -m pip install -r backend/python_api/requirements.txt
+python -m pip install -r api/requirements.txt
 ```
 
 ## Executar
 
 ```bash
-python -m uvicorn backend.python_api.main:app --reload --host 127.0.0.1 --port 8000
+python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 Ou via npm script:

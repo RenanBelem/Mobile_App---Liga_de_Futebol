@@ -7,7 +7,7 @@
     "dev": "vite --config config/vite.config.ts",
     "build": "vite build --config config/vite.config.ts",
     "build:dev": "vite build --mode development --config config/vite.config.ts",
-    "dev:py-api": "python -m uvicorn backend.python_api.main:app --reload --host 127.0.0.1 --port 8000",
+    "dev:py-api": "python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000",
     "lint": "eslint --config config/eslint.config.js .",
     "preview": "vite preview",
     "test": "vitest run --config config/vitest.config.ts",
