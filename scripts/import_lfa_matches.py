@@ -68,7 +68,7 @@ COMPETITION_TOKENS = [
 # Contexto de fase (coluna F) -> slug de competição default quando a rodada (coluna E)
 # não menciona a competição explicitamente.
 PHASE_CONTEXT_DEFAULT = [
-    ("SÉRIE B", "taca-wladimir-rodrigues"),
+    ("SERIE B", "taca-wladimir-rodrigues"),
     ("FEMININO", "taca-sissi"),
 ]
 DEFAULT_COMPETITION_SLUG = "taca-cecilia"
@@ -159,7 +159,7 @@ def humanize_round(round_label: str) -> str:
         return "Quartas de Final"
     if "SEMI" in norm:
         return "Semifinal"
-    if "3" in norm and ("LUGAR" in norm or norm.startswith("3")):
+    if "3" in norm and "LUGAR" in norm:
         return "Disputa de 3º Lugar"
     if "FINAL" in norm:
         return "Final"

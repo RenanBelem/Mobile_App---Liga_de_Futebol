@@ -39,7 +39,18 @@ const normalizeText = (value: string) =>
     .replace(/\s+/g, ' ')
     .trim();
 
-const knockoutRoundKeywords = ['oitavas', 'quartas', 'semi', 'final', 'mata', 'eliminatoria'];
+const knockoutRoundKeywords = [
+  'oitavas',
+  'quartas',
+  'semi',
+  'final',
+  'mata',
+  'eliminatoria',
+  'quadrangular',
+  'triangular',
+  'repescagem',
+  'lugar',
+];
 
 const isKnockoutRound = (round: string) => {
   const normalizedRound = normalizeText(round);
