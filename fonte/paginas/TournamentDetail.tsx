@@ -15,8 +15,29 @@ import { dataGateway } from '@/servicos/dataGateway';
 
 type Tab = 'standings' | 'matches' | 'stats' | 'media';
 type StatsTab = 'scorers' | 'bestPlayers' | 'penalties' | 'suspensions';
-type StandingsNature = 'league' | 'hybrid' | 'knockout';
-type StandingsPhase = 'phase1' | 'phase2';
+
+const PENALTY_NOTE_RE = /penaltis\s*:\s*(\d+)/gi;
+
+const getPenaltyScores = (notes?: string | null): [number, number] | null => {
+  if (!notes) {
+    return null;
+  }
+
+  const values = [...notes.matchAll(PENALTY_NOTE_RE)].map((match) => Number(match[1]));
+  if (values.length !== 2) {
+    return null;
+  }
+
+  return [values[0], values[1]];
+};
+
+const formatMatchScore = (match: { score_home?: number | null; score_away?: number | null; notes?: string | null }) => {
+  const penalties = getPenaltyScores(match.notes);
+  const home = `${match.score_home ?? '?'}${penalties ? ` (${penalties[0]})` : ''}`;
+  const away = `${match.score_away ?? '?'}${penalties ? ` (${penalties[1]})` : ''}`;
+  return { home, away };
+};
+
 type MatchDialogAction = 'menu' | 'view' | 'teams' | 'result' | 'info';
 
 type EditableEvent = {
@@ -57,20 +78,50 @@ const isKnockoutRound = (round: string) => {
   return knockoutRoundKeywords.some((keyword) => normalizedRound.includes(keyword));
 };
 
+const groupStageRoundKeywords = ['quadrangular', 'triangular', 'repescagem'];
+
+const isGroupStageRound = (round: string) => {
+  const normalizedRound = normalizeText(round);
+  return groupStageRoundKeywords.some((keyword) => normalizedRound.includes(keyword));
+};
+
 const roundWeight = (round: string) => {
   const normalized = normalizeText(round);
 
-  if (normalized.includes('oitavas')) return 1;
-  if (normalized.includes('quartas')) return 2;
-  if (normalized.includes('semi')) return 3;
-  if (normalized === 'final' || normalized.includes(' final')) return 4;
-  if (normalized.includes('3') || normalized.includes('terceiro')) return 5;
   if (normalized.includes('rodada')) {
     const match = normalized.match(/rodada\s*(\d+)/);
     return 100 + Number(match?.[1] ?? 0);
   }
 
+  if (normalized.includes('oitavas')) return 1;
+  if (normalized.includes('quartas')) return 2;
+  if (normalized.includes('semi')) return 3;
+  if (normalized === 'final' || normalized.includes(' final')) return 4;
+  if (normalized.includes('lugar') || normalized.includes('terceiro')) return 5;
+
   return 500;
+};
+
+type RoundPhaseKey = 'liga' | 'grupo' | 'mata-mata';
+
+const getRoundPhaseKey = (round: string): RoundPhaseKey => {
+  if (isGroupStageRound(round)) return 'grupo';
+  if (isKnockoutRound(round)) return 'mata-mata';
+  return 'liga';
+};
+
+const compareRounds = (roundDates: Map<string, string>) => (a: string, b: string) => {
+  const weightDifference = roundWeight(a) - roundWeight(b);
+  if (weightDifference !== 0) {
+    return weightDifference;
+  }
+
+  const dateDifference = (roundDates.get(a) ?? '').localeCompare(roundDates.get(b) ?? '');
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return a.localeCompare(b);
 };
 
 const groupMatchesByRound = <T extends { round?: string }>(matches: T[]) => {
@@ -190,7 +241,7 @@ const TournamentDetail = () => {
   const tournament = tournamentService.getById(id ?? '');
   const [activeTab, setActiveTab] = useState<Tab>('standings');
   const [activeStatsTab, setActiveStatsTab] = useState<StatsTab>('scorers');
-  const [standingsPhase, setStandingsPhase] = useState<StandingsPhase>('phase1');
+  const [standingsPhaseKey, setStandingsPhaseKey] = useState<RoundPhaseKey>('liga');
 
   const [matchDialogOpen, setMatchDialogOpen] = useState(false);
   const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null);
@@ -216,6 +267,7 @@ const TournamentDetail = () => {
   const [matchAttachments, setMatchAttachments] = useState('');
 
   const [selectedRoundFilter, setSelectedRoundFilter] = useState('');
+  const [selectedPhaseKey, setSelectedPhaseKey] = useState<RoundPhaseKey>('liga');
   const [showAddMatchForm, setShowAddMatchForm] = useState(false);
   const [showAddRoundForm, setShowAddRoundForm] = useState(false);
   const [newRoundName, setNewRoundName] = useState('');
@@ -285,31 +337,70 @@ const TournamentDetail = () => {
     return player?.name ?? playerId;
   };
 
+  const roundDates = useMemo(() => {
+    const dates = new Map<string, string>();
+    rawTournamentMatches.forEach((match) => {
+      const key = match.round?.trim() || 'Sem rodada definida';
+      const existing = dates.get(key);
+      if (!existing || (match.date ?? '') < existing) {
+        dates.set(key, match.date ?? '');
+      }
+    });
+    return dates;
+  }, [rawTournamentMatches]);
+
   const roundOptions = useMemo(() => {
     return [...new Set([
       ...rawTournamentMatches.map((match) => match.round?.trim() || 'Sem rodada definida'),
       ...customRounds,
-    ])]
-      .sort((a, b) => {
-        const weightDifference = roundWeight(a) - roundWeight(b);
-        if (weightDifference !== 0) {
-          return weightDifference;
-        }
+    ])].sort(compareRounds(roundDates));
+  }, [customRounds, rawTournamentMatches, roundDates]);
 
-        return a.localeCompare(b);
-      });
-  }, [customRounds, rawTournamentMatches]);
+  const phases = useMemo(() => {
+    const ligaRounds = roundOptions.filter((round) => getRoundPhaseKey(round) === 'liga');
+    const grupoRounds = roundOptions.filter((round) => getRoundPhaseKey(round) === 'grupo');
+    const mataMataRounds = roundOptions.filter((round) => getRoundPhaseKey(round) === 'mata-mata');
+
+    const result: { key: RoundPhaseKey; label: string; rounds: string[] }[] = [];
+    let phaseNumber = 1;
+
+    if (ligaRounds.length) {
+      result.push({ key: 'liga', label: `${phaseNumber}ª Fase (Pontos Corridos)`, rounds: ligaRounds });
+      phaseNumber += 1;
+    }
+    if (grupoRounds.length) {
+      result.push({ key: 'grupo', label: `${phaseNumber}ª Fase (Pontos Corridos)`, rounds: grupoRounds });
+      phaseNumber += 1;
+    }
+    if (mataMataRounds.length) {
+      result.push({ key: 'mata-mata', label: `${phaseNumber}ª Fase (Mata-mata)`, rounds: mataMataRounds });
+    }
+
+    return result;
+  }, [roundOptions]);
 
   useEffect(() => {
-    if (!roundOptions.length) {
+    if (!phases.length) {
       return;
     }
 
-    const firstRound = roundOptions[0];
+    setSelectedPhaseKey((current) => (phases.some((phase) => phase.key === current) ? current : phases[0].key));
+  }, [phases]);
 
-    setSelectedRoundFilter((current) => (current && roundOptions.includes(current) ? current : firstRound));
-    setNewMatchRound((current) => (current && roundOptions.includes(current) ? current : firstRound));
-  }, [roundOptions]);
+  const roundsInSelectedPhase = useMemo(() => {
+    return phases.find((phase) => phase.key === selectedPhaseKey)?.rounds ?? roundOptions;
+  }, [phases, selectedPhaseKey, roundOptions]);
+
+  useEffect(() => {
+    if (!roundsInSelectedPhase.length) {
+      return;
+    }
+
+    const firstRound = roundsInSelectedPhase[0];
+
+    setSelectedRoundFilter((current) => (current && roundsInSelectedPhase.includes(current) ? current : firstRound));
+    setNewMatchRound((current) => (current && roundsInSelectedPhase.includes(current) ? current : firstRound));
+  }, [roundsInSelectedPhase]);
 
   const filteredMatches = useMemo(() => {
     if (!selectedRoundFilter) {
@@ -319,41 +410,54 @@ const TournamentDetail = () => {
     return rawTournamentMatches.filter((match) => (match.round?.trim() || 'Sem rodada definida') === selectedRoundFilter);
   }, [rawTournamentMatches, selectedRoundFilter]);
 
-  const standingsNature = useMemo<StandingsNature>(() => {
-    const rawFormat = sourceCompetition?.format ?? tournament.format ?? '';
-    const normalizedFormat = normalizeText(rawFormat);
+  const matchesByPhaseKey = useMemo(() => {
+    const map = new Map<RoundPhaseKey, typeof rawTournamentMatches>();
+    rawTournamentMatches.forEach((match) => {
+      const key = getRoundPhaseKey(match.round ?? '');
+      const list = map.get(key) ?? [];
+      list.push(match);
+      map.set(key, list);
+    });
+    return map;
+  }, [rawTournamentMatches]);
 
-    if (
-      normalizedFormat.includes('pontos corridos + eliminatorias') ||
-      normalizedFormat.includes('grupos playoff') ||
-      normalizedFormat.includes('grupos_playoff') ||
-      normalizedFormat.includes('pontos_corridos_eliminatorias')
-    ) {
-      return 'hybrid';
+  const standingsByPhaseKey = useMemo(() => {
+    const map = new Map<RoundPhaseKey, ReturnType<typeof buildStandingsFromMatches>>();
+    phases.forEach((phase) => {
+      if (phase.key === 'mata-mata') {
+        return;
+      }
+
+      const phaseMatches = matchesByPhaseKey.get(phase.key) ?? [];
+      const precomputed = phase.key === 'liga' && standings.length > 0 ? standings : null;
+      map.set(phase.key, precomputed ?? buildStandingsFromMatches(phaseMatches, getTeamNameById));
+    });
+    return map;
+  }, [phases, matchesByPhaseKey, standings]);
+
+  const knockoutRoundsByPhaseKey = useMemo(() => {
+    const map = new Map<RoundPhaseKey, ReturnType<typeof groupMatchesByRound>>();
+    phases.forEach((phase) => {
+      if (phase.key !== 'mata-mata') {
+        return;
+      }
+
+      map.set(phase.key, groupMatchesByRound(matchesByPhaseKey.get(phase.key) ?? []));
+    });
+    return map;
+  }, [phases, matchesByPhaseKey]);
+
+  useEffect(() => {
+    if (!phases.length) {
+      return;
     }
 
-    if (normalizedFormat.includes('eliminatorias')) {
-      return 'knockout';
-    }
-
-    return 'league';
-  }, [sourceCompetition?.format, tournament.format]);
+    setStandingsPhaseKey((current) => (phases.some((phase) => phase.key === current) ? current : phases[0].key));
+  }, [phases]);
 
   const knockoutMatches = useMemo(() => {
     return rawTournamentMatches.filter((match) => isKnockoutRound(match.round ?? ''));
   }, [rawTournamentMatches]);
-
-  const leaguePhaseMatches = useMemo(() => {
-    return rawTournamentMatches.filter((match) => !isKnockoutRound(match.round ?? ''));
-  }, [rawTournamentMatches]);
-
-  const phaseOneStandings = useMemo(() => {
-    if (standings.length > 0) {
-      return standings;
-    }
-
-    return buildStandingsFromMatches(leaguePhaseMatches, getTeamNameById);
-  }, [leaguePhaseMatches, standings]);
 
   const knockoutByRounds = useMemo(() => {
     return groupMatchesByRound(knockoutMatches);
@@ -695,6 +799,7 @@ const TournamentDetail = () => {
     }
 
     setCustomRounds((previous) => [...previous, normalizedRoundName]);
+    setSelectedPhaseKey(getRoundPhaseKey(normalizedRoundName));
     setSelectedRoundFilter(normalizedRoundName);
     setNewMatchRound(normalizedRoundName);
     setNewRoundName('');
@@ -726,23 +831,26 @@ const TournamentDetail = () => {
     );
   };
 
-  const renderKnockoutBracket = () => {
-    if (!knockoutByRounds.length) {
+  const renderKnockoutBracket = (groupedRounds: ReturnType<typeof groupMatchesByRound> = knockoutByRounds) => {
+    if (!groupedRounds.length) {
       return emptyState;
     }
 
     return (
       <div className="grid gap-3">
-        {knockoutByRounds.map(([roundLabel, matches]) => (
+        {groupedRounds.map(([roundLabel, matches]) => (
           <div key={roundLabel} className="rounded-xl border border-border/70 bg-background/60 p-3">
             <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">{roundLabel}</p>
             <div className="space-y-2">
-              {matches.map((match) => (
-                <div key={match.id} className="rounded-md border border-border/60 bg-secondary/20 p-2 text-sm">
-                  <p className="font-semibold">{getTeamNameById(match.home_team_id)} {match.score_home ?? '?'} x {match.score_away ?? '?'} {getTeamNameById(match.away_team_id)}</p>
-                  <p className="text-xs text-muted-foreground">{match.date} · {match.location || 'Local não informado'}</p>
-                </div>
-              ))}
+              {matches.map((match) => {
+                const score = formatMatchScore(match);
+                return (
+                  <div key={match.id} className="rounded-md border border-border/60 bg-secondary/20 p-2 text-sm">
+                    <p className="font-semibold">{getTeamNameById(match.home_team_id)} {score.home} x {score.away} {getTeamNameById(match.away_team_id)}</p>
+                    <p className="text-xs text-muted-foreground">{match.date} · {match.location || 'Local não informado'}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -778,21 +886,39 @@ const TournamentDetail = () => {
         {activeTab === 'matches' && (
           <div className="space-y-3">
             <div className="rounded-xl border border-border/70 bg-background/60 p-3">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Selecione a rodada</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Fase</p>
               <select
-                value={selectedRoundFilter}
-                onChange={(event) => {
-                  setSelectedRoundFilter(event.target.value);
-                  setNewMatchRound(event.target.value);
-                }}
+                value={selectedPhaseKey}
+                onChange={(event) => setSelectedPhaseKey(event.target.value as RoundPhaseKey)}
                 className="w-full rounded-md border border-border bg-background/50 p-2.5 text-sm"
               >
-                {roundOptions.map((round) => (
-                  <option key={round} value={round}>{round}</option>
+                {phases.map((phase) => (
+                  <option key={phase.key} value={phase.key}>{phase.label}</option>
                 ))}
               </select>
 
-              <div className="mt-2 space-y-2">
+              <p className="mb-2 mt-3 text-xs font-bold uppercase tracking-wider text-muted-foreground">Rodada</p>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {roundsInSelectedPhase.map((round) => (
+                  <button
+                    key={round}
+                    type="button"
+                    onClick={() => {
+                      setSelectedRoundFilter(round);
+                      setNewMatchRound(round);
+                    }}
+                    className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                      selectedRoundFilter === round
+                        ? 'border-primary bg-primary text-primary-foreground'
+                        : 'border-border bg-background/50 text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {round}
+                  </button>
+                ))}
+              </div>
+
+              <div className="mt-3 space-y-2">
                 <button
                   type="button"
                   onClick={() => setShowAddRoundForm((current) => !current)}
@@ -825,17 +951,20 @@ const TournamentDetail = () => {
               <div className="rounded-xl border border-border/70 bg-background/60 p-3">
                 <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Jogos da rodada {selectedRoundFilter}</p>
                 <div className="space-y-2">
-                  {filteredMatches.map((match) => (
-                    <button
-                      key={match.id}
-                      type="button"
-                      onClick={() => openMatchDialog(match.id)}
-                      className="w-full rounded-lg border border-border/60 bg-secondary/20 p-3 text-left text-sm"
-                    >
-                      <p className="font-semibold">{getTeamNameById(match.home_team_id)} {match.score_home ?? '?'} x {match.score_away ?? '?'} {getTeamNameById(match.away_team_id)}</p>
-                      <p className="text-muted-foreground">{match.date} · {match.location || 'Local não informado'}</p>
-                    </button>
-                  ))}
+                  {filteredMatches.map((match) => {
+                    const score = formatMatchScore(match);
+                    return (
+                      <button
+                        key={match.id}
+                        type="button"
+                        onClick={() => openMatchDialog(match.id)}
+                        className="w-full rounded-lg border border-border/60 bg-secondary/20 p-3 text-left text-sm"
+                      >
+                        <p className="font-semibold">{getTeamNameById(match.home_team_id)} {score.home} x {score.away} {getTeamNameById(match.away_team_id)}</p>
+                        <p className="text-muted-foreground">{match.date} · {match.location || 'Local não informado'}</p>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ) : emptyState}
@@ -912,24 +1041,29 @@ const TournamentDetail = () => {
 
         {activeTab === 'standings' && (
           <div className="space-y-3">
-            {standingsNature === 'league' && renderStandingsTable(phaseOneStandings)}
-
-            {standingsNature === 'knockout' && renderKnockoutBracket()}
-
-            {standingsNature === 'hybrid' && (
-              <div className="space-y-3">
-                <select
-                  value={standingsPhase}
-                  onChange={(event) => setStandingsPhase(event.target.value as StandingsPhase)}
-                  className="w-full rounded-md border border-border bg-background/50 p-2.5 text-sm"
-                >
-                  <option value="phase1">1ª fase (Pontos corridos)</option>
-                  <option value="phase2">2ª fase (Eliminatórias)</option>
-                </select>
-
-                {standingsPhase === 'phase1' ? renderStandingsTable(phaseOneStandings) : renderKnockoutBracket()}
-              </div>
+            {phases.length > 1 && (
+              <select
+                value={standingsPhaseKey}
+                onChange={(event) => setStandingsPhaseKey(event.target.value as RoundPhaseKey)}
+                className="w-full rounded-md border border-border bg-background/50 p-2.5 text-sm"
+              >
+                {phases.map((phase) => (
+                  <option key={phase.key} value={phase.key}>{phase.label}</option>
+                ))}
+              </select>
             )}
+
+            {(() => {
+              const activePhaseKey = phases.some((phase) => phase.key === standingsPhaseKey)
+                ? standingsPhaseKey
+                : phases[0]?.key ?? 'liga';
+
+              if (activePhaseKey === 'mata-mata') {
+                return renderKnockoutBracket(knockoutRoundsByPhaseKey.get(activePhaseKey) ?? []);
+              }
+
+              return renderStandingsTable(standingsByPhaseKey.get(activePhaseKey) ?? []);
+            })()}
           </div>
         )}
 
@@ -1123,7 +1257,7 @@ const TournamentDetail = () => {
               {selectedAction === 'view' && (
                 <div className="space-y-3 text-sm">
                   <div className="rounded-lg border border-border/60 p-3">
-                    <p><span className="font-semibold">Placar:</span> {selectedRawMatch.score_home ?? '?'} x {selectedRawMatch.score_away ?? '?'}</p>
+                    <p><span className="font-semibold">Placar:</span> {formatMatchScore(selectedRawMatch).home} x {formatMatchScore(selectedRawMatch).away}</p>
                     <p><span className="font-semibold">Local:</span> {selectedRawMatch.location ?? 'Não definido'}</p>
                     <p><span className="font-semibold">Data:</span> {selectedRawMatch.date}</p>
                     <p><span className="font-semibold">Aviso:</span> {selectedRawMatch.warning_notice ?? 'Sem aviso'}</p>
